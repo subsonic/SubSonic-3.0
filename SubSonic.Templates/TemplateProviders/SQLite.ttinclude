@@ -1,0 +1,169 @@
+﻿<#@ include file="Settings.ttinclude" #>
+<#@ assembly name="System.Data.SQLite" #>
+<#@ import namespace="System.Data.SQLite" #>
+<#+
+SQLiteConnection conn;
+
+List<Table> LoadTables(){
+    var result=new List<Table>();
+    
+    using(conn=new SQLiteConnection(ConnectionString)){
+             
+        conn.Open();
+        //this will return everything for the DB
+        var schema  = conn.GetSchema("COLUMNS");
+        conn.Close();
+        
+        //spin through once to get all the tables
+        foreach (DataRow row in schema.Rows)
+        {
+            if(!result.Any(x=>x.Name.Equals(row["TABLE_NAME"].ToString(),StringComparison.InvariantCultureIgnoreCase)))
+            {
+
+                //add it
+                Table tbl = new Table();
+                tbl.PrimaryKey="";
+                tbl.FKTables=new List<FKTable>();
+                tbl.Name = row["TABLE_NAME"].ToString();
+                tbl.CleanName=CleanUp(tbl.Name);
+                tbl.ClassName=Inflector.MakeSingular(tbl.CleanName);
+                tbl.QueryableName=Inflector.MakePlural(tbl.ClassName);
+                result.Add(tbl);
+            }
+        }
+        
+        //loop again - but this time pull by table name
+        foreach (var item in result) {
+            item.Columns=new List<Column>();
+            //pull the columns from the schema
+            var columns = schema.Select("TABLE_NAME='" + item.Name + "'");
+
+            foreach (var row in columns) {
+                Column col=new Column();
+                col.Name=row["COLUMN_NAME"].ToString();
+                col.CleanName=CleanUp(col.Name);
+                col.DataType=row["DATA_TYPE"].ToString();
+                
+                col.SysType=GetSysType(col.DataType);
+                col.DbType=GetDbType(col.DataType);
+                
+                col.AutoIncrement=row["AUTOINCREMENT"].ToString()=="True";
+                col.IsNullable=row["IS_NULLABLE"].ToString()=="True";
+                col.IsPK=row["PRIMARY_KEY"].ToString()=="True";
+                
+                if(col.IsPK){
+                    item.PrimaryKey=col.Name ?? "";
+                }
+                
+                int.TryParse(row["CHARACTER_MAXIMUM_LENGTH"].ToString(),out col.MaxLength);
+                
+                item.Columns.Add(col);
+            
+            }
+        }
+        
+    }
+        
+
+    return result;
+}
+
+string GetSysType(string sqlType){
+	string sysType="string";
+	switch (sqlType) {
+		case "bigint":
+		case "smallint":
+		case "integer":
+			sysType= "int";
+			break;
+		case "guid":
+			sysType=  "Guid";
+			 break;
+		case "smalldatetime":
+		case "datetime":
+			sysType=  "DateTime";
+			  break;
+		case "float":
+			sysType="double";
+			break;
+		case "real":
+		case "numeric":
+		case "smallmoney":
+		case "decimal":
+		case "money":
+			sysType=  "decimal";
+			 break;
+		case "bit":
+			sysType=  "bool";
+			   break;
+		case "image":
+		case "binary":
+		case "tinyint":
+		case "varbinary":
+			sysType=  "byte[]";
+			 break;
+	}
+	return sysType;
+}
+DbType GetDbType(string sqlType){
+	switch(sqlType)
+    {
+        case "varchar":
+            return DbType.AnsiString;
+        case "nvarchar":
+            return DbType.String;
+        case "integer":
+            return DbType.Int32;
+        case "guid":
+            return DbType.Guid;
+        case "datetime":
+            return DbType.DateTime;
+        case "bigint":
+            return DbType.Int64;
+        case "binary":
+            return DbType.Binary;
+        case "bit":
+            return DbType.Boolean;
+        case "char":
+            return DbType.AnsiStringFixedLength;
+        case "decimal":
+            return DbType.Decimal;
+        case "float":
+            return DbType.Double;
+        case "image":
+            return DbType.Binary;
+        case "money":
+            return DbType.Currency;
+        case "nchar":
+            return DbType.String;
+        case "ntext":
+            return DbType.String;
+        case "numeric":
+            return DbType.Decimal;
+        case "real":
+            return DbType.Single;
+        case "smalldatetime":
+            return DbType.DateTime;
+        case "smallint":
+            return DbType.Int16;
+        case "smallmoney":
+            return DbType.Currency;
+        case "sql_variant":
+            return DbType.String;
+        case "sysname":
+            return DbType.String;
+        case "text":
+            return DbType.AnsiString;
+        case "timestamp":
+            return DbType.Binary;
+        case "tinyint":
+            return DbType.Byte;
+        case "varbinary":
+            return DbType.Binary;
+        default:
+            return DbType.AnsiString;
+    }
+
+}
+
+#>

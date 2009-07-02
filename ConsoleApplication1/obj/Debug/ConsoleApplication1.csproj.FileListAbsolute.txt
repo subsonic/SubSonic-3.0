@@ -1,0 +1,9 @@
+D:\@SubSonic\SubSonic3\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+D:\@SubSonic\SubSonic3\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+D:\@SubSonic\SubSonic3\ConsoleApplication1\obj\Debug\ResolveAssemblyReference.cache
+D:\@SubSonic\SubSonic3\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+D:\@SubSonic\SubSonic3\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+D:\@SubSonic\SubSonic3\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+D:\@SubSonic\SubSonic3\ConsoleApplication1\bin\Debug\SubSonic.Core.dll
+D:\@SubSonic\SubSonic3\ConsoleApplication1\bin\Debug\SubSonic.Core.pdb
+D:\@SubSonic\SubSonic3\ConsoleApplication1\bin\Debug\SubSonic.Core.xml

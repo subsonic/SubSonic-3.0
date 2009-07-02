@@ -1,0 +1,15 @@
+D:\@SubSonic\SubSonic3\PerfRunner\bin\Debug\PerfRunner.exe.config
+D:\@SubSonic\SubSonic3\PerfRunner\bin\Debug\PerfRunner.exe
+D:\@SubSonic\SubSonic3\PerfRunner\bin\Debug\PerfRunner.pdb
+D:\@SubSonic\SubSonic3\PerfRunner\bin\Debug\SubSonic.Core.dll
+D:\@SubSonic\SubSonic3\PerfRunner\bin\Debug\SubSonic.Templates.dll
+D:\@SubSonic\SubSonic3\PerfRunner\bin\Debug\SubSonic.Tests.dll
+D:\@SubSonic\SubSonic3\PerfRunner\bin\Debug\xunit.dll
+D:\@SubSonic\SubSonic3\PerfRunner\bin\Debug\SubSonic.Templates.pdb
+D:\@SubSonic\SubSonic3\PerfRunner\bin\Debug\SubSonic.Tests.pdb
+D:\@SubSonic\SubSonic3\PerfRunner\bin\Debug\SubSonic.Core.pdb
+D:\@SubSonic\SubSonic3\PerfRunner\bin\Debug\SubSonic.Core.xml
+D:\@SubSonic\SubSonic3\PerfRunner\obj\Debug\ResolveAssemblyReference.cache
+D:\@SubSonic\SubSonic3\PerfRunner\obj\Debug\PerfRunner.exe
+D:\@SubSonic\SubSonic3\PerfRunner\obj\Debug\PerfRunner.pdb
+D:\@SubSonic\SubSonic3\PerfRunner\bin\Debug\MySql.Data.dll

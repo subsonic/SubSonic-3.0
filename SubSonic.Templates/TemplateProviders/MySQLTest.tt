@@ -1,0 +1,14 @@
+﻿<#@ template language="C#v3.5" debug="False" hostspecific="True"  #>
+<#@ output extension=".cs" #>
+<#@ include file="MySQL.ttinclude" #>
+<#
+    var tables = LoadTables();
+    
+    foreach(var tbl in tables){
+#>
+        //Table=<#=tbl.Name#>
+        //Columns=<#=tbl.Columns.Count#>
+        //PK =<#=tbl.PK.Name#>
+        
+
+<#  }#>

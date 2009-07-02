@@ -1,0 +1,329 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="livetemplates.csharp.usevar">True</setting>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="column" priority="4" />
+      <Item value="sql" priority="1" />
+      <Item value="tableName" priority="0" />
+      <Item value="if" priority="5" />
+      <Item value="else" priority="1" />
+      <Item value="public" priority="12" />
+      <Item value="MigrationTests" priority="0" />
+      <Item value="provider" priority="5" />
+      <Item value="new" priority="19" />
+      <Item value="try" priority="0" />
+      <Item value="qry" priority="4" />
+      <Item value="catch" priority="0" />
+      <Item value="void" priority="5" />
+      <Item value="IDataProvider" priority="2" />
+      <Item value="return" priority="5" />
+      <Item value="DbType" priority="0" />
+      <Item value="conversionType" priority="1" />
+      <Item value="typeof" priority="3" />
+      <Item value="Int16" priority="2" />
+      <Item value="Int32" priority="1" />
+      <Item value="Int64" priority="1" />
+      <Item value="value" priority="0" />
+      <Item value="throw" priority="0" />
+      <Item value="InvalidOperationException" priority="0" />
+      <Item value="override" priority="0" />
+      <Item value="IQueryable" priority="0" />
+      <Item value="TypeAttributes" priority="0" />
+      <Item value="var" priority="16" />
+      <Item value="Query" priority="6" />
+      <Item value="T" priority="0" />
+      <Item value="_provider" priority="3" />
+      <Item value="ExistsExpression" priority="0" />
+      <Item value="bool" priority="1" />
+      <Item value="All" priority="0" />
+      <Item value="_repo" priority="3" />
+      <Item value="Shwerko" priority="5" />
+      <Item value="Assert" priority="8" />
+      <Item value="result" priority="5" />
+      <Item value="x" priority="3" />
+      <Item value="string" priority="2" />
+      <Item value="col" priority="1" />
+      <Item value="addSql" priority="1" />
+      <Item value="foreach" priority="0" />
+      <Item value="Fact" priority="1" />
+      <Item value="PropertyInfo" priority="0" />
+      <Item value="SubSonicTest" priority="0" />
+      <Item value="type" priority="0" />
+      <Item value="partial" priority="0" />
+      <Item value="prop" priority="1" />
+      <Item value="DateTime" priority="1" />
+      <Item value="char" priority="0" />
+      <Item value="StringSplitOptions" priority="0" />
+      <Item value="Product" priority="5" />
+      <Item value="Northwind.Data" priority="0" />
+      <Item value="enum" priority="0" />
+      <Item value="GetRepo" priority="1" />
+      <Item value="ProviderFactory" priority="3" />
+      <Item value="SimpleRepository" priority="0" />
+      <Item value="SimpleRepositoryOptions" priority="1" />
+      <Item value="Northwind" priority="4" />
+      <Item value="Data" priority="5" />
+      <Item value="NorthwindDB" priority="2" />
+      <Item value="from" priority="0" />
+      <Item value="db" priority="3" />
+      <Item value="select" priority="0" />
+      <Item value="p" priority="2" />
+      <Item value="PlatformID" priority="1" />
+      <Item value="repo" priority="0" />
+      <Item value="expression" priority="0" />
+      <Item value="results" priority="1" />
+      <Item value="null" priority="0" />
+      <Item value="providerName" priority="1" />
+      <Item value="Linq" priority="1" />
+      <Item value="SubSonic" priority="3" />
+      <Item value="Structure" priority="0" />
+      <Item value="this" priority="0" />
+      <Item value="ProviderFactoryTests" priority="0" />
+      <Item value="System" priority="0" />
+      <Item value="SqlClient" priority="0" />
+      <Item value="using" priority="1" />
+      <Item value="SharedDbConnectionScope" priority="1" />
+      <Item value="connectionString" priority="0" />
+      <Item value="connectionStringName" priority="0" />
+      <Item value="scope" priority="0" />
+      <Item value="scopeString" priority="0" />
+      <Item value="int" priority="1" />
+      <Item value="while" priority="0" />
+      <Item value="counter" priority="1" />
+      <Item value="Southwind" priority="2" />
+      <Item value="Schema" priority="0" />
+      <Item value="Migrator" priority="0" />
+      <Item value="BatchQuery" priority="0" />
+      <Item value="SelectTests" priority="0" />
+      <Item value="batch" priority="5" />
+      <Item value="_queries" priority="0" />
+      <Item value="_linqProvider" priority="0" />
+      <Item value="DbQueryProvider" priority="0" />
+      <Item value="tbl" priority="0" />
+      <Item value="rowType" priority="0" />
+      <Item value="false" priority="0" />
+      <Item value="rdr" priority="2" />
+      <Item value="Update" priority="2" />
+      <Item value="SubSonicRepository" priority="0" />
+      <Item value="_db" priority="2" />
+      <Item value="query" priority="0" />
+      <Item value="item" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.Schema.IColumn">
+      <Item value="IsNullable" priority="0" />
+      <Item value="Name" priority="0" />
+      <Item value="DefaultSetting" priority="0" />
+      <Item value="IsString" priority="0" />
+      <Item value="IsDateTime" priority="0" />
+      <Item value="CreateSql" priority="0" />
+      <Item value="AlterSql" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Text.StringBuilder">
+      <Item value="AppendFormat" priority="0" />
+      <Item value="AppendLine" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.DataProviders.IDataProvider">
+      <Item value="ExecuteQuery" priority="1" />
+      <Item value="ConnectionString" priority="2" />
+      <Item value="FindOrCreateTable" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.Query.CodingHorror">
+      <Item value="Execute" priority="1" />
+      <Item value="ExecuteReader" priority="0" />
+      <Item value="GetCommand" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.Tests.Migrations.SQLitey">
+      <Item value="Connection" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Data.DbType">
+      <Item value="Int64" priority="1" />
+      <Item value="Int16" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Linq.IQueryable`1">
+      <Item value="Any" priority="0" />
+      <Item value="Count" priority="2" />
+      <Item value="ToList" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.Repository.IRepository">
+      <Item value="All" priority="0" />
+      <Item value="Exists" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Xunit.Assert">
+      <Item value="NotNull" priority="0" />
+      <Item value="Equal" priority="5" />
+      <Item value="True" priority="1" />
+      <Item value="False" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.Tests.Repositories.Shwerko">
+      <Item value="Name" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.List`1">
+      <Item value="Add" priority="1" />
+      <Item value="Count" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.String">
+      <Item value="Split" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Type">
+      <Item value="GetProperties" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.StringSplitOptions">
+      <Item value="RemoveEmptyEntries" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.String">
+      <Item value="IsNullOrEmpty" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Southwind.Product">
+      <Item value="Setup" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@SubSonic.DataProviders.ProviderFactory">
+      <Item value="GetProvider" priority="4" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@SubSonic.Repository.SimpleRepositoryOptions">
+      <Item value="RunMigrations" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Northwind.Data.NorthwindDB">
+      <Item value="Products" priority="1" />
+      <Item value="Select" priority="0" />
+      <Item value="Orders" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.Query.Select">
+      <Item value="From" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.Query.SqlQuery">
+      <Item value="GetRecordCount" priority="0" />
+      <Item value="ExecuteTypedList" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.Repository.IRepository`1">
+      <Item value="Find" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.DataProviders.AutomaticConnectionScope">
+      <Item value="Connection" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Common.DbConnection">
+      <Item value="CreateCommand" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.Query.QueryCommand">
+      <Item value="Provider" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Common.DbDataReader">
+      <Item value="Read" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@Southwind.Shwerko">
+      <Item value="SingleOrDefault" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Southwind.Product">
+      <Item value="Save" priority="0" />
+      <Item value="Add" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.Query.BatchQuery">
+      <Item value="Queue" priority="1" />
+      <Item value="QueryCount" priority="0" />
+      <Item value="ExecuteReader" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.IDataReader">
+      <Item value="Read" priority="1" />
+      <Item value="NextResult" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.Query.Update`1">
+      <Item value="Set" priority="1" />
+      <Item value="Where" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Northwind.Data.Product">
+      <Item value="CategoryID" priority="0" />
+      <Item value="UnitPrice" priority="0" />
+      <Item value="ProductID" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Southwind.NorthwindDB">
+      <Item value="Provider" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.Query.IQuerySurface">
+      <Item value="Provider" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:SubSonic.Query.ISqlQuery">
+      <Item value="GetCommand" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="6B23B65F-2E09-4531-BDA1-A6EA08CBA843/d:SimpleQuery/f:InsertTests.cs" caret="1929" fromTop="30" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Repository/f:SubSonicRepository.cs" caret="9124" fromTop="18" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Schema/f:IActiveRecord.cs" caret="1318" fromTop="29" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:ActiveRecord.cs" caret="559" fromTop="17" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:ActiveRecord.tt" caret="12432" fromTop="5" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Repository/f:TestRepository.cs" caret="830" fromTop="0" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Repository/f:IRepository.cs" caret="2025" fromTop="21" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:Context.tt" caret="2054" fromTop="20" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:Settings.ttinclude" caret="0" fromTop="0" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Linq/d:Structure/f:ImplicitMapping.cs" caret="2869" fromTop="20" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Linq/d:Structure/f:DbExpressions.cs" caret="4031" fromTop="19" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Linq/d:Structure/f:TypeHelper.cs" caret="2121" fromTop="30" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Linq/d:Structure/f:DbExpressionVisitor.cs" caret="2808" fromTop="17" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Linq/d:Structure/f:ExpressionVisitor.cs" caret="2779" fromTop="17" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Linq/d:Translation/f:QueryBinder.cs" caret="38417" fromTop="20" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Linq/d:Structure/f:QueryMapping.cs" caret="4636" fromTop="20" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Query/f:BatchQuery.cs" caret="4187" fromTop="16" />
+      <File id="6B23B65F-2E09-4531-BDA1-A6EA08CBA843/d:Batch/f:SelectTests.cs" caret="1440" fromTop="32" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:DataProviders/f:IDataProvider.cs" caret="2614" fromTop="33" />
+      <File id="6B23B65F-2E09-4531-BDA1-A6EA08CBA843/d:Migrations/f:MigrationTests.cs" caret="2127" fromTop="19" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Query/f:InlineQuery.cs" caret="3153" fromTop="35" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:DataProviders/f:ProviderFactory.cs" caret="1773" fromTop="17" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Query/f:SqlQuery.cs" caret="39112" fromTop="24" />
+      <File id="6B23B65F-2E09-4531-BDA1-A6EA08CBA843/d:MultipleConnections/f:ConnectionTests.cs" caret="1182" fromTop="29" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Linq/d:Structure/f:DbQueryProvider.cs" caret="6505" fromTop="17" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/f:Web.config" caret="2720" fromTop="24" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Models/d:_Generated/f:ActiveRecord.tt" caret="13029" fromTop="25" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Models/d:_Generated/f:ActiveRecord.cs" caret="15353" fromTop="24" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Models/d:_Generated/f:Settings.ttinclude" caret="1034" fromTop="25" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Controllers/f:HomeController.cs" caret="470" fromTop="19" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:ActiveRecord.tt" caret="85172" fromTop="12" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:ActiveRecord.tt" caret="12932" fromTop="12" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:ActiveRecord.tt" caret="13798" fromTop="19" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:ActiveRecord.tt" caret="13570" fromTop="12" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:ActiveRecord.tt" caret="14206" fromTop="18" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:ActiveRecord.tt" caret="13893" fromTop="7" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:ActiveRecord.tt" caret="14053" fromTop="11" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:ActiveRecord.tt" caret="14296" fromTop="11" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:ActiveRecord.tt" caret="15321" fromTop="26" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:ActiveRecord.tt" caret="15141" fromTop="26" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:ActiveRecord.tt" caret="15559" fromTop="27" />
+      <File id="5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC/d:ActiveRecord/f:ActiveRecord.tt" caret="12432" fromTop="5" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Schema/f:IActiveRecord.cs" caret="1318" fromTop="28" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Repository/f:SubSonicRepository.cs" caret="8978" fromTop="14" />
+      <File id="53FF90B2-2D33-4EC0-91B6-A30FDF1B3374/d:Repository/f:SubSonicRepository.cs" caret="9124" fromTop="18" />
+      <File id="6B23B65F-2E09-4531-BDA1-A6EA08CBA843/d:SimpleQuery/f:InsertTests.cs" caret="1927" fromTop="17" />
+      <File id="6B23B65F-2E09-4531-BDA1-A6EA08CBA843/d:SimpleQuery/f:DeleteTests.cs" caret="2509" fromTop="17" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/f:Web.config" caret="2719" fromTop="24" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Models/d:_Generated/f:Settings.ttinclude" caret="850" fromTop="21" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Models/d:_Generated/f:Settings.ttinclude" caret="1034" fromTop="25" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Models/d:_Generated/f:Settings.ttinclude" caret="29309" fromTop="25" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Models/d:_Generated/f:ActiveRecord.tt" caret="13031" fromTop="33" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Models/d:_Generated/f:ActiveRecord.tt" caret="465" fromTop="16" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Models/d:_Generated/f:ActiveRecord.tt" caret="12704" fromTop="21" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Models/d:_Generated/f:ActiveRecord.tt" caret="13241" fromTop="33" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Models/d:_Generated/f:ActiveRecord.tt" caret="13451" fromTop="39" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Models/d:_Generated/f:ActiveRecord.tt" caret="13029" fromTop="25" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Models/d:_Generated/f:ActiveRecord.tt" caret="16275" fromTop="25" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Controllers/f:HomeController.cs" caret="411" fromTop="12" />
+      <File id="3497AAC9-6661-4960-8DF7-96244F898766/d:Controllers/f:HomeController.cs" caret="460" fromTop="19" />
+    </RecentEdits>
+  </RecentFiles>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerMSTest>
+    <UseTestRunConfigFromMetadataFile>False</UseTestRunConfigFromMetadataFile>
+  </UnitTestRunnerMSTest>
+</Configuration>

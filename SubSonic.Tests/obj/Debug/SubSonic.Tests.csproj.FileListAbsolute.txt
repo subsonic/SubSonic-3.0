@@ -1,0 +1,14 @@
+D:\@SubSonic\SubSonic3\SubSonic.Tests\bin\Debug\SubSonic.Tests.dll.config
+D:\@SubSonic\SubSonic3\SubSonic.Tests\bin\Debug\SubSonic.Tests.dll
+D:\@SubSonic\SubSonic3\SubSonic.Tests\bin\Debug\SubSonic.Tests.pdb
+D:\@SubSonic\SubSonic3\SubSonic.Tests\bin\Debug\MySql.Data.dll
+D:\@SubSonic\SubSonic3\SubSonic.Tests\bin\Debug\SubSonic.Core.dll
+D:\@SubSonic\SubSonic3\SubSonic.Tests\bin\Debug\SubSonic.Templates.dll
+D:\@SubSonic\SubSonic3\SubSonic.Tests\bin\Debug\xunit.dll
+D:\@SubSonic\SubSonic3\SubSonic.Tests\bin\Debug\SubSonic.Core.pdb
+D:\@SubSonic\SubSonic3\SubSonic.Tests\bin\Debug\SubSonic.Core.xml
+D:\@SubSonic\SubSonic3\SubSonic.Tests\bin\Debug\SubSonic.Templates.pdb
+D:\@SubSonic\SubSonic3\SubSonic.Tests\obj\Debug\ResolveAssemblyReference.cache
+D:\@SubSonic\SubSonic3\SubSonic.Tests\obj\Debug\SubSonic.Tests.dll
+D:\@SubSonic\SubSonic3\SubSonic.Tests\obj\Debug\SubSonic.Tests.pdb
+D:\@SubSonic\SubSonic3\SubSonic.Tests\bin\Debug\System.Data.SQLite.DLL
