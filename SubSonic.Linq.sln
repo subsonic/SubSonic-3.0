@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Examples.ActiveRec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Examples.SimpleRepo", "SubSonic.Examples.SimpleRepo\SubSonic.Examples.SimpleRepo.csproj", "{FC2DA043-126B-44B0-A095-FD71A7547149}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "ConsoleApplication1\ConsoleApplication1.csproj", "{4C9A3DA0-86E4-4B92-A5E5-A92E534D785B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,10 +37,6 @@ Global
 		{FC2DA043-126B-44B0-A095-FD71A7547149}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC2DA043-126B-44B0-A095-FD71A7547149}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC2DA043-126B-44B0-A095-FD71A7547149}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4C9A3DA0-86E4-4B92-A5E5-A92E534D785B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C9A3DA0-86E4-4B92-A5E5-A92E534D785B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C9A3DA0-86E4-4B92-A5E5-A92E534D785B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C9A3DA0-86E4-4B92-A5E5-A92E534D785B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
