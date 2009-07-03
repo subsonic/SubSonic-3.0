@@ -59,7 +59,7 @@ namespace SubSonic.DataProviders
         T ExecuteSingle<T>(QueryCommand cmd) where T : new();
         int ExecuteQuery(QueryCommand cmd);
         ITable FindTable(string tableName);
-        ITable FindOrCreateTable<T>() where T : class, new();
+        ITable FindOrCreateTable<T>() where T : new();
         ITable FindOrCreateTable(Type type);
         DbCommand CreateCommand();
         //SQL formatting

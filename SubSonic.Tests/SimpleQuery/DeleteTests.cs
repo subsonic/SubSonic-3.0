@@ -12,10 +12,12 @@
 //   rights and limitations under the License.
 // 
 using System.Linq;
-using WestWind;
 using SubSonic.Repository;
 using SubSonic.Tests.Linq.TestBases;
 using Xunit;
+using SubSonic.DataProviders;
+using SubSonic.Tests.TestClasses;
+using SubSonic.Linq.Structure;
 
 namespace SubSonic.Tests.Update
 {
@@ -24,19 +26,23 @@ namespace SubSonic.Tests.Update
     /// </summary>
     public class DeleteTests
     {
-        private readonly SubSonicDB _db;
+        
+        
+        private readonly IDataProvider provider;
+        private TestDB _db;
 
         public DeleteTests()
         {
-            _db = new SubSonicDB();
-            var setup = new Setup(_db.Provider);
+            provider = ProviderFactory.GetProvider("WestWind");
+            _db = new TestDB(provider);
+            var setup = new Setup(provider);
             setup.DropTestTables();
             setup.CreateTestTable();
             setup.LoadTestData();
         }
 
         [Fact]
-        public void Delete_With_Advanced_Template_Repo()
+        public void Delete_With_SimpleQuery_Single_Record()
         {
             //make sure it's there
             bool wasThere = _db.Products.Any(x => x.ProductID == 1);
@@ -51,37 +57,18 @@ namespace SubSonic.Tests.Update
         }
 
         [Fact]
-        public void Delete_With_ActiveRecord_DeleteMany()
-        {
-            var simpleRepo = new SimpleRepository(_db.Provider);
-
-            bool wasThere = Southwind.Product.Exists(x => x.ProductID == 1);
+        public void Delete_With_SimpleQuery_Many_Records() {
+            //make sure it's there
+            bool wasThere = _db.Products.Any(x => x.ProductID == 1);
             Assert.True(wasThere);
 
             //delete it
-            Southwind.Product.Delete(x => x.ProductID == 1);
-
-            wasThere = Southwind.Product.Exists(x => x.ProductID == 1);
+            _db.Delete<Product>(x => x.ProductID >0).Execute();
 
             //make sure it's not there
-            Assert.False(wasThere);
+            Assert.Equal(0,_db.Select.From<Product>().GetRecordCount());
         }
 
-        [Fact]
-        public void Delete_With_ActiveRecord_Single()
-        {
-            var simpleRepo = new SimpleRepository(_db.Provider);
 
-            bool wasThere = Southwind.Product.Exists(x => x.ProductID == 1);
-            Assert.True(wasThere);
-
-            //delete it
-            Southwind.Product.Delete(x=>x.ProductID==1);
-
-            wasThere = Southwind.Product.Exists(x => x.ProductID == 1);
-
-            //make sure it's not there
-            Assert.False(wasThere);
-        }
     }
 }

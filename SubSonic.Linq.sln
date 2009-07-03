@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Core", "SubSonic.Core\SubSonic.Core.csproj", "{53FF90B2-2D33-4EC0-91B6-A30FDF1B3374}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Templates", "SubSonic.Templates\SubSonic.Templates.csproj", "{5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Tests", "SubSonic.Tests\SubSonic.Tests.csproj", "{6B23B65F-2E09-4531-BDA1-A6EA08CBA843}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Examples.ActiveRecord", "SubSonic.Examples.ActiveRecord\SubSonic.Examples.ActiveRecord.csproj", "{3497AAC9-6661-4960-8DF7-96244F898766}"
@@ -21,10 +19,6 @@ Global
 		{53FF90B2-2D33-4EC0-91B6-A30FDF1B3374}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53FF90B2-2D33-4EC0-91B6-A30FDF1B3374}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53FF90B2-2D33-4EC0-91B6-A30FDF1B3374}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6B23B65F-2E09-4531-BDA1-A6EA08CBA843}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6B23B65F-2E09-4531-BDA1-A6EA08CBA843}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B23B65F-2E09-4531-BDA1-A6EA08CBA843}.Release|Any CPU.ActiveCfg = Release|Any CPU

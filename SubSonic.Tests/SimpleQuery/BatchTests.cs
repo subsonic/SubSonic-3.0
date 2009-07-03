@@ -14,58 +14,51 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using WestWind;
 using SubSonic.Extensions;
 using SubSonic.Query;
 using Xunit;
+using SubSonic.DataProviders;
+using SubSonic.Linq.Structure;
+using SubSonic.Tests.TestClasses;
 
 namespace SubSonic.Tests.Batch
 {
+
+
+    
     /// <summary>
     /// Summary description for FutureTests
     /// </summary>
     public class BatchTests
     {
-        private readonly SubSonicDB _db;
+        
+        private readonly IDataProvider provider;
 
         public BatchTests()
         {
-            _db = new SubSonicDB();
+            provider = ProviderFactory.GetProvider("WestWind");
         }
-
-        [Fact]
-        public void DB_Should_Have_TableSchema() {
-            Assert.True(_db.Provider.Schema.Tables.Count > 0);
-        }
-
-        [Fact]
-        public void ProductTable_Should_Have_TableSchema() {
-            var table = new ProductsTable(_db.Provider);
-
-            Assert.True(table.Provider.Schema.Tables.Count > 0);
-        }
-
 
         [Fact]
         public void Batch_Should_Build_Batched_SQL()
         {
-            BatchQuery qry = new BatchQuery(_db.Provider);
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 1));
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 2));
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 3));
+            BatchQuery qry = new BatchQuery(provider);
+
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(1));
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(2));
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(3));
 
             string sql = qry.BuildSqlStatement();
 
             Assert.Equal(3, sql.FindMatches("SELECT").Count);
         }
-
         [Fact]
         public void Batch_Should_Build_Batched_SQL_With_Replaced_SQL_Parameters()
         {
-            BatchQuery qry = new BatchQuery(_db.Provider);
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 1));
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 2));
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 3));
+            BatchQuery qry = new BatchQuery(provider);
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(1));
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(2));
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(3));
 
             string sql = qry.BuildSqlStatement();
 
@@ -77,11 +70,10 @@ namespace SubSonic.Tests.Batch
         [Fact]
         public void Batch_Should_Build_Batched_SQL_With_Replaced_Command_Parameters()
         {
-            BatchQuery qry = new BatchQuery(_db.Provider);
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 1));
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 2));
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 3));
-
+            BatchQuery qry = new BatchQuery(provider);
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(1));
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(2));
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(3));
             QueryCommand cmd = qry.GetCommand();
 
             Assert.Equal("@0", cmd.Parameters[0].ParameterName);
@@ -92,11 +84,10 @@ namespace SubSonic.Tests.Batch
         [Fact]
         public void Batch_Should_Execute_Reader()
         {
-            BatchQuery qry = new BatchQuery(_db.Provider);
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 1));
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 2));
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 3));
-
+            BatchQuery qry = new BatchQuery(provider);
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(1));
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(2));
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(3));
             int sets = 1;
             bool canRead = false;
             using(IDataReader rdr = qry.ExecuteReader())
@@ -117,10 +108,10 @@ namespace SubSonic.Tests.Batch
         [Fact]
         public void Batch_Should_Execute_Reader_And_Return_Typed_Lists()
         {
-            BatchQuery qry = new BatchQuery(_db.Provider);
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 1));
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 2));
-            qry.Queue(_db.Select.From<Product>().Where<Product>(x => x.ProductID == 3));
+            BatchQuery qry = new BatchQuery(provider);
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(1));
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(2));
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(3));
 
             int sets = 1;
             bool canRead = false;
@@ -149,11 +140,12 @@ namespace SubSonic.Tests.Batch
         [Fact]
         public void Batch_Should_Build_Batched_SQL_Using_Linq()
         {
-            BatchQuery qry = new BatchQuery(_db.Provider, _db.QueryProvider);
+            BatchQuery qry = new BatchQuery(provider);
+            var pquery = new Query<Product>(provider);
 
-            qry.Queue(from p in _db.Products where p.ProductID == 1 select p);
-            qry.Queue(from p in _db.Products where p.ProductID == 2 select p);
-            qry.Queue(from p in _db.Products where p.ProductID == 3 select p);
+            qry.Queue(from p in pquery where p.ProductID == 1 select p);
+            qry.Queue(from p in pquery where p.ProductID == 2 select p);
+            qry.Queue(from p in pquery where p.ProductID == 3 select p);
 
             string sql = qry.BuildSqlStatement();
 
@@ -163,11 +155,12 @@ namespace SubSonic.Tests.Batch
         [Fact]
         public void Batch_Should_Execute_Reader_And_Return_Typed_Lists_Using_Linq()
         {
-            BatchQuery qry = new BatchQuery(_db.Provider, _db.QueryProvider);
+            BatchQuery qry = new BatchQuery(provider);
+            var pquery = new Query<Product>(provider);
 
-            qry.Queue(from p in _db.Products where p.ProductID == 1 select p);
-            qry.Queue(from p in _db.Products where p.ProductID == 2 select p);
-            qry.Queue(from p in _db.Products where p.ProductID == 3 select p);
+            qry.Queue(from p in pquery where p.ProductID == 1 select p);
+            qry.Queue(from p in pquery where p.ProductID == 2 select p);
+            qry.Queue(from p in pquery where p.ProductID == 3 select p);
 
             int sets = 1;
             bool canRead = false;
@@ -193,30 +186,5 @@ namespace SubSonic.Tests.Batch
             Assert.False(canRead);
         }
 
-        [Fact]
-        public void Batch_Call_From_Provider_Should_Execute_Reader_And_Return_Typed_Lists_Using_Linq()
-        {
-            _db.Queue(from p in _db.Products where p.ProductID == 1 select p);
-            _db.Queue(from p in _db.Categories select p);
-
-            int sets = 1;
-            bool canRead = false;
-            List<Product> result1 = null;
-            List<Category> result2 = null;
-
-            using(IDataReader rdr = _db.ExecuteBatch())
-            {
-                result1 = rdr.ToList<Product>();
-                canRead = true;
-                if(rdr.NextResult())
-                    result2 = rdr.ToList<Category>();
-
-                canRead = rdr.NextResult();
-            }
-
-            Assert.True(result1.Count > 0);
-            Assert.True(result2.Count > 0);
-            Assert.False(canRead);
-        }
     }
 }

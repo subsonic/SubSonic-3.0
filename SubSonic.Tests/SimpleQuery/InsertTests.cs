@@ -12,9 +12,10 @@
 //   rights and limitations under the License.
 // 
 using System.Linq;
-using WestWind;
 using SubSonic.Tests.Linq.TestBases;
 using Xunit;
+using SubSonic.DataProviders;
+using SubSonic.Tests.TestClasses;
 
 namespace SubSonic.Tests.Update
 {
@@ -23,19 +24,21 @@ namespace SubSonic.Tests.Update
     /// </summary>
     public class InsertTests
     {
-        private readonly SubSonicDB _db;
+
+        private readonly TestDB _db;
 
         public InsertTests()
         {
-            _db = new SubSonicDB();
-            var setup = new Setup(_db.Provider);
+            var provider = ProviderFactory.GetProvider("WestWind");
+            _db = new TestDB(provider);
+            var setup = new Setup(provider);
             setup.DropTestTables();
             setup.CreateTestTable();
             setup.LoadTestData();
         }
 
         [Fact]
-        public void Insert_With_Advanced_Template_Context()
+        public void Insert_Single()
         {
             bool wasThere = _db.Categories.Any(x => x.CategoryName == "SubSonic");
             Assert.False(wasThere);
@@ -48,17 +51,16 @@ namespace SubSonic.Tests.Update
         }
 
         [Fact]
-        public void Insert_With_ActiveRecord()
+        public void Insert_Explicit()
         {
-            bool wasThere = Southwind.Category.Exists(x => x.CategoryName == "SubSonic");
-            Assert.False(wasThere);
+            
+            //delete all records
+            _db.Delete<Category>(x => x.CategoryID > 0).Execute();
+            Assert.Equal(0, _db.Categories.Count());
 
-            var newCategory = new Southwind.Category();
-            newCategory.CategoryName = "SubSonic";
-            newCategory.Save();
+            _db.Insert.Into<Category>("CategoryName").Values("SubSonic").Execute();
 
-            wasThere = _db.Categories.Any(x => x.CategoryName == "SubSonic");
-            Assert.True(wasThere);
+            Assert.Equal(1, _db.Categories.Count());
         }
     }
 }

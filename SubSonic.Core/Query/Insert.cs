@@ -88,10 +88,8 @@ namespace SubSonic.Query
         public Insert Into<T>(params Expression<Func<T, object>>[] props)
         {
             ColumnList.Clear();
-            ITable tbl = _provider.FindTable(typeof(T).Name);
-            Table = new DatabaseTable(tbl.Name, _provider, tbl.ClassName);
-            Table.Columns = tbl.Columns;
-            tableName = tbl.Name;
+            Table = _provider.FindOrCreateTable(typeof(T));
+            tableName = Table.Name;
             Init();
             foreach(object o in props)
             {
@@ -111,9 +109,8 @@ namespace SubSonic.Query
         {
             ColumnList.Clear();
             ColumnList.AddRange(columns);
-            ITable tbl = _provider.FindTable(typeof(T).Name);
-            Table = new DatabaseTable(tbl.Name, _provider, tbl.ClassName);
-            Table.Columns = tbl.Columns;
+            Table = _provider.FindOrCreateTable(typeof(T));
+            tableName = Table.Name;
             Init();
             return this; //Init(new T().GetSchema());
         }
@@ -139,7 +136,7 @@ namespace SubSonic.Query
         /// <returns></returns>
         private Insert Init()
         {
-            if(string.IsNullOrEmpty(tableName))
+            if(Table==null)
                 throw new InvalidOperationException("No table is set");
 
             bool isFirst = true;

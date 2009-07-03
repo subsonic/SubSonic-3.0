@@ -319,7 +319,7 @@ namespace SubSonic.Extensions
 
             ITable tbl = provider.FindOrCreateTable<T>();
 
-            Update<T> query = new Update<T>(tbl, provider);
+            Update<T> query = new Update<T>(tbl.Provider);
             if(item is IActiveRecord)
             {
                 var ar = item as IActiveRecord;

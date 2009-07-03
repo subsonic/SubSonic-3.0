@@ -186,7 +186,7 @@ namespace SubSonic.Repository
         /// <returns></returns>
         public ISqlQuery BuildUpdateQuery(T item)
         {
-            return new Update<T>();
+            return new Update<T>(_db.Provider);
         }
 
         #region IRepository<T> Members

@@ -348,7 +348,7 @@ namespace SubSonic.DataProviders
             return result;
         }
 
-        public ITable FindOrCreateTable<T>() where T : class, new()
+        public ITable FindOrCreateTable<T>() where T : new()
         {
             ITable result = null;
             return FindOrCreateTable(typeof(T));

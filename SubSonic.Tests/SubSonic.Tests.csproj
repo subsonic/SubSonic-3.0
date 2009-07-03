@@ -58,12 +58,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActiveRecord\FetchTests.cs" />
-    <Compile Include="Aggregates\AggregateTests.cs" />
-    <Compile Include="Batch\SelectTests.cs" />
-    <Compile Include="BugReports\ActiveRecord.cs" />
     <Compile Include="DataProviders\ProviderFactoryTests.cs" />
-    <Compile Include="BugReports\AdvancedTemplates.cs" />
     <Compile Include="SimpleQuery\BatchTests.cs" />
     <Compile Include="LINQ\MySqlTests.cs" />
     <Compile Include="LINQ\SQL2005Tests.cs" />
@@ -87,7 +82,6 @@
     <Compile Include="Session.cs" />
     <Compile Include="SimpleQuery\DeleteTests.cs" />
     <Compile Include="SimpleQuery\InsertTests.cs" />
-    <Compile Include="SimpleQuery\InTests.cs" />
     <Compile Include="SimpleQuery\SelectTests.cs" />
     <Compile Include="SimpleQuery\UpdateTests.cs" />
     <Compile Include="Extensions\DatabaseTests.cs" />
@@ -114,12 +108,9 @@
       <Project>{53FF90B2-2D33-4EC0-91B6-A30FDF1B3374}</Project>
       <Name>SubSonic.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SubSonic.Templates\SubSonic.Templates.csproj">
-      <Project>{5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC}</Project>
-      <Name>SubSonic.Templates</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="BugReports\" />
     <Folder Include="Transactions\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

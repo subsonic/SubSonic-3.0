@@ -470,6 +470,7 @@ namespace SubSonic.Query
 
         public QueryCommand GetCommand()
         {
+            
             QueryCommand cmd = new QueryCommand(BuildSqlStatement(), _provider);
             SetConstraintParams(cmd);
 
@@ -545,7 +546,7 @@ namespace SubSonic.Query
         /// <returns></returns>
         public SqlQuery From(string tableName)
         {
-            ITable tbl = _provider.FindTable(tableName);
+            ITable tbl = _provider.FindTable(tableName) ?? new DatabaseTable(tableName,_provider);
 
             if(tbl == null)
                 throw new InvalidOperationException("Can't find the table " + tableName + "; suggest you use the Generics <T> to pass the From (From<T>())");
