@@ -21,9 +21,9 @@ namespace <#=Namespace#> {
         /// Primary Key: <#=tbl.PrimaryKey#>
         /// </summary>
 
-        public class <#=tbl.Name#>Table: DatabaseTable {
+        public class <#=tbl.CleanName#>Table: DatabaseTable {
             
-            public <#=tbl.Name#>Table(IDataProvider provider):base("<#=tbl.Name#>",provider){
+            public <#=tbl.CleanName#>Table(IDataProvider provider):base("<#=tbl.Name#>",provider){
                 ClassName = "<#=tbl.ClassName#>";
                 SchemaName = "<#=tbl.Schema#>";
                 

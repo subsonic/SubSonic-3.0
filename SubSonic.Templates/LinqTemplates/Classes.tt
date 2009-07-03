@@ -74,9 +74,8 @@ namespace <#=Namespace#>
         {
             get
             {
-                
-                  var repo=<#=Namespace #>.<#=fk.OtherClass#>.GetRepo();
-                  return from items in repo.GetAll()
+                  var db=new <#=Namespace #>.<#=DatabaseName#>DB();
+                  return from items in db.<#=CleanUp(Inflector.MakePlural(fk.OtherTable)) #>
                        where items.<#=fk.OtherColumn#> == _<#=fk.ThisColumn#>
                        select items;
             }
