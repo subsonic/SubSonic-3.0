@@ -28,12 +28,12 @@ namespace SubSonic.Repository
     {
         private readonly IDataProvider _provider;
         private readonly List<Type> migrated;
-        private readonly SimpleRepositoryOptions runMigrations=SimpleRepositoryOptions.DontRunMigrations;
+        private readonly SimpleRepositoryOptions _options=SimpleRepositoryOptions.Default;
         
-        public SimpleRepository() : this(ProviderFactory.GetProvider(),SimpleRepositoryOptions.DontRunMigrations) {}
+        public SimpleRepository() : this(ProviderFactory.GetProvider(),SimpleRepositoryOptions.Default) {}
 
         public SimpleRepository(string connectionStringName)
-            : this(connectionStringName,SimpleRepositoryOptions.DontRunMigrations) { }
+            : this(connectionStringName,SimpleRepositoryOptions.Default) { }
 
         public SimpleRepository(string connectionStringName, SimpleRepositoryOptions options)
             : this(ProviderFactory.GetProvider(connectionStringName), options) { }
@@ -41,13 +41,13 @@ namespace SubSonic.Repository
 
         public SimpleRepository(SimpleRepositoryOptions options) : this(ProviderFactory.GetProvider(), options) { }
 
-        public SimpleRepository(IDataProvider provider) : this(provider, SimpleRepositoryOptions.DontRunMigrations) {}
+        public SimpleRepository(IDataProvider provider) : this(provider, SimpleRepositoryOptions.Default) {}
 
         public SimpleRepository(IDataProvider provider, SimpleRepositoryOptions options)
         {
             _provider = provider;
-            runMigrations = options;
-            if (runMigrations == SimpleRepositoryOptions.RunMigrations)
+            _options = options;
+            if (_options == SimpleRepositoryOptions.RunMigrations)
                 migrated = new List<Type>();
         }
 
@@ -75,7 +75,7 @@ namespace SubSonic.Repository
         /// <returns></returns>
         public T Single<T>(Expression<Func<T, bool>> expression) where T : class, new()
         {
-            if (runMigrations == SimpleRepositoryOptions.RunMigrations)
+            if (_options == SimpleRepositoryOptions.RunMigrations)
                 Migrate<T>();
             T result = default(T);
             var tbl = _provider.FindOrCreateTable<T>();
@@ -97,7 +97,7 @@ namespace SubSonic.Repository
         /// <returns></returns>
         public T Single<T>(object key) where T : class, new()
         {
-            if (runMigrations == SimpleRepositoryOptions.RunMigrations)
+            if (_options == SimpleRepositoryOptions.RunMigrations)
                 Migrate<T>();
             var tbl = _provider.FindOrCreateTable<T>();
 
@@ -111,7 +111,7 @@ namespace SubSonic.Repository
         /// </summary>
         public IList<T> Find<T>(Expression<Func<T, bool>> expression) where T : class, new()
         {
-            if (runMigrations == SimpleRepositoryOptions.RunMigrations)
+            if (_options == SimpleRepositoryOptions.RunMigrations)
                 Migrate<T>();
             var tbl = _provider.FindOrCreateTable<T>();
 
@@ -130,7 +130,7 @@ namespace SubSonic.Repository
         /// <returns></returns>
         public PagedList<T> GetPaged<T>(int pageIndex, int pageSize) where T : class, new()
         {
-            if (runMigrations == SimpleRepositoryOptions.RunMigrations)
+            if (_options == SimpleRepositoryOptions.RunMigrations)
                 Migrate<T>();
             var tbl = _provider.FindOrCreateTable<T>();
             var qry = new Select(_provider).From(tbl).Paged(pageIndex + 1, pageSize).OrderAsc(tbl.PrimaryKey.Name);
@@ -151,7 +151,7 @@ namespace SubSonic.Repository
         /// <returns></returns>
         public PagedList<T> GetPaged<T>(string sortBy, int pageIndex, int pageSize) where T : class, new()
         {
-            if (runMigrations == SimpleRepositoryOptions.RunMigrations)
+            if (_options == SimpleRepositoryOptions.RunMigrations)
                 Migrate<T>();
             var tbl = _provider.FindOrCreateTable<T>();
             var qry = new Select(_provider).From(tbl).Paged(pageIndex + 1, pageSize).OrderAsc(sortBy);
@@ -169,7 +169,7 @@ namespace SubSonic.Repository
         /// <returns></returns>
         public object Add<T>(T item) where T : class, new()
         {
-            if (runMigrations == SimpleRepositoryOptions.RunMigrations)
+            if (_options == SimpleRepositoryOptions.RunMigrations)
                 Migrate<T>();
 
             object result = null;
@@ -203,7 +203,7 @@ namespace SubSonic.Repository
         /// <param name="items">The items.</param>
         public void AddMany<T>(IEnumerable<T> items) where T : class, new()
         {
-            if (runMigrations == SimpleRepositoryOptions.RunMigrations)
+            if (_options == SimpleRepositoryOptions.RunMigrations)
                 Migrate<T>();
 
             BatchQuery batch = new BatchQuery(_provider);
@@ -220,7 +220,7 @@ namespace SubSonic.Repository
         /// <returns></returns>
         public int Update<T>(T item) where T : class, new()
         {
-            if (runMigrations == SimpleRepositoryOptions.RunMigrations)
+            if (_options == SimpleRepositoryOptions.RunMigrations)
                 Migrate<T>();
             return item.ToUpdateQuery(_provider).Execute();
         }
@@ -233,7 +233,7 @@ namespace SubSonic.Repository
         /// <returns></returns>
         public int UpdateMany<T>(IEnumerable<T> items) where T : class, new()
         {
-            if (runMigrations == SimpleRepositoryOptions.RunMigrations)
+            if (_options == SimpleRepositoryOptions.RunMigrations)
                 Migrate<T>();
             BatchQuery batch = new BatchQuery(_provider);
             int result = 0;
