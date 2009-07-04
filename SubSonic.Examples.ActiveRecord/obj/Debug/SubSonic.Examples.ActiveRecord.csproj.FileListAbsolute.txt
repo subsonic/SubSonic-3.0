@@ -1,8 +1,0 @@
-D:\@SubSonic\SubSonic3\SubSonic.Examples.ActiveRecord\obj\Debug\ResolveAssemblyReference.cache
-D:\@SubSonic\SubSonic3\SubSonic.Examples.ActiveRecord\bin\SubSonic.Examples.ActiveRecord.dll
-D:\@SubSonic\SubSonic3\SubSonic.Examples.ActiveRecord\bin\SubSonic.Examples.ActiveRecord.pdb
-D:\@SubSonic\SubSonic3\SubSonic.Examples.ActiveRecord\bin\SubSonic.Core.dll
-D:\@SubSonic\SubSonic3\SubSonic.Examples.ActiveRecord\bin\SubSonic.Core.pdb
-D:\@SubSonic\SubSonic3\SubSonic.Examples.ActiveRecord\bin\SubSonic.Core.xml
-D:\@SubSonic\SubSonic3\SubSonic.Examples.ActiveRecord\obj\Debug\SubSonic.Examples.ActiveRecord.dll
-D:\@SubSonic\SubSonic3\SubSonic.Examples.ActiveRecord\obj\Debug\SubSonic.Examples.ActiveRecord.pdb

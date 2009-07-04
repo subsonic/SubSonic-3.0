@@ -1,7 +1,0 @@
-D:\@SubSonic\SubSonic 3.0\SubSonic.Examples.SimpleRepo\bin\SubSonic.Examples.SimpleRepo.dll
-D:\@SubSonic\SubSonic 3.0\SubSonic.Examples.SimpleRepo\bin\SubSonic.Examples.SimpleRepo.pdb
-D:\@SubSonic\SubSonic 3.0\SubSonic.Examples.SimpleRepo\bin\SubSonic.Core.dll
-D:\@SubSonic\SubSonic 3.0\SubSonic.Examples.SimpleRepo\bin\SubSonic.Core.pdb
-D:\@SubSonic\SubSonic 3.0\SubSonic.Examples.SimpleRepo\obj\Release\ResolveAssemblyReference.cache
-D:\@SubSonic\SubSonic 3.0\SubSonic.Examples.SimpleRepo\obj\Release\SubSonic.Examples.SimpleRepo.dll
-D:\@SubSonic\SubSonic 3.0\SubSonic.Examples.SimpleRepo\obj\Release\SubSonic.Examples.SimpleRepo.pdb
