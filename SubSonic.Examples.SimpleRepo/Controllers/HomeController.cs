@@ -45,7 +45,7 @@ namespace SubSonic.Examples.SimpleRepo.Controllers {
 
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Create() {
-            return View();
+            return View(_repo.All<Category>());
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -54,7 +54,7 @@ namespace SubSonic.Examples.SimpleRepo.Controllers {
                 _repo.Add(post);
                 return RedirectToAction("Index");
             } else {
-                return View();
+                return View(_repo.All<Category>());
             }
         }
 
