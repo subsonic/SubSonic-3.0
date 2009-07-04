@@ -24,15 +24,6 @@ using SubSonic.Linq.Structure;
 
 namespace SubSonic.Repository
 {
-    public enum SimpleRepositoryOptions
-    {
-        ///<summary>
-        ///This is better than a boolean? Seems weird.
-        ///</summary>
-        RunMigrations,
-        DontRunMigrations
-    }
-    
     public class SimpleRepository : IRepository
     {
         private readonly IDataProvider _provider;
