@@ -25,7 +25,8 @@
             <p>
                 <label for="CategoryID">CategoryID:</label>
                 
-                <%=Html.DropDownList("CategoryID",new SelectList(Model, "categoryid", "description")) %>
+                <%=Html.DropDownList("CategoryID", from c in Model
+                                                   select new SelectListItem { Value = c.CategoryID.ToString(), Text = c.Description }) %>
             </p>
             <p>
                 <label for="Title">Title:</label>
