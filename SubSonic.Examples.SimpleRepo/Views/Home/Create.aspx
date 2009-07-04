@@ -25,7 +25,7 @@
             <p>
                 <label for="CategoryID">CategoryID:</label>
                 
-                <%=Html.DropDownList("CategoryID",new SelectList(Blog.Category.All(), "categoryid", "description")) %>
+                <%=Html.DropDownList("CategoryID",new SelectList(Model, "categoryid", "description")) %>
             </p>
             <p>
                 <label for="Title">Title:</label>
