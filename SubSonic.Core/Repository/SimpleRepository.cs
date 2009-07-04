@@ -62,6 +62,9 @@ namespace SubSonic.Repository
 
         public IQueryable<T> All<T>() where T : class, new()
         {
+            if (_options.Contains(SimpleRepositoryOptions.RunMigrations))
+                Migrate<T>();
+
             var qry = new Query<T>(_provider);
             return qry;
         }
