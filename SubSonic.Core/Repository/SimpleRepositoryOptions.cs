@@ -11,14 +11,26 @@
 //   implied. See the License for the specific language governing
 //   rights and limitations under the License.
 //  
+using System;
+
 namespace SubSonic.Repository
 {
+	[Flags]
 	public enum SimpleRepositoryOptions
 	{
-		///<summary>
-		///This is better than a boolean? Seems weird.
-		///</summary>
-		RunMigrations,
-		DontRunMigrations
+		/// <summary>
+		/// An enumeration value for no options configured.
+		/// </summary>
+		None = 0,
+
+		/// <summary>
+		/// The default set of options (right now the same as none).
+		/// </summary>
+		Default = 0,
+
+		/// <summary>
+		/// Use this flag to let the repository run migrations.
+		/// </summary>
+		RunMigrations = 1
 	}
 }
