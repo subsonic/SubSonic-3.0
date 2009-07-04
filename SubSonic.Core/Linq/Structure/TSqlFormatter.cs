@@ -646,7 +646,7 @@ namespace SubSonic.Linq.Structure
                             if (ce.Value == null)
                             {
                                 this.Visit(left);
-                                sb.Append(" IS NULL");
+                                sb.Append(" IS NOT NULL");
                                 break;
                             }
                         }
@@ -656,7 +656,7 @@ namespace SubSonic.Linq.Structure
                             if (ce.Value == null)
                             {
                                 this.Visit(right);
-                                sb.Append(" IS NULL");
+                                sb.Append(" IS NOT NULL");
                                 break;
                             }
                         }

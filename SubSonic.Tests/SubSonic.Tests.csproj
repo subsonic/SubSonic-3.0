@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataProviders\ProviderFactoryTests.cs" />
+    <Compile Include="LINQ\BugReports.cs" />
     <Compile Include="SimpleQuery\BatchTests.cs" />
     <Compile Include="LINQ\MySqlTests.cs" />
     <Compile Include="LINQ\SQL2005Tests.cs" />

@@ -1,0 +1,7 @@
+D:\@SubSonic\SubSonic 3.0\SubSonic.Examples.ActiveRecord\bin\SubSonic.Examples.ActiveRecord.dll
+D:\@SubSonic\SubSonic 3.0\SubSonic.Examples.ActiveRecord\bin\SubSonic.Examples.ActiveRecord.pdb
+D:\@SubSonic\SubSonic 3.0\SubSonic.Examples.ActiveRecord\bin\SubSonic.Core.dll
+D:\@SubSonic\SubSonic 3.0\SubSonic.Examples.ActiveRecord\bin\SubSonic.Core.pdb
+D:\@SubSonic\SubSonic 3.0\SubSonic.Examples.ActiveRecord\obj\Release\ResolveAssemblyReference.cache
+D:\@SubSonic\SubSonic 3.0\SubSonic.Examples.ActiveRecord\obj\Release\SubSonic.Examples.ActiveRecord.dll
+D:\@SubSonic\SubSonic 3.0\SubSonic.Examples.ActiveRecord\obj\Release\SubSonic.Examples.ActiveRecord.pdb

@@ -1,0 +1,5 @@
+D:\@SubSonic\SubSonic 3.0\SubSonic.Core\bin\Release\SubSonic.Core.dll
+D:\@SubSonic\SubSonic 3.0\SubSonic.Core\bin\Release\SubSonic.Core.pdb
+D:\@SubSonic\SubSonic 3.0\SubSonic.Core\obj\Release\ResolveAssemblyReference.cache
+D:\@SubSonic\SubSonic 3.0\SubSonic.Core\obj\Release\SubSonic.Core.dll
+D:\@SubSonic\SubSonic 3.0\SubSonic.Core\obj\Release\SubSonic.Core.pdb

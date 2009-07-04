@@ -1,9 +1,0 @@
-D:\@SubSonic\SubSonic3\SubSonic.Templates\bin\Debug\SubSonic.Templates.dll.config
-D:\@SubSonic\SubSonic3\SubSonic.Templates\bin\Debug\SubSonic.Templates.dll
-D:\@SubSonic\SubSonic3\SubSonic.Templates\bin\Debug\SubSonic.Templates.pdb
-D:\@SubSonic\SubSonic3\SubSonic.Templates\bin\Debug\SubSonic.Core.dll
-D:\@SubSonic\SubSonic3\SubSonic.Templates\bin\Debug\SubSonic.Core.pdb
-D:\@SubSonic\SubSonic3\SubSonic.Templates\bin\Debug\SubSonic.Core.xml
-D:\@SubSonic\SubSonic3\SubSonic.Templates\obj\Debug\ResolveAssemblyReference.cache
-D:\@SubSonic\SubSonic3\SubSonic.Templates\obj\Debug\SubSonic.Templates.dll
-D:\@SubSonic\SubSonic3\SubSonic.Templates\obj\Debug\SubSonic.Templates.pdb
