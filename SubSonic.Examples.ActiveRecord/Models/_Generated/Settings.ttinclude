@@ -155,19 +155,20 @@
         public string Schema;
         public string QueryableName;
         
-        public bool HasLogicalDelete(){
-            return this.Columns.Any(x=>x.Name.ToLower()=="deleted" || x.Name.ToLower()=="isdeleted");
+        private readonly string[] DeleteColumnNames = new [] { "deleted", "isdeleted" };
+
+        public bool HasLogicalDelete()
+        {
+            return this.Columns.Any(x => DeleteColumnNames.Contains(x.Name.ToLowerInvariant()));
         }
-        public Column DeleteColumn{
-            get{
-                Column result=null;
-                if(this.Columns.Any(x=>x.Name.ToLower()=="deleted"))
-                    result=this.Columns.Single(x=>x.Name.ToLower()=="deleted");
-                if(this.Columns.Any(x=>x.Name.ToLower()=="isdeleted"))
-                    result=this.Columns.Single(x=>x.Name.ToLower()=="isdeleted");
-                return result;
+        public Column DeleteColumn
+        {
+            get
+            {
+                return this.Columns.Find(x => DeleteColumnNames.Contains(x.Name.ToLowerInvariant()));
             }
         }
+
         public Column PK{
             get{
                 return this.Columns.SingleOrDefault(x=>x.IsPK) ?? this.Columns[0];
