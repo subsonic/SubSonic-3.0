@@ -196,9 +196,11 @@ namespace SubSonic.Repository
 					string pkPropName = table.PrimaryKey.Name;
 
 					var prop = item.GetType().GetProperty(pkPropName);
-					object castedReturnValue = result.ChangeTypeTo(prop.PropertyType);
-					prop.SetValue(item, castedReturnValue, null);
-                }
+					if (prop != null && result != null) {
+						object castedReturnValue = result.ChangeTypeTo(prop.PropertyType);
+						prop.SetValue(item, castedReturnValue, null);
+					}
+				}
                 result = provider.ExecuteScalar(query);
 
             }
