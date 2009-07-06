@@ -63,8 +63,8 @@ namespace SubSonic.Repository
     public interface IRepository
     {
 
-        bool Exists<T>(Expression<Func<T, bool>> expression);
-        IQueryable<T> All<T>();
+        bool Exists<T>(Expression<Func<T, bool>> expression) where T : class, new();
+        IQueryable<T> All<T>() where T : class, new();
         T Single<T>(object key) where T : class, new();
         T Single<T>(Expression<Func<T, bool>> expression) where T : class, new();
         IList<T> Find<T>(Expression<Func<T, bool>> expression) where T : class, new();

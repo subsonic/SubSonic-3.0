@@ -55,13 +55,16 @@ namespace SubSonic.Repository
         #region IRepository Members
 
 
-        public bool Exists<T>(Expression<Func<T, bool>> expression)
+        public bool Exists<T>(Expression<Func<T, bool>> expression) where T : class, new()
         {
             return All<T>().Any(expression);
         }
 
-        public IQueryable<T> All<T>()
+        public IQueryable<T> All<T>() where T : class, new()
         {
+            if (_options.Contains(SimpleRepositoryOptions.RunMigrations))
+                Migrate<T>();
+
             var qry = new Query<T>(_provider);
             return qry;
         }

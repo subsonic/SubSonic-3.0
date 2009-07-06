@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Blog.Post>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<Blog.Category>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
 	Create
@@ -25,7 +25,8 @@
             <p>
                 <label for="CategoryID">CategoryID:</label>
                 
-                <%=Html.DropDownList("CategoryID",new SelectList(Blog.Category.All(), "categoryid", "description")) %>
+                <%=Html.DropDownList("CategoryID", from c in Model
+                                                   select new SelectListItem { Value = c.CategoryID.ToString(), Text = c.Description }) %>
             </p>
             <p>
                 <label for="Title">Title:</label>
