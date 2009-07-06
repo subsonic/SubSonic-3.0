@@ -191,8 +191,16 @@ namespace SubSonic.Repository
                 {
                     //add in SCOPE_INDENTITY so we can pull back the ID
                     query.CommandSql += "; SELECT SCOPE_IDENTITY() as new_id";
+
+					ITable table = GetTable();
+					string pkPropName = table.PrimaryKey.Name;
+
+					var prop = item.GetType().GetProperty(pkPropName);
+					object castedReturnValue = result.ChangeTypeTo(prop.PropertyType);
+					prop.SetValue(item, castedReturnValue, null);
                 }
                 result = provider.ExecuteScalar(query);
+
             }
             return result;
         }
