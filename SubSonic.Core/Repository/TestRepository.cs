@@ -33,7 +33,6 @@ namespace SubSonic.Repository
         }
 
 
-        #region IRepository<T> Members
 
         public object Add(T item)
         {
@@ -156,7 +155,6 @@ namespace SubSonic.Repository
             return items.Count();
         }
 
-        #endregion
 
 
         /// <summary>
@@ -189,41 +187,37 @@ namespace SubSonic.Repository
             return new Update<T>(_db.Provider);
         }
 
-        #region IRepository<T> Members
-
-
         public object Add(T item, SubSonic.DataProviders.IDataProvider provider) {
-            throw new NotImplementedException();
+            return Add(item);
         }
 
         public void Add(IEnumerable<T> items, SubSonic.DataProviders.IDataProvider provider) {
-            throw new NotImplementedException();
+            Add(items);
         }
 
         public int Update(T item, SubSonic.DataProviders.IDataProvider provider) {
-            throw new NotImplementedException();
+            return Update(item);
         }
 
         public int Update(IEnumerable<T> items, SubSonic.DataProviders.IDataProvider provider) {
-            throw new NotImplementedException();
+            return Update(items);
         }
 
         public int Delete(T item, SubSonic.DataProviders.IDataProvider provider) {
-            throw new NotImplementedException();
+            return Delete(item);
         }
 
         public int Delete(object key, SubSonic.DataProviders.IDataProvider provider) {
-            throw new NotImplementedException();
+            return Delete(key);
         }
 
         public int DeleteMany(Expression<Func<T, bool>> expression, SubSonic.DataProviders.IDataProvider provider) {
-            throw new NotImplementedException();
+            return DeleteMany(expression);
         }
 
         public int Delete(IEnumerable<T> items, SubSonic.DataProviders.IDataProvider provider) {
-            throw new NotImplementedException();
+            return Delete(items);
         }
 
-        #endregion
     }
 }
