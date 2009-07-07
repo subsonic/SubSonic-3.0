@@ -103,8 +103,13 @@ namespace SubSonic.SqlGeneration.Schema
         public override string GenerateColumnAttributes(IColumn column)
         {
             StringBuilder sb = new StringBuilder();
-            if(column.DataType == DbType.String && column.MaxLength > 8000)
+            if (column.DataType == DbType.String && column.MaxLength > 8000)
                 sb.Append(" TEXT ");
+            else if (column.IsPrimaryKey && column.DataType == DbType.Int32
+                || column.IsPrimaryKey && column.DataType == DbType.Int16
+                || column.IsPrimaryKey && column.DataType == DbType.Int64
+                )
+                sb.Append(" integer ");
             else
                 sb.Append(" " + GetNativeType(column.DataType));
 
