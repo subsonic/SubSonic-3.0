@@ -6,6 +6,11 @@ using System.Web;
 namespace Blog {
     public class Post {
 
+        public Post() {
+            //auto-set the Guid!
+            PostID = Guid.NewGuid();
+        }
+
         public Guid PostID { get; set; }
         public int CategoryID { get; set; }
         public Category Category { get; set; }
