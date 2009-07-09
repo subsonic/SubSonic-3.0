@@ -58,6 +58,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BugReports\LinqGeneratorBugs.cs" />
     <Compile Include="DataProviders\ProviderFactoryTests.cs" />
     <Compile Include="LINQ\BugReports.cs" />
     <Compile Include="SimpleQuery\BatchTests.cs" />
@@ -111,7 +112,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BugReports\" />
     <Folder Include="Transactions\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

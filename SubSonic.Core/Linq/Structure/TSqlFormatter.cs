@@ -639,6 +639,22 @@ namespace SubSonic.Linq.Structure
                         }
                         break;
                     case ExpressionType.Equal:
+                        if (right.NodeType == ExpressionType.Constant) {
+                            ConstantExpression ce = (ConstantExpression)right;
+                            if (ce.Value == null) {
+                                this.Visit(left);
+                                sb.Append(" IS NULL");
+                                break;
+                            }
+                        } else if (left.NodeType == ExpressionType.Constant) {
+                            ConstantExpression ce = (ConstantExpression)left;
+                            if (ce.Value == null) {
+                                this.Visit(right);
+                                sb.Append(" IS NULL");
+                                break;
+                            }
+                        }
+                        goto case ExpressionType.LessThan;
                     case ExpressionType.NotEqual:
                         if (right.NodeType == ExpressionType.Constant)
                         {
