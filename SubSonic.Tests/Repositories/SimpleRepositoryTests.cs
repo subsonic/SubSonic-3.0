@@ -35,6 +35,7 @@ namespace SubSonic.Tests.Repositories
         public Guid? NullKey { get; set; }
         public int Underscored_Column { get; set; }
     }
+ 
 
     internal class SQLitey
     {
@@ -80,6 +81,9 @@ namespace SubSonic.Tests.Repositories
             item.Underscored_Column = 1;
             return item;
         }
+
+
+
 
         [Fact]
         public void Simple_Repo_Should_Create_Schema_And_Save_Shwerko()
@@ -275,5 +279,6 @@ namespace SubSonic.Tests.Repositories
             _repo.Add<Shwerko>(shwerko);
             Assert.True(shwerko.ID > 0);
         }
+
     }
 }

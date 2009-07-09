@@ -10,6 +10,11 @@ using SubSonic.Extensions;
 
 namespace SubSonic.Tests.Migrations
 {
+    public class GuidAsKey{
+       public Guid ID { get; set; }
+        public string Title { get; set; }
+    }
+    
     public class SqlServerMigrationTests {
 
         IDataProvider _provider;
@@ -19,6 +24,13 @@ namespace SubSonic.Tests.Migrations
         {
             _provider = ProviderFactory.GetProvider(TestConfiguration.MsSql2005TestConnectionString, DbClientTypeName.MsSql);
             migrator=new Migrator(Assembly.GetExecutingAssembly());
+        }
+
+
+        [Fact]
+        public void CreateTable_Should_Set_PK_If_Guid_To_DefaultSetting_NewID() {
+            var sql = typeof(GuidAsKey).ToSchemaTable(_provider).CreateSql;
+            Assert.True(sql.Contains("CONSTRAINT DF_GuidAsKeys_ID DEFAULT (NEWID())"));
         }
 
         [Fact]

@@ -14,6 +14,7 @@
 using System.Data;
 using System.Text;
 using SubSonic.Schema;
+using System;
 
 namespace SubSonic.SqlGeneration.Schema
 {
@@ -151,11 +152,21 @@ namespace SubSonic.SqlGeneration.Schema
 
             if(column.IsPrimaryKey && column.IsNumeric)
                 sb.Append(" IDENTITY(1,1)");
+            else if (column.IsPrimaryKey && column.DataType==DbType.Guid)
+                column.DefaultSetting="NEWID()";
+
 
             if(column.DefaultSetting != null)
             {
-                sb.Append(" CONSTRAINT DF_" + column.Table.Name + "_" + column.Name + " DEFAULT ('" +
-                          column.DefaultSetting + "')");
+
+                var defaultType = column.DefaultSetting.GetType();
+                if (defaultType == typeof(string) || defaultType == typeof(DateTime)) {
+                    if(!column.DefaultSetting.ToString().EndsWith("()"))
+                        column.DefaultSetting = string.Format("'{0}'", column.DefaultSetting);
+                }
+                
+                sb.Append(" CONSTRAINT DF_" + column.Table.Name + "_" + column.Name + " DEFAULT (" +
+                          column.DefaultSetting + ")");
             }
 
             return sb.ToString();

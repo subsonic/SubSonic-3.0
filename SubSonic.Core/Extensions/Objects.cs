@@ -238,8 +238,15 @@ namespace SubSonic.Extensions
                     //loop the attributes - see if a PK attribute was set
                     foreach(var att in attributes)
                     {
-                        if (att.ToString().Equals("SubSonic.SqlGeneration.Schema.SubSonicPrimaryKeyAttribute"))
+                        if (att.ToString().Equals("SubSonic.SqlGeneration.Schema.SubSonicPrimaryKeyAttribute")) {
                             column.IsPrimaryKey = true;
+                            column.IsNullable = false;
+                            if(column.IsNumeric)
+                                column.AutoIncrement = true;
+                            else if (column.IsString && column.MaxLength == 0)
+                                column.MaxLength = 255;
+                        }
+                        
                     }
 
                     result.Columns.Add(column);

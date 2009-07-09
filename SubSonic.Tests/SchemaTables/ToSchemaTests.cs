@@ -11,6 +11,7 @@
 //   implied. See the License for the specific language governing
 //   rights and limitations under the License.
 // 
+using System;
 using System.Data;
 using SubSonic.DataProviders;
 using SubSonic.Extensions;
@@ -19,6 +20,7 @@ using Xunit;
 
 namespace SubSonic.Tests.SchemaTables
 {
+    
     public class IDAsKey
     {
         public int ID { get; set; }
@@ -152,5 +154,6 @@ namespace SubSonic.Tests.SchemaTables
             var table = typeof(SubSonicTest).ToSchemaTable(_provider);
             Assert.True(table.GetColumn("SomeNullableFlag").IsNullable);
         }
+
     }
 }
