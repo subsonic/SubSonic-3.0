@@ -129,12 +129,6 @@ namespace SubSonic.SqlGeneration.Schema
         public override string GenerateColumnAttributes(IColumn column)
         {
             StringBuilder sb = new StringBuilder();
-
-            if (column.DataType == DbType.String && column.MaxLength == 100000)
-            {
-                sb.Append(" ntext");
-            }
-
             if(column.DataType == DbType.String && column.MaxLength > 8000)
             {
                 //use nvarchar MAX 
