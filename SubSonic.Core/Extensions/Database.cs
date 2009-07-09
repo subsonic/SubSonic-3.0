@@ -181,6 +181,14 @@ namespace SubSonic.Extensions
                         currentField.SetValue(item, rdr.GetValue(i).ChangeTypeTo(valueType));
                 }
             }
+
+            if (item is IActiveRecord) {
+                var arItem = (IActiveRecord)item;
+                arItem.SetIsLoaded(true);
+                arItem.SetIsNew(false);
+                
+            }
+
         }
 
         /// <summary>
