@@ -5,10 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Core", "SubSonic.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Tests", "SubSonic.Tests\SubSonic.Tests.csproj", "{6B23B65F-2E09-4531-BDA1-A6EA08CBA843}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Examples.ActiveRecord", "SubSonic.Examples.ActiveRecord\SubSonic.Examples.ActiveRecord.csproj", "{3497AAC9-6661-4960-8DF7-96244F898766}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Examples.SimpleRepo", "SubSonic.Examples.SimpleRepo\SubSonic.Examples.SimpleRepo.csproj", "{FC2DA043-126B-44B0-A095-FD71A7547149}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,14 +19,6 @@ Global
 		{6B23B65F-2E09-4531-BDA1-A6EA08CBA843}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B23B65F-2E09-4531-BDA1-A6EA08CBA843}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B23B65F-2E09-4531-BDA1-A6EA08CBA843}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3497AAC9-6661-4960-8DF7-96244F898766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3497AAC9-6661-4960-8DF7-96244F898766}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3497AAC9-6661-4960-8DF7-96244F898766}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3497AAC9-6661-4960-8DF7-96244F898766}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC2DA043-126B-44B0-A095-FD71A7547149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC2DA043-126B-44B0-A095-FD71A7547149}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC2DA043-126B-44B0-A095-FD71A7547149}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC2DA043-126B-44B0-A095-FD71A7547149}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
