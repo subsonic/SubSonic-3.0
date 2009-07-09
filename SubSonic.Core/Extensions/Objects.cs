@@ -220,6 +220,11 @@ namespace SubSonic.Extensions
                                 var lengthAtt = (SubSonicStringLengthAttribute)att;
                                 column.MaxLength = lengthAtt.Length;
                             }
+
+                            if (att.ToString().Equals("SubSonic.SqlGeneration.Schema.SubSonicNullStringAttribute"))
+                            {
+                                isNullable = true;
+                            }
                         }
                     }
 
