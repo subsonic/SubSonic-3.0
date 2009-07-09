@@ -16,6 +16,12 @@ using System;
 namespace SubSonic.SqlGeneration.Schema
 {
     [AttributeUsage(AttributeTargets.Property)]
+    public class SubSonicNullStringAttribute : Attribute { }
+
+    [AttributeUsage(AttributeTargets.Property)]
+    public class SubSonicNTextAttribute : Attribute { }
+
+    [AttributeUsage(AttributeTargets.Property)]
     public class SubSonicLongStringAttribute : Attribute {}
 
     [AttributeUsage(AttributeTargets.Property)]

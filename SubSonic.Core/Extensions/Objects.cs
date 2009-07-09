@@ -233,6 +233,9 @@ namespace SubSonic.Extensions
                     {
                         if (att.ToString().Equals("SubSonic.SqlGeneration.Schema.SubSonicLongStringAttribute"))
                             column.MaxLength = 8001;
+
+                        if (att.ToString().Equals("SubSonic.SqlGeneration.Schema.SubSonicNTextAttribute"))
+                            column.MaxLength = 100000;
                     }
 
                     //loop the attributes - see if a PK attribute was set
