@@ -31,7 +31,7 @@ namespace SubSonic.DataProviders
         public static IDataProvider GetProvider(string connectionStringName)
         {
 			if (ConfigurationManager.ConnectionStrings[connectionStringName] == null) {
-				throw new ApplicationException(string.Format("Connection string '{0}' does not exist"));
+				throw new ApplicationException(string.Format("Connection string '{0}' does not exist", connectionStringName));
 			}
 
             string connString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
