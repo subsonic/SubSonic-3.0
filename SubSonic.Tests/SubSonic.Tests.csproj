@@ -58,9 +58,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BugReports\ActiveRecord.cs" />
+    <Compile Include="BugReports\Generated\ActiveRecord.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ActiveRecord.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BugReports\Generated\Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BugReports\Generated\StoredProcedures.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StoredProcedures.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BugReports\Generated\Structs.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Structs.tt</DependentUpon>
+    </Compile>
     <Compile Include="BugReports\LinqGeneratorBugs.cs" />
     <Compile Include="DataProviders\ProviderFactoryTests.cs" />
-    <Compile Include="LINQ\BugReports.cs" />
     <Compile Include="SimpleQuery\BatchTests.cs" />
     <Compile Include="LINQ\MySqlTests.cs" />
     <Compile Include="LINQ\SQL2005Tests.cs" />
@@ -100,6 +120,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="BugReports\Generated\ActiveRecord.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ActiveRecord.cs</LastGenOutput>
+    </None>
+    <None Include="BugReports\Generated\Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Context.cs</LastGenOutput>
+    </None>
+    <None Include="BugReports\Generated\Settings.ttinclude" />
+    <None Include="BugReports\Generated\SQLServer.ttinclude" />
+    <None Include="BugReports\Generated\StoredProcedures.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StoredProcedures.cs</LastGenOutput>
+    </None>
+    <None Include="BugReports\Generated\Structs.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Structs.cs</LastGenOutput>
+    </None>
     <None Include="Repositories\RepoTests.db" />
   </ItemGroup>
   <ItemGroup>

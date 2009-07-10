@@ -42,5 +42,7 @@ namespace SubSonic.Schema
         DbCommand GetDeleteCommand();
         void SetKeyValue(object value);
         void SetIsLoaded(bool isLoaded);
+        void SetIsNew(bool isLoaded);
+
     }
 }
