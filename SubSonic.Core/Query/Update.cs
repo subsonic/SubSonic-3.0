@@ -20,6 +20,7 @@ using SubSonic.Extensions;
 using SubSonic.DataProviders;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration;
+using System.Linq;
 
 namespace SubSonic.Query
 {
@@ -153,6 +154,7 @@ namespace SubSonic.Query
         /// <param name="columnName">Name of the column.</param>
         /// <returns></returns>
         public Setting Set(string columnName) {
+           
             return CreateSetting(columnName, DbType.AnsiString, false);
         }
 
@@ -219,8 +221,17 @@ namespace SubSonic.Query
             QueryCommand cmd = new QueryCommand(BuildSqlStatement(), _provider);
 
             //add in the commands
-            foreach (Setting s in _query.SetStatements)
+            foreach (Setting s in _query.SetStatements) {
+
+                //Fix the data type!
+                var table = _query.FromTables.FirstOrDefault();
+                if (table != null) {
+                    var col= table.Columns.SingleOrDefault(x => x.Name.Equals(s.ColumnName, StringComparison.InvariantCultureIgnoreCase));
+                    if (col != null) ;
+                        s.DataType = col.DataType;
+                }
                 cmd.Parameters.Add(s.ParameterName, s.Value, s.DataType);
+            }
 
             //set the contstraints
             _query.SetConstraintParams(cmd);
