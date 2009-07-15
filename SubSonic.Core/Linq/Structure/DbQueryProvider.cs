@@ -196,6 +196,10 @@ namespace SubSonic.Linq.Structure
             expression = RedundantJoinRemover.Remove(expression);
             expression = RedundantColumnRemover.Remove(expression);
 
+
+            //HACK: Have to fix invalid COUNT/ORDER BY here
+            expression = CountOrderByRemover.Remove(expression);
+
             return (ProjectionExpression)expression;
         }
 
