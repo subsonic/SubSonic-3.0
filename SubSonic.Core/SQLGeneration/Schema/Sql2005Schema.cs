@@ -143,7 +143,7 @@ namespace SubSonic.SqlGeneration.Schema
                 if(column.MaxLength > 0)
                     sb.Append("(" + column.MaxLength + ")");
 
-                if(column.DataType == DbType.Double || column.DataType == DbType.Decimal)
+                if(column.DataType == DbType.Decimal)
                     sb.Append("(" + column.NumericPrecision + ", " + column.NumberScale + ")");
             }
 

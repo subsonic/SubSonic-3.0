@@ -32,7 +32,10 @@ namespace SubSonic.Tests.SchemaTables
         public int TestTypeID { get; set; }
         public string Name { get; set; }
     }
-
+    public class TestTypeWithDouble {
+        public int ID { get; set; }
+        public Double SomeDouble { get; set; }
+    }
     public class ToSchemaTests
     {
         private readonly IDataProvider _provider;
@@ -154,6 +157,15 @@ namespace SubSonic.Tests.SchemaTables
             var table = typeof(SubSonicTest).ToSchemaTable(_provider);
             Assert.True(table.GetColumn("SomeNullableFlag").IsNullable);
         }
+        [Fact]
+        public void ToSchemaTable_Should_Set_Double_Properly() {
+            var table = typeof(TestTypeWithDouble).ToSchemaTable(_provider);
+            var col=table.Columns[1];
+            string sql = col.AlterSql;
+            Assert.False(sql.Contains("float(10,2)"));
+            Assert.True(sql.Contains("ALTER COLUMN SomeDouble float"));
 
+            
+        }
     }
 }

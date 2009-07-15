@@ -10,6 +10,12 @@ using SubSonic.Tests.TestClasses;
 using SubSonic.Schema;
 
 namespace SubSonic.Tests.BugReports {
+    public class CustomerSummaryView {
+        public string CustomerID { get; set; }
+        public int OrderID { get; set; }
+        public string ProductName { get; set; }
+    }
+
     public class Linq {
 
         TestDB _db;
@@ -41,5 +47,29 @@ namespace SubSonic.Tests.BugReports {
             Assert.True(list.Count > 0);
             Assert.True(customers > 0);
         }
+
+        [Fact]
+        public void Joined_Projection_Should_Return_All_Values() {
+            var qry = (from c in _db.Customers
+                             join order in _db.Orders on c.CustomerID equals order.CustomerID
+                             join details in _db.OrderDetails on order.OrderID equals details.OrderID
+                             join products in _db.Products on details.ProductID equals products.ProductID
+                             select new CustomerSummaryView
+                             {
+                                 CustomerID = c.CustomerID,
+                                 OrderID = order.OrderID,
+                                 ProductName = products.ProductName
+                             });
+
+            Assert.True(qry.Count() > 0);
+
+            foreach (var view in qry) {
+                Assert.False(String.IsNullOrEmpty(view.ProductName));
+                Assert.True(view.OrderID > 0);
+                Assert.False(String.IsNullOrEmpty(view.CustomerID));
+            }
+
+        }
+
     }
 }
