@@ -35,8 +35,18 @@ namespace SubSonic.Tests.Repositories
         public Guid? NullKey { get; set; }
         public int Underscored_Column { get; set; }
     }
- 
 
+    public class Shwerko2 {
+        public Guid ID { get; set; }
+        public string Name { get; set; }
+        public DateTime ElDate { get; set; }
+        public decimal SomeNumber { get; set; }
+        public int? NullInt { get; set; }
+        public decimal? NullSomeNumber { get; set; }
+        public DateTime? NullElDate { get; set; }
+        public Guid? NullKey { get; set; }
+        public int Underscored_Column { get; set; }
+    }
     internal class SQLitey
     {
         public SQLitey()
@@ -272,6 +282,23 @@ namespace SubSonic.Tests.Repositories
             Assert.False(_repo.Exists<Shwerko>(x => x.Name == "Chuck"));
 
         }
+
+
+        [Fact]
+        public void SimpleRepo_Should_Set_The_Guid_PK_On_Add() {
+            var item = new Shwerko2();
+            var id = Guid.NewGuid();
+            item.ID = id;
+            item.Name = "Charlie";
+            item.ElDate = DateTime.Now;
+            item.SomeNumber = 1;
+            item.NullSomeNumber = 12.3M;
+            item.Underscored_Column = 1;
+            _repo.Add<Shwerko2>(item);
+            Assert.Equal(item.ID, id);
+            //Assert.True(shwerko.ID > 0);
+        }
+
 
         [Fact]
         public void SimpleRepo_Should_Set_The_PK_On_Add() {

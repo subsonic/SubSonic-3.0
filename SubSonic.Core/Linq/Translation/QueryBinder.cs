@@ -938,17 +938,20 @@ namespace SubSonic.Linq.Translation
 
         private static bool MembersMatch(MemberInfo a, MemberInfo b)
         {
-            if (a == b)
-            {
+            if (a == b) {
                 return true;
             }
-            if (a is MethodInfo && b is PropertyInfo)
-            {
-                return a == ((PropertyInfo) b).GetGetMethod();
+
+            if ((a.DeclaringType.IsAssignableFrom(b.DeclaringType) || b.DeclaringType.IsAssignableFrom(a.DeclaringType)) &&
+                a.Name == b.Name) {
+                return true;
             }
-            if (a is PropertyInfo && b is MethodInfo)
-            {
-                return ((PropertyInfo) a).GetGetMethod() == b;
+
+            if (a is MethodInfo && b is PropertyInfo) {
+                return a == ((PropertyInfo)b).GetGetMethod();
+            }
+            if (a is PropertyInfo && b is MethodInfo) {
+                return ((PropertyInfo)a).GetGetMethod() == b;
             }
             return false;
         }

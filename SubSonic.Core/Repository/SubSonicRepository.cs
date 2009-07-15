@@ -193,17 +193,21 @@ namespace SubSonic.Repository
                     query.CommandSql += "; SELECT SCOPE_IDENTITY() as new_id";
                 }
 
-                result = provider.ExecuteScalar(query);
-
+                var rdr = provider.ExecuteReader(query);
+                if (rdr.Read())
+                    result = rdr[0];
                 // repopulate primary key column with newly generated ID
-                if (provider.Client == DataClient.SqlClient) {
-                    ITable table = GetTable();
-                    string pkPropName = table.PrimaryKey.Name;
+                if (result != null && result != DBNull.Value) {
 
-                    var prop = item.GetType().GetProperty(pkPropName);
-                    if (prop != null && result != null) {
-                        object castedReturnValue = result.ChangeTypeTo(prop.PropertyType);
-                        prop.SetValue(item, castedReturnValue, null);
+                    try {
+                        var tbl = provider.FindOrCreateTable(typeof(T));
+                        var prop = item.GetType().GetProperty(tbl.PrimaryKey.Name);
+                        var settable = result.ChangeTypeTo(prop.PropertyType);
+                        prop.SetValue(item, settable, null);
+
+                    } catch (Exception x) {
+                        //swallow it - I don't like this per se but this is a convenience and we
+                        //don't want to throw the whole thing just because we can't auto-set the value
                     }
                 }
 
