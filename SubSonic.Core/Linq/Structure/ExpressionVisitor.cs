@@ -128,8 +128,40 @@ namespace SubSonic.Linq.Structure
             return u;
         }
 
+        protected static BinaryExpression ConvertVbCompareString(BinaryExpression b)
+        {
+            if (b.Left.NodeType == ExpressionType.Call)
+            {
+                var compareStringCall = (MethodCallExpression)b.Left;
+
+                if ((compareStringCall.Method.DeclaringType.FullName == "Microsoft.VisualBasic.CompilerServices.Operators")
+                    && (compareStringCall.Method.Name == "CompareString"))
+                {
+                    var arg1 = compareStringCall.Arguments[0];
+                    var arg2 = compareStringCall.Arguments[1];
+
+                    switch (b.NodeType)
+                    {
+                        case ExpressionType.LessThan:
+                            return Expression.LessThan(arg1, arg2);
+                        case ExpressionType.LessThanOrEqual:
+                            return Expression.LessThanOrEqual(arg1, arg2);
+                        case ExpressionType.GreaterThan:
+                            return Expression.GreaterThan(arg1, arg2);
+                        case ExpressionType.GreaterThanOrEqual:
+                            return Expression.GreaterThanOrEqual(arg1, arg2);
+                        default:
+                            return Expression.Equal(arg1, arg2);
+                    }
+                }
+            }
+            return b;
+        }
+
         protected virtual Expression VisitBinary(BinaryExpression b)
         {
+            b = ConvertVbCompareString(b);
+
             Expression left = this.Visit(b.Left);
             Expression right = this.Visit(b.Right);
             Expression conversion = this.Visit(b.Conversion);
