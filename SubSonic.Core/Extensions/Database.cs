@@ -397,7 +397,6 @@ namespace SubSonic.Extensions
         {
             Type type = typeof(T);
             ITable tbl = provider.FindOrCreateTable<T>();
-            int result = 0;
             var query = new Delete<T>(tbl, provider);
             if(tbl != null)
             {
