@@ -147,7 +147,7 @@ namespace SubSonic.Query
             return _provider.ExecuteReader(_command);
         }
 
-        private void LoadCommandParams(QueryCommand cmd, object[] values)
+        private static void LoadCommandParams(QueryCommand cmd, object[] values)
         {
             //load up the params
             List<string> paramList = ParseParameters(cmd.CommandSql);
@@ -159,22 +159,20 @@ namespace SubSonic.Query
                     "The parameter count doesn't match up with the values entered - this could be our fault with our parser; please check the list to make sure the count adds up, and if it does, please add some spacing around the parameters in the list");
             }
 
-            int indexer = 0;
-            foreach(string s in paramList)
+            for(int i = 0; i < paramList.Count; i++)
             {
-                cmd.Parameters.Add(s, values[indexer]);
-
-                indexer++;
+                cmd.Parameters.Add(paramList[i], values[i]);
             }
         }
 
         private static List<string> ParseParameters(string sql)
         {
-            List<string> result = new List<string>();
-            Regex paramReg = new Regex(@"@\w*");
+            //bferrier altered this so Inline Query works with Oracle
+            Regex paramReg = new Regex(@"@\w*|:\w*");
 
             MatchCollection matches = paramReg.Matches(String.Concat(sql, " "));
-            foreach(Match m in matches)
+            List<string> result = new List<string>(matches.Count);
+            foreach (Match m in matches)
                 result.Add(m.Value);
 
             return result;

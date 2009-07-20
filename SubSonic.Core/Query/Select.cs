@@ -86,12 +86,18 @@ namespace SubSonic.Query
             {
                 _provider = columns[0].Table.Provider;
                 SQLCommand = SqlFragment.SELECT;
+                
+                
+                SelectColumnList = new string[columns.Length];
+                for (int i = 0; i < columns.Length; i++)
+                    SelectColumnList[i] = columns[i].QualifiedName;
+                
                 //user entered an array
-                StringBuilder sb = new StringBuilder();
-                foreach(IColumn col in columns)
-                    sb.AppendFormat("{0}|", col.QualifiedName);
+                //StringBuilder sb = new StringBuilder();
+                //foreach(IColumn col in columns)
+                //    sb.AppendFormat("{0}|", col.QualifiedName);
 
-                SelectColumnList = sb.ToString().Split(new char[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
+                //SelectColumnList = sb.ToString().Split(new char[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
             }
         }
 
@@ -107,7 +113,9 @@ namespace SubSonic.Query
             if(columns.Length == 1 && columns[0].Contains(","))
             {
                 //user entered a single string column list: "col1, col2, col3"
-                SelectColumnList = columns[0].Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                SelectColumnList = columns[0].Split(new [] {','}, StringSplitOptions.RemoveEmptyEntries);
+                for (int i = 0; i < SelectColumnList.Length; i++)
+                    SelectColumnList[i] = SelectColumnList[i].Trim();
             }
             else
             {

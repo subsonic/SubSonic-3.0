@@ -139,6 +139,7 @@ namespace SubSonic.Query
             if(Table==null)
                 throw new InvalidOperationException("No table is set");
 
+            // EK: No methods consume the return value. Is the rest of this necessary?
             bool isFirst = true;
             StringBuilder sb = new StringBuilder();
             foreach(string s in ColumnList)
@@ -172,12 +173,14 @@ namespace SubSonic.Query
 
         private void AddInsertSetting(string columnName, object columnValue, DbType dbType, bool isExpression)
         {
-            InsertSetting setting = new InsertSetting();
-            setting.ColumnName = columnName;
-            setting.ParameterName = _provider.ParameterPrefix + "ins_" + columnName.ToAlphaNumericOnly();
-            setting.Value = columnValue;
-            setting.IsExpression = isExpression;
-            setting.DataType = dbType;
+            InsertSetting setting = new InsertSetting
+                                        {
+                                            ColumnName = columnName,
+                                            ParameterName = _provider.ParameterPrefix + "ins_" + columnName.ToAlphaNumericOnly(),
+                                            Value = columnValue,
+                                            IsExpression = isExpression,
+                                            DataType = dbType
+                                        };
             Inserts.Add(setting);
         }
 
@@ -253,10 +256,9 @@ namespace SubSonic.Query
         /// <returns></returns>
         public int Execute()
         {
-            object result;
             int returner = 0;
 
-            result = _provider.ExecuteScalar(GetCommand());
+            object result = _provider.ExecuteScalar(GetCommand());
             if(result != null)
             {
                 if(result.GetType() == typeof(decimal))
@@ -275,10 +277,12 @@ namespace SubSonic.Query
             //add in the commands
             foreach(InsertSetting s in Inserts)
             {
-                QueryParameter p = new QueryParameter();
-                p.ParameterName = s.ParameterName;
-                p.ParameterValue = s.Value ?? DBNull.Value;
-                p.DataType = s.DataType;
+                QueryParameter p = new QueryParameter
+                                       {
+                                           ParameterName = s.ParameterName,
+                                           ParameterValue = s.Value ?? DBNull.Value,
+                                           DataType = s.DataType
+                                       };
                 cmd.Parameters.Add(p);
             }
             return cmd;

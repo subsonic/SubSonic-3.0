@@ -66,10 +66,7 @@ namespace SubSonic.Query
         #endregion
 
 
-        private IColumn _fromColumn;
         private JoinType _joinType = JoinType.Inner;
-
-        private IColumn _toColumn;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Join"/> class.
@@ -133,21 +130,13 @@ namespace SubSonic.Query
         /// Gets or sets from column.
         /// </summary>
         /// <value>From column.</value>
-        public IColumn FromColumn
-        {
-            get { return _fromColumn; }
-            set { _fromColumn = value; }
-        }
+        public IColumn FromColumn { get; set; }
 
         /// <summary>
         /// Gets or sets to column.
         /// </summary>
         /// <value>To column.</value>
-        public IColumn ToColumn
-        {
-            get { return _toColumn; }
-            set { _toColumn = value; }
-        }
+        public IColumn ToColumn { get; set; }
 
         /// <summary>
         /// Gets the join type value.

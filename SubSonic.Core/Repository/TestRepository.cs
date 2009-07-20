@@ -23,7 +23,7 @@ namespace SubSonic.Repository
 {
     public class TestRepository<T> : IRepository<T> where T : IActiveRecord, new()
     {
-        private IQuerySurface _db;
+        private readonly IQuerySurface _db;
         public List<T> _items;
 
         public TestRepository(IQuerySurface db)
