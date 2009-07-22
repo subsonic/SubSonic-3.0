@@ -43,11 +43,8 @@ namespace SubSonic.DataProviders
         internal DbDataProvider(string connectionString, string providerName)
         {
             ConnectionString = connectionString;
-            DbDataProviderName = providerName;
+            DbDataProviderName = String.IsNullOrEmpty(DbDataProviderName) ? DbClientTypeName.MsSql : providerName;
             Schema = new DatabaseSchema();
-            if(string.IsNullOrEmpty(DbDataProviderName))
-                DbDataProviderName = DbClientTypeName.MsSql;
-
             DecideClient(DbDataProviderName);
 
             Factory = DbProviderFactories.GetFactory(DbDataProviderName);
@@ -181,7 +178,7 @@ namespace SubSonic.DataProviders
             //}
 #endif
 
-            object result = null;
+            object result;
             using(AutomaticConnectionScope automaticConnectionScope = new AutomaticConnectionScope(this))
             {
                 DbCommand cmd = Factory.CreateCommand();
@@ -244,7 +241,7 @@ namespace SubSonic.DataProviders
 
         public IList<T> ToList<T>(QueryCommand qry) where T : new()
         {
-            List<T> result = null;
+            List<T> result;
             using(var rdr = ExecuteReader(qry))
                 result = rdr.ToList<T>();
 
@@ -256,7 +253,10 @@ namespace SubSonic.DataProviders
             get { return "@"; }
         }
 
-        public string Name { get; private set; }
+        public string Name
+        {
+            get { return DbDataProviderName; }
+        }
 
         /// <summary>
         /// Gets or sets the current shared connection.
@@ -327,7 +327,8 @@ namespace SubSonic.DataProviders
             //        "the template you're using. Make sure to use it, and not the query directly");
             //}
 
-            var result = Schema.Tables.FirstOrDefault(x => x.Name.ToLower() == tableName.ToLower());
+            //var result = Schema.Tables.FirstOrDefault(x => x.Name.ToLower() == tableName.ToLower());
+            var result = Schema.Tables.FirstOrDefault(x => x.Name.Equals(tableName, StringComparison.InvariantCultureIgnoreCase));
             if(result == null)
                 result = Schema.Tables.FirstOrDefault(x => x.ClassName.Equals(tableName, StringComparison.InvariantCultureIgnoreCase));
 
@@ -350,7 +351,7 @@ namespace SubSonic.DataProviders
 
         public ITable FindOrCreateTable<T>() where T : new()
         {
-            ITable result = null;
+            //ITable result = null;
             return FindOrCreateTable(typeof(T));
         }
 
@@ -470,16 +471,16 @@ namespace SubSonic.DataProviders
 
                     //fix for NULLs as parameter values
                     if(param.ParameterValue == null)
+                    {
                         p.Value = DBNull.Value;
-
-                        //TODO: WTF is this?
+                    }
                     else if(param.DataType == DbType.Guid)
                     {
                         string paramValue = param.ParameterValue.ToString();
                         if (!String.IsNullOrEmpty(paramValue))
                         {
                             if(!paramValue.Equals("DEFAULT", StringComparison.InvariantCultureIgnoreCase))
-                                p.Value = new Guid(param.ParameterValue.ToString());
+                                p.Value = new Guid(paramValue);
                         }
                         else
                             p.Value = DBNull.Value;

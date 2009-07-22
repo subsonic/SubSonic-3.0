@@ -1,4 +1,4 @@
-﻿<#@ include file="Settings.ttinclude" #>
+<#@ include file="Settings.ttinclude" #>
 <#+
 
 IDataReader GetReader(string sql){
@@ -258,6 +258,8 @@ string GetSysType(string sqlType){
 			sysType=  "decimal";
 			 break;
 		case "tinyint":
+			sysType = "byte";
+			break;
 		case "bit":
 			sysType=  "bool";
 			   break;

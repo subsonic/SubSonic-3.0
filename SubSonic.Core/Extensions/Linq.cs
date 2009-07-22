@@ -11,6 +11,7 @@
 //   implied. See the License for the specific language governing
 //   rights and limitations under the License.
 // 
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using SubSonic.Query;
@@ -26,7 +27,7 @@ namespace SubSonic.Extensions
         /// <returns></returns>
         public static string ParseObjectValue(this LambdaExpression expression)
         {
-            string result = "";
+            string result = String.Empty;
             if(expression.Body is MemberExpression)
             {
                 MemberExpression m = expression.Body as MemberExpression;
@@ -35,8 +36,12 @@ namespace SubSonic.Extensions
             else if(expression.Body.NodeType == ExpressionType.Convert)
             {
                 UnaryExpression u = expression.Body as UnaryExpression;
-                MemberExpression m = u.Operand as MemberExpression;
-                result = m.Member.Name;
+                if (u != null)
+                {
+                    MemberExpression m = u.Operand as MemberExpression;
+                    if(m != null)
+                        result = m.Member.Name;
+                }
             }
             return result;
         }
@@ -85,7 +90,8 @@ namespace SubSonic.Extensions
             if(exp is BinaryExpression)
             {
                 var binary = exp as BinaryExpression;
-                result = binary.Left.GetType() != typeof(BinaryExpression) && binary.Right.GetType() != typeof(BinaryExpression);
+                Type binExpType = typeof(BinaryExpression);
+                result = binary.Left.GetType() != binExpType && binary.Right.GetType() != binExpType;
             }
             return result;
         }

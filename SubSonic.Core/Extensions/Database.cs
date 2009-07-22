@@ -98,7 +98,6 @@ namespace SubSonic.Extensions
                 result = DbType.Int16;
             else if (type == typeof(Int64))
                 result = DbType.Int64;
-
             else if(type == typeof(DateTime))
                 result = DbType.DateTime;
             else if(type == typeof(float))
@@ -124,7 +123,7 @@ namespace SubSonic.Extensions
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static List<Query.Constraint> ToConstraintList(this object value)
+        public static List<Constraint> ToConstraintList(this object value)
         {
             var hashedSet = value.ToDictionary();
             SqlQuery query = new SqlQuery();
@@ -165,7 +164,7 @@ namespace SubSonic.Extensions
                     Type valueType = rdr.GetValue(i).GetType();
                     if(valueType == typeof(SByte))
                         currentProp.SetValue(item, (rdr.GetValue(i).ToString() == "1"), null);
-                    else if (currentProp.PropertyType == typeof(Guid))
+                    else if(currentProp.PropertyType == typeof(Guid))
                         currentProp.SetValue(item, rdr.GetGuid(i), null);
                     else
                         currentProp.SetValue(item, rdr.GetValue(i).ChangeTypeTo(valueType), null);
@@ -182,11 +181,12 @@ namespace SubSonic.Extensions
                 }
             }
 
-            if (item is IActiveRecord) {
+            if(item is IActiveRecord)
+            {
                 var arItem = (IActiveRecord)item;
                 arItem.SetIsLoaded(true);
                 arItem.SetIsNew(false);
-                
+
             }
 
         }
@@ -239,11 +239,11 @@ namespace SubSonic.Extensions
         private static bool IsCoreSystemType(Type type)
         {
             return type == typeof(string) ||
-                    type == typeof(Int16) ||
+                   type == typeof(Int16) ||
                    type == typeof(Int16?) ||
                    type == typeof(Int32) ||
                    type == typeof(Int32?) ||
-                  type == typeof(Int64) ||
+                   type == typeof(Int64) ||
                    type == typeof(Int64?) ||
                    type == typeof(decimal) ||
                    type == typeof(decimal?) ||
@@ -305,7 +305,7 @@ namespace SubSonic.Extensions
         public static List<T> ToList<T>(this IDataReader rdr) where T : new()
         {
             List<T> result = new List<T>();
-            Type iType = typeof(T);
+            //Type iType = typeof(T);
 
             //set the values        
             while(rdr.Read())
@@ -322,7 +322,7 @@ namespace SubSonic.Extensions
         ///</summary>
         public static ISqlQuery ToUpdateQuery<T>(this T item, IDataProvider provider) where T : class, new()
         {
-            Type type = typeof(T);
+            //Type type = typeof(T);
             var settings = item.ToDictionary();
 
             ITable tbl = provider.FindOrCreateTable<T>();
@@ -367,7 +367,7 @@ namespace SubSonic.Extensions
         ///</summary>
         public static ISqlQuery ToInsertQuery<T>(this T item, IDataProvider provider) where T : class, new()
         {
-            Type type = typeof(T);
+            //Type type = typeof(T);
             ITable tbl = provider.FindOrCreateTable<T>();
             Insert query = null;
 
@@ -375,7 +375,7 @@ namespace SubSonic.Extensions
             {
                 var hashed = item.ToDictionary();
                 query = new Insert(provider).Into<T>(tbl);
-                ;
+
                 foreach(string key in hashed.Keys)
                 {
                     IColumn col = tbl.GetColumn(key);
@@ -395,7 +395,7 @@ namespace SubSonic.Extensions
         ///</summary>
         public static ISqlQuery ToDeleteQuery<T>(this T item, IDataProvider provider) where T : class, new()
         {
-            Type type = typeof(T);
+            //Type type = typeof(T);
             ITable tbl = provider.FindOrCreateTable<T>();
             var query = new Delete<T>(tbl, provider);
             if(tbl != null)
@@ -404,10 +404,12 @@ namespace SubSonic.Extensions
                 var settings = item.ToDictionary();
                 if(pk != null)
                 {
-                    var c = new Constraint(ConstraintType.Where, pk.Name);
-                    c.ParameterValue = settings[pk.Name];
-                    c.ParameterName = pk.Name;
-                    c.ConstructionFragment = pk.Name;
+                    var c = new Constraint(ConstraintType.Where, pk.Name)
+                                {
+                                    ParameterValue = settings[pk.Name],
+                                    ParameterName = pk.Name,
+                                    ConstructionFragment = pk.Name
+                                };
                     query.Constraints.Add(c);
                 }
                 else

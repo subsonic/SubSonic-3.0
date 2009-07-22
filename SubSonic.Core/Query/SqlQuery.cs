@@ -67,7 +67,7 @@ namespace SubSonic.Query
         {
             string provider = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
             string cString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
-            _provider = new DbDataProvider(connectionStringName, provider);
+            _provider = new DbDataProvider(cString, provider);
         }
 
 
@@ -1045,7 +1045,7 @@ namespace SubSonic.Query
         /// <returns></returns>
         public virtual IDataReader ExecuteReader()
         {
-            IDataReader rdr = null;
+            IDataReader rdr;
             try
             {
                 var command = GetCommand();
@@ -1065,7 +1065,7 @@ namespace SubSonic.Query
         /// <returns></returns>
         public virtual object ExecuteScalar()
         {
-            object result = null;
+            object result;
             try
             {
                 result = _provider.ExecuteScalar(GetCommand());

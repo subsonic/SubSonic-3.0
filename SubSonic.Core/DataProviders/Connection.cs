@@ -50,6 +50,7 @@ namespace SubSonic.DataProviders
         /// Indicates to the default DataProvider that it should use a per-thread shared connection using the given connection string.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
+        /// <param name="providerName">Name of the provider.</param>
         public SharedDbConnectionScope(string connectionString, string providerName)
             : this(ProviderFactory.GetProvider(connectionString, providerName))
         {

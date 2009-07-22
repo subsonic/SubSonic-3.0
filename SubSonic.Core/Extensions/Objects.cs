@@ -112,7 +112,7 @@ namespace SubSonic.Extensions
         public static T FromDictionary<T>(this Dictionary<string, object> settings, T item) where T : class
         {
             PropertyInfo[] props = item.GetType().GetProperties();
-            FieldInfo[] fields = item.GetType().GetFields();
+            //FieldInfo[] fields = item.GetType().GetFields();
             foreach(PropertyInfo pi in props)
             {
                 if(settings.ContainsKey(pi.Name))
@@ -261,16 +261,11 @@ namespace SubSonic.Extensions
             //if the PK is still null-look for a column called [tableName]ID - if it's there then make it PK
             if(result.PrimaryKey == null)
             {
-                var pk = result.GetColumn(type.Name + "ID");
-                if(pk == null)
-                    pk = result.GetColumn("ID");
-                if(pk == null)
-                    pk = result.GetColumn("Key");
+                var pk = (result.GetColumn(type.Name + "ID") ?? result.GetColumn("ID")) ?? result.GetColumn("Key");
 
                 if(pk != null)
                 {
                     pk.IsPrimaryKey = true;
-
                     //if it's an INT then AutoIncrement it
                     if(pk.IsNumeric)
                         pk.AutoIncrement = true;

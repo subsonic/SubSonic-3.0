@@ -178,7 +178,7 @@ namespace SubSonic.Query
                             {
                                 query = this,
                                 ColumnName = columnName,
-                                ParameterName = (_provider.ParameterPrefix + "up_" + columnName),
+                                ParameterName = String.Format("{0}up_{1}", _provider.ParameterPrefix,columnName),
                                 IsExpression = isExpression,
                                 DataType = dbType
                             };
@@ -295,9 +295,11 @@ namespace SubSonic.Query
             Constraint c = lamda.ParseConstraint();
             var tbl = _provider.FindOrCreateTable(typeof(T));
             IColumn col = tbl.GetColumnByPropertyName(c.ColumnName);
-            Constraint con = new Constraint(c.Condition, col.Name, col.QualifiedName, col.Name);
-            con.ParameterName = col.PropertyName;
-            con.ParameterValue = c.ParameterValue;
+            Constraint con = new Constraint(c.Condition, col.Name, col.QualifiedName, col.Name)
+                                 {
+                                     ParameterName = col.PropertyName,
+                                     ParameterValue = c.ParameterValue
+                                 };
 
             _query.Constraints.Add(con);
             return this;

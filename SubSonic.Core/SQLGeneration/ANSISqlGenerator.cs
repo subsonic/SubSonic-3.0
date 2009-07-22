@@ -286,8 +286,11 @@ namespace SubSonic.SqlGeneration
             bool isFirst = true;
             foreach(ITable tbl in query.FromTables)
             {
+                // EK: The line below is intentional. See: http://weblogs.asp.net/fbouma/archive/2009/06/25/linq-beware-of-the-access-to-modified-closure-demon.aspx
+                ITable table = tbl;
+
                 //Can't pop a table into the FROM list if it's also in a JOIN
-                if(!query.Joins.Any(x => x.FromColumn.Table.Name.Equals(tbl.Name, StringComparison.InvariantCultureIgnoreCase)))
+                if(!query.Joins.Any(x => x.FromColumn.Table.Name.Equals(table.Name, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     if(!isFirst)
                         sb.Append(", ");

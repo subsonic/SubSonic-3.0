@@ -41,8 +41,8 @@ namespace SubSonic.Extensions
         {
             if(exp != null)
                 return base.Visit(exp);
-            else
-                return exp;
+
+            return exp;
         }
 
         protected override Expression VisitConstant(ConstantExpression c)
@@ -58,7 +58,7 @@ namespace SubSonic.Extensions
             return base.VisitConstant(c);
         }
 
-        private Expression Evaluate(Expression e)
+        private static Expression Evaluate(Expression e)
         {
             if(e.NodeType == ExpressionType.Constant)
                 return e;
@@ -87,23 +87,21 @@ namespace SubSonic.Extensions
             }
         }
 
-        protected override Expression VisitMethodCall(MethodCallExpression m)
-        {
-            return base.VisitMethodCall(m);
-        }
-
         protected override Expression VisitUnary(UnaryExpression u)
         {
-            if(u.NodeType == ExpressionType.Not)
+            if (u.NodeType == ExpressionType.Not)
             {
                 //this is a "!" not operator, which is akin to saying "member.name == false"
                 //so we'll switch it up
                 var member = u.Operand as MemberExpression;
-                current.ParameterName = member.Member.Name;
-                current.ColumnName += member.Member.Name;
-                current.ConstructionFragment += member.Member.Name;
-                current.ParameterValue = false;
-                AddConstraint();
+                if(member != null)
+                {
+                    current.ParameterName = member.Member.Name;
+                    current.ColumnName += member.Member.Name;
+                    current.ConstructionFragment += member.Member.Name;
+                    current.ParameterValue = false;
+                    AddConstraint();
+                }
             }
             return base.VisitUnary(u);
         }
@@ -174,12 +172,11 @@ namespace SubSonic.Extensions
             //    expressionOpen = false;
             //}
 
-            if(left != b.Left || right != b.Right || conversion != b.Conversion)
+            if (left != b.Left || right != b.Right || conversion != b.Conversion)
             {
                 if(b.NodeType == ExpressionType.Coalesce && b.Conversion != null)
                     return Expression.Coalesce(left, right, conversion as LambdaExpression);
-                else
-                    return Expression.MakeBinary(b.NodeType, left, right, b.IsLiftedToNull, b.Method);
+                return Expression.MakeBinary(b.NodeType, left, right, b.IsLiftedToNull, b.Method);
             }
             return b;
         }
