@@ -28,7 +28,7 @@ namespace SubSonic.DataProviders
     public class DbClientTypeName
     {
         public const string MsSql = "System.Data.SqlClient";
-        //public const string MsSqlCe = "System.Data.SqlServerCe.3.5";
+        //public const string MsSqlCe = "System.Data.SqlServerCe.3.5C:\Users\funky81\Documents\Visual Studio 2008\Projects\ISDS\ISDS\Views\Home\";
         public const string MySql = "MySql.Data.MySqlClient";
         //public const string OleDb = "System.Data.OleDb";
         public const string Oracle = "System.Data.OracleClient";
@@ -43,7 +43,7 @@ namespace SubSonic.DataProviders
         internal DbDataProvider(string connectionString, string providerName)
         {
             ConnectionString = connectionString;
-            DbDataProviderName = String.IsNullOrEmpty(DbDataProviderName) ? DbClientTypeName.MsSql : providerName;
+            DbDataProviderName = String.IsNullOrEmpty(providerName) ? DbClientTypeName.MsSql : providerName;
             Schema = new DatabaseSchema();
             DecideClient(DbDataProviderName);
 
