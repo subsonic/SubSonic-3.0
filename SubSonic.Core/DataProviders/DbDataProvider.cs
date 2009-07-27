@@ -157,6 +157,7 @@ namespace SubSonic.DataProviders
                 cmd.Connection = scope.Connection;
                 AddParams(cmd, qry);
                 DbDataAdapter da = Factory.CreateDataAdapter();
+                da.SelectCommand = cmd;
                 da.Fill(ds);
 
                 return ds;
