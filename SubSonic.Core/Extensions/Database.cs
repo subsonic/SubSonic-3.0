@@ -332,7 +332,7 @@ namespace SubSonic.Extensions
                 var ar = item as IActiveRecord;
                 foreach(var dirty in ar.GetDirtyColumns())
                 {
-                    if(!dirty.IsPrimaryKey)
+                    if(!dirty.IsPrimaryKey && !dirty.IsReadOnly)
                         query.Set(dirty.Name).EqualTo(settings[dirty.Name]);
                 }
             }
@@ -343,7 +343,7 @@ namespace SubSonic.Extensions
                     IColumn col = tbl.GetColumn(key);
                     if(col != null)
                     {
-                        if(!col.IsPrimaryKey)
+                        if(!col.IsPrimaryKey && !col.IsReadOnly)
                             query.Set(col).EqualTo(settings[key]);
                     }
                 }
@@ -379,7 +379,7 @@ namespace SubSonic.Extensions
                     IColumn col = tbl.GetColumn(key);
                     if(col != null)
                     {
-                        if(!col.AutoIncrement)
+                        if(!col.AutoIncrement && !col.IsReadOnly)
                             query.Value(col.QualifiedName, hashed[key], col.DataType);
                     }
                 }
