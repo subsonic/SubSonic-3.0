@@ -55,6 +55,26 @@ namespace SubSonic.Tests.BugReports {
             product = Product.SingleOrDefault(x => x.ProductID == 1);
             Assert.Equal(false, product.IsNew());
         }
+
+
+        [Fact]
+        public void Issue54_Looping_List_Calling_Update_Should_Work() {
+            var list = Product.Find(x => x.ProductID < 10);
+            foreach(Product p in list){
+                p.UnitPrice=100;
+                p.Update();
+            }
+        }
+
+
+        [Fact]
+        public void Issue55_Delete_Should_Have_Two_Constraints() {
+
+            Product.Delete(x => x.ProductID > 100 && x.CategoryID == 5);
+
+        }
+
+
     }
 
 }
