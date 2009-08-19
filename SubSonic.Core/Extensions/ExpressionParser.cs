@@ -103,55 +103,69 @@ namespace SubSonic.Extensions
 
         private void BuildFromBinary(Expression exp, Comparison op)
         {
+
             BinaryExpression expression = exp as BinaryExpression;
 
-            //make sure the left side is a Member, and the right is a constant value
-            if(expression.Left is MemberExpression && expression.Right is ConstantExpression)
+            if (expression != null)
             {
-                //the member - "Title", "Publisher", etc
-                MemberExpression memb = expression.Left as MemberExpression;
-                //the setting
-                ConstantExpression val = expression.Right as ConstantExpression;
-                AddConstraint(memb.Member.Name, op, val.Value);
-            }
-                //or the left side is a Member, and the right is a conversion from a constant value to a nullable
-            else if(expression.Left is MemberExpression && expression.Right.NodeType == ExpressionType.Convert
-                    && expression.Right.Type.Name.Equals(nullableType))
-            {
-                //the member - "Title", "Publisher", etc
-                MemberExpression memb = expression.Left as MemberExpression;
-                //the auto-conversion-to-nullable
-                UnaryExpression convert = expression.Right as UnaryExpression;
-                //the setting
-                ConstantExpression val = convert.Operand as ConstantExpression;
-                AddConstraint(memb.Member.Name, op, val.Value);
-            }
-                //if this isn't the case, it's Unary and is an enum setting
-            else if(expression.Left.NodeType == ExpressionType.MemberAccess)
-            {
-                MemberExpression left = expression.Left as MemberExpression;
-                MemberExpression right = expression.Right as MemberExpression;
-
-                if(right.Expression.NodeType == ExpressionType.Constant)
+                //make sure the left side is a Member, and the right is a constant value
+                if(expression.Left is MemberExpression && expression.Right is ConstantExpression)
                 {
-                    ConstantExpression val = right.Expression as ConstantExpression;
-                    Type t = val.Value.GetType();
-                    FieldInfo[] fields = t.GetFields();
-                    object oVal = fields[0].GetValue(val.Value);
-                    AddConstraint(left.Member.Name, op, oVal);
+                    //the member - "Title", "Publisher", etc
+                    MemberExpression memb = expression.Left as MemberExpression;
+                    //the setting
+                    ConstantExpression val = expression.Right as ConstantExpression;
+                    AddConstraint(memb.Member.Name, op, val.Value);
                 }
-                else if(right.Expression.NodeType == ExpressionType.MemberAccess)
+                    //or the left side is a Member, and the right is a conversion from a constant value to a nullable
+                else if(expression.Left is MemberExpression && expression.Right.NodeType == ExpressionType.Convert
+                        && expression.Right.Type.Name.Equals(nullableType))
                 {
-                    //this is screwed
-                    MemberExpression val = right.Expression as MemberExpression;
-                    //object expressionValue = EvaluateExpression(val.Expression);
-                    //expressionValue.GetType().InvokeMember(val.Member.Name, global, global, expressionValue) ;
+                    //the member - "Title", "Publisher", etc
+                    MemberExpression memb = expression.Left as MemberExpression;
+                    //the auto-conversion-to-nullable
+                    UnaryExpression convert = expression.Right as UnaryExpression;
+                    //the setting
+                    if (convert != null)
+                    {
+                        ConstantExpression val = convert.Operand as ConstantExpression;
+                        if(val != null)
+                            AddConstraint(memb.Member.Name, op, val.Value);
+                    }
+                }
+                    //if this isn't the case, it's Unary and is an enum setting
+                else if(expression.Left.NodeType == ExpressionType.MemberAccess)
+                {
+                    MemberExpression left = expression.Left as MemberExpression;
+                    MemberExpression right = expression.Right as MemberExpression;
 
-                    var t = right.Member.MemberType;
+                    if (right != null)
+                    {
+                        if (right.Expression.NodeType == ExpressionType.Constant)
+                        {
+                            ConstantExpression val = right.Expression as ConstantExpression;
+                            if(val != null && left != null)
+                            {
+                                Type t = val.Value.GetType();
+                                FieldInfo[] fields = t.GetFields();
+                                object oVal = fields[0].GetValue(val.Value);
+                                AddConstraint(left.Member.Name, op, oVal);
+                            }
+                        }
+                        else if (right.Expression.NodeType == ExpressionType.MemberAccess)
+                        {
+                            //this is screwed
+                            MemberExpression val = right.Expression as MemberExpression;
+                            //object expressionValue = EvaluateExpression(val.Expression);
+                            //expressionValue.GetType().InvokeMember(val.Member.Name, global, global, expressionValue) ;
 
-                    //this should be a property
-                    //PropertyInfo p = (PropertyInfo)t.GetProperties()[0].GetValue(right.Member, null);
-                    //oVal = p.GetValue(val.Member, null);
+                            var t = right.Member.MemberType;
+
+                            //this should be a property
+                            //PropertyInfo p = (PropertyInfo)t.GetProperties()[0].GetValue(right.Member, null);
+                            //oVal = p.GetValue(val.Member, null);
+                        }
+                    }
                 }
             }
         }
@@ -160,21 +174,23 @@ namespace SubSonic.Extensions
         {
             MethodCallExpression expression = exp as MethodCallExpression;
 
-            if(expression.Arguments[0].NodeType == ExpressionType.MemberAccess)
+            if (expression != null)
             {
-                MemberExpression memberExpr = (MemberExpression)expression.Arguments[0];
-                if(expression.Arguments[1].NodeType == ExpressionType.Constant)
+                if(expression.Arguments[0].NodeType == ExpressionType.MemberAccess)
                 {
-                    ConstantExpression val = (ConstantExpression)expression.Arguments[1];
-
+                    MemberExpression memberExpr = (MemberExpression)expression.Arguments[0];
+                    if(expression.Arguments[1].NodeType == ExpressionType.Constant)
+                    {
+                        ConstantExpression val = (ConstantExpression)expression.Arguments[1];
+                        AddConstraint(memberExpr.Member.Name, op, val.Value);
+                    }
+                }
+                else if(expression.Arguments[0].NodeType == ExpressionType.Constant)
+                {
+                    ConstantExpression val = (ConstantExpression)expression.Arguments[0];
+                    MemberExpression memberExpr = (MemberExpression)expression.Object;
                     AddConstraint(memberExpr.Member.Name, op, val.Value);
                 }
-            }
-            else if(expression.Arguments[0].NodeType == ExpressionType.Constant)
-            {
-                ConstantExpression val = (ConstantExpression)expression.Arguments[0];
-                MemberExpression memberExpr = (MemberExpression)expression.Object;
-                AddConstraint(memberExpr.Member.Name, op, val.Value);
             }
         }
 

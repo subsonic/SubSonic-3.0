@@ -98,7 +98,6 @@ namespace SubSonic.Extensions
                 result = DbType.Int16;
             else if (type == typeof(Int64))
                 result = DbType.Int64;
-
             else if(type == typeof(DateTime))
                 result = DbType.DateTime;
             else if(type == typeof(float))
@@ -124,7 +123,7 @@ namespace SubSonic.Extensions
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static List<Query.Constraint> ToConstraintList(this object value)
+        public static List<Constraint> ToConstraintList(this object value)
         {
             var hashedSet = value.ToDictionary();
             SqlQuery query = new SqlQuery();
@@ -163,7 +162,7 @@ namespace SubSonic.Extensions
                 if(currentProp != null && !DBNull.Value.Equals(rdr.GetValue(i)))
                 {
                     Type valueType = rdr.GetValue(i).GetType();
-                    if(valueType == typeof(SByte))
+                    if(valueType == typeof(Boolean))
                         currentProp.SetValue(item, (rdr.GetValue(i).ToString() == "1"), null);
                     else if (currentProp.PropertyType == typeof(Guid))
                         currentProp.SetValue(item, rdr.GetGuid(i), null);
@@ -173,7 +172,7 @@ namespace SubSonic.Extensions
                 else if(currentField != null && !DBNull.Value.Equals(rdr.GetValue(i)))
                 {
                     Type valueType = rdr.GetValue(i).GetType();
-                    if(valueType == typeof(SByte))
+                    if(valueType == typeof(Boolean))
                         currentField.SetValue(item, (rdr.GetValue(i).ToString() == "1"));
                     else if(currentField.FieldType == typeof(Guid))
                         currentField.SetValue(item, rdr.GetGuid(i));
@@ -239,11 +238,11 @@ namespace SubSonic.Extensions
         private static bool IsCoreSystemType(Type type)
         {
             return type == typeof(string) ||
-                    type == typeof(Int16) ||
+                   type == typeof(Int16) ||
                    type == typeof(Int16?) ||
                    type == typeof(Int32) ||
                    type == typeof(Int32?) ||
-                  type == typeof(Int64) ||
+                   type == typeof(Int64) ||
                    type == typeof(Int64?) ||
                    type == typeof(decimal) ||
                    type == typeof(decimal?) ||
@@ -375,7 +374,6 @@ namespace SubSonic.Extensions
             {
                 var hashed = item.ToDictionary();
                 query = new Insert(provider).Into<T>(tbl);
-                ;
                 foreach(string key in hashed.Keys)
                 {
                     IColumn col = tbl.GetColumn(key);
@@ -397,7 +395,6 @@ namespace SubSonic.Extensions
         {
             Type type = typeof(T);
             ITable tbl = provider.FindOrCreateTable<T>();
-            int result = 0;
             var query = new Delete<T>(tbl, provider);
             if(tbl != null)
             {
@@ -405,10 +402,12 @@ namespace SubSonic.Extensions
                 var settings = item.ToDictionary();
                 if(pk != null)
                 {
-                    var c = new Constraint(ConstraintType.Where, pk.Name);
-                    c.ParameterValue = settings[pk.Name];
-                    c.ParameterName = pk.Name;
-                    c.ConstructionFragment = pk.Name;
+                    var c = new Constraint(ConstraintType.Where, pk.Name)
+                                {
+                                    ParameterValue = settings[pk.Name],
+                                    ParameterName = pk.Name,
+                                    ConstructionFragment = pk.Name
+                                };
                     query.Constraints.Add(c);
                 }
                 else

@@ -67,7 +67,7 @@ namespace SubSonic.Query
         {
             string provider = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
             string cString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
-            _provider = new DbDataProvider(connectionStringName, provider);
+            _provider = new DbDataProvider(cString, provider);
         }
 
 
@@ -623,12 +623,8 @@ namespace SubSonic.Query
 
             //the "from" table is a bit tricky
             //if this is a multi-join, then we need to pull from the very last table in the Join list
-            ITable fromTable;
 
-            if(Joins.Count > 0)
-                fromTable = Joins[Joins.Count - 1].FromColumn.Table;
-            else
-                fromTable = FromTables[0];
+            ITable fromTable = Joins.Count > 0 ? Joins[Joins.Count - 1].FromColumn.Table : FromTables[0];
 
             //first effort, match the name of the fromTable PK to the toTable
             var fromColumn = fromTable.PrimaryKey;
@@ -640,7 +636,6 @@ namespace SubSonic.Query
             {
                 //second effort - reverse the lookup and match the PK of the toTable to the fromTable
                 toColumn = toTable.PrimaryKey;
-
                 fromColumn = fromTable.GetColumn(toColumn.Name);
             }
 
@@ -1050,7 +1045,7 @@ namespace SubSonic.Query
         /// <returns></returns>
         public virtual IDataReader ExecuteReader()
         {
-            IDataReader rdr = null;
+            IDataReader rdr;
             try
             {
                 var command = GetCommand();
@@ -1070,7 +1065,7 @@ namespace SubSonic.Query
         /// <returns></returns>
         public virtual object ExecuteScalar()
         {
-            object result = null;
+            object result;
             try
             {
                 result = _provider.ExecuteScalar(GetCommand());
@@ -1187,7 +1182,7 @@ namespace SubSonic.Query
         /// Executes the transaction.
         /// </summary>
         /// <param name="queries">The queries.</param>
-        /// <param name="connectionString">The connection string.</param>
+        /// <param name="connectionStringName">Name of the connection string.</param>
         public static void ExecuteTransaction(List<SqlQuery> queries, string connectionStringName)
         {
 

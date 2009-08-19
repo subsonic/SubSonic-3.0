@@ -427,7 +427,6 @@ namespace SubSonic.Query
         public SqlQuery StartsWith(string val)
         {
             return StartsWith(val, "%");
-            ;
         }
 
         public SqlQuery StartsWith(string val, string wildCard)

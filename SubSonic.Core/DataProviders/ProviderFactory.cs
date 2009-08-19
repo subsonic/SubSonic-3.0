@@ -19,7 +19,7 @@ namespace SubSonic.DataProviders
 {
     public static class ProviderFactory
     {
-        private static Dictionary<string, IDataProvider> _dataProviders = new Dictionary<string, IDataProvider>();
+        //private static Dictionary<string, IDataProvider> _dataProviders = new Dictionary<string, IDataProvider>();
 
         public static IDataProvider GetProvider()
         {
@@ -30,9 +30,8 @@ namespace SubSonic.DataProviders
 
         public static IDataProvider GetProvider(string connectionStringName)
         {
-			if (ConfigurationManager.ConnectionStrings[connectionStringName] == null) {
+			if (ConfigurationManager.ConnectionStrings[connectionStringName] == null)
 				throw new ApplicationException(string.Format("Connection string '{0}' does not exist", connectionStringName));
-			}
 
             string connString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
             string providerName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
@@ -67,9 +66,8 @@ namespace SubSonic.DataProviders
         internal static IDataProvider LoadProvider(string connectionString, string providerName)
         {
             //TODO: This is throwing errors and not working
-            IDataProvider result = null;
 
-            result = new DbDataProvider(connectionString, providerName);
+            IDataProvider result = new DbDataProvider(connectionString, providerName);
 
             if(result == null)
                 throw new InvalidOperationException("There is no SubSonic provider for the provider you're using");

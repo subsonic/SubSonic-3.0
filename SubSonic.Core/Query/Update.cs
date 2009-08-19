@@ -98,26 +98,23 @@ namespace SubSonic.Query
         }
     }
 
-
-    public class Update : ISqlQuery {
-
-
+    public class Update : ISqlQuery
+    {
         #region .ctors
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Update&lt;T&gt;"/> class.
         /// </summary>
-        public Update(string tableName) : this(ProviderFactory.GetProvider().FindTable(tableName) ) { }
+        public Update(string tableName) : this(ProviderFactory.GetProvider().FindTable(tableName)) {}
 
-        public Update(string tableName, IDataProvider provider):this(provider.FindTable(tableName)){}
+        public Update(string tableName, IDataProvider provider) : this(provider.FindTable(tableName)) {}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Update&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="table">The table.</param>
-        /// <param name="provider">The provider.</param>
-        public Update(ITable table) {
+        public Update(ITable table)
+        {
             _query = new SqlQuery(table.Provider);
             _provider = table.Provider;
             _query.QueryCommandType = QueryType.Update;
@@ -127,17 +124,18 @@ namespace SubSonic.Query
             _query.FromTables.Add(dbTable);
         }
 
-
-
         #endregion
-        
-        
+
+
         internal readonly IDataProvider _provider;
         internal readonly SqlQuery _query;
-        internal List<Setting> SetStatements {
+
+        internal List<Setting> SetStatements
+        {
             get { return _query.SetStatements; }
             set { _query.SetStatements = value; }
         }
+
         public IList<Setting> Settings
         {
             get { return _query.SetStatements; }
@@ -148,17 +146,19 @@ namespace SubSonic.Query
             get { return _query.Constraints; }
             set { _query.Constraints = value; }
         }
+
         /// <summary>
         /// Sets the specified column name.
         /// </summary>
         /// <param name="columnName">Name of the column.</param>
         /// <returns></returns>
-        public Setting Set(string columnName) {
-           
+        public Setting Set(string columnName)
+        {
             return CreateSetting(columnName, DbType.AnsiString, false);
         }
 
-        public Setting Set(IColumn column) {
+        public Setting Set(IColumn column)
+        {
             return CreateSetting(column, false);
         }
 
@@ -167,37 +167,42 @@ namespace SubSonic.Query
         /// </summary>
         /// <param name="column">The column.</param>
         /// <returns></returns>
-        public Setting SetExpression(string column) {
+        public Setting SetExpression(string column)
+        {
             return CreateSetting(column, DbType.AnsiString, true);
         }
 
-        internal Setting CreateSetting(string columnName, DbType dbType, bool isExpression) {
+        internal Setting CreateSetting(string columnName, DbType dbType, bool isExpression)
+        {
             Setting s = new Setting
-            {
-                query = this,
-                ColumnName = columnName,
-                ParameterName = (_provider.ParameterPrefix + "up_" + columnName),
-                IsExpression = isExpression,
-                DataType = dbType
-            };
+                            {
+                                query = this,
+                                ColumnName = columnName,
+                                ParameterName = String.Format("{0}up_{1}", _provider.ParameterPrefix,columnName),
+                                IsExpression = isExpression,
+                                DataType = dbType
+                            };
             return s;
         }
 
-        internal Setting CreateSetting(IColumn column, bool isExpression) {
+        internal Setting CreateSetting(IColumn column, bool isExpression)
+        {
             Setting s = new Setting
-            {
-                query = this,
-                ColumnName = column.QualifiedName,
-                ParameterName = (_provider.ParameterPrefix + "up_" + column.Name),
-                IsExpression = isExpression,
-                DataType = column.DataType
-            };
+                            {
+                                query = this,
+                                ColumnName = column.QualifiedName,
+                                ParameterName = (_provider.ParameterPrefix + "up_" + column.Name),
+                                IsExpression = isExpression,
+                                DataType = column.DataType
+                            };
             return s;
         }
+
 
         #region Execution
 
-        public IDataReader ExecuteReader() {
+        public IDataReader ExecuteReader()
+        {
             return _provider.ExecuteReader(GetCommand());
         }
 
@@ -205,29 +210,36 @@ namespace SubSonic.Query
         /// Executes this instance.
         /// </summary>
         /// <returns></returns>
-        public int Execute() {
+        public int Execute()
+        {
             int result = _provider.ExecuteQuery(GetCommand());
 
             return result;
         }
 
-        public string BuildSqlStatement() {
+        public string BuildSqlStatement()
+        {
             ISqlGenerator generator = _query.GetGenerator();
             string sql = generator.BuildUpdateStatement();
             return sql;
         }
 
-        public QueryCommand GetCommand() {
+        public QueryCommand GetCommand()
+        {
             QueryCommand cmd = new QueryCommand(BuildSqlStatement(), _provider);
 
             //add in the commands
-            foreach (Setting s in _query.SetStatements) {
-
+            foreach(Setting s in _query.SetStatements)
+            {
                 //Fix the data type!
                 var table = _query.FromTables.FirstOrDefault();
-                if (table != null) {
-                    var col= table.Columns.SingleOrDefault(x => x.Name.Equals(s.ColumnName, StringComparison.InvariantCultureIgnoreCase));
-                    if (col != null) ;
+                if(table != null)
+                {
+                    // EK: The line below is intentional. See: http://weblogs.asp.net/fbouma/archive/2009/06/25/linq-beware-of-the-access-to-modified-closure-demon.aspx
+                    Setting setting = s;
+
+                    var col = table.Columns.SingleOrDefault(x => x.Name.Equals(setting.ColumnName, StringComparison.InvariantCultureIgnoreCase));
+                    if(col != null)
                         s.DataType = col.DataType;
                 }
                 cmd.Parameters.Add(s.ParameterName, s.Value, s.DataType);
@@ -242,11 +254,13 @@ namespace SubSonic.Query
         #endregion
 
 
-        public Update Where<T>(Expression<Func<T, bool>> expression) {
+        public Update Where<T>(Expression<Func<T, bool>> expression)
+        {
             //ExpressionParser parser = new ExpressionParser();
             IList<Constraint> c = expression.ParseConstraints();
 
-            foreach (Constraint constrain in c) {
+            foreach(Constraint constrain in c)
+            {
                 IColumn column = _provider.FindTable(typeof(T).Name).GetColumnByPropertyName(constrain.ColumnName);
                 constrain.ColumnName = column.Name;
                 constrain.ConstructionFragment = column.Name;
@@ -259,9 +273,6 @@ namespace SubSonic.Query
 
             return this;
         }
-
-
-
     }
 
     /// <summary>
@@ -269,12 +280,12 @@ namespace SubSonic.Query
     /// </summary>
     public class Update<T> : Update where T : new()
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Update&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="provider">The provider.</param>
-        public Update(IDataProvider provider) : base(provider.FindOrCreateTable<T>()) { }
+        public Update(IDataProvider provider) : base(provider.FindOrCreateTable<T>()) {}
+
 
         #region Special Constraint
 
@@ -284,9 +295,11 @@ namespace SubSonic.Query
             Constraint c = lamda.ParseConstraint();
             var tbl = _provider.FindOrCreateTable(typeof(T));
             IColumn col = tbl.GetColumnByPropertyName(c.ColumnName);
-            Constraint con = new Constraint(c.Condition, col.Name, col.QualifiedName, col.Name);
-            con.ParameterName = col.PropertyName;
-            con.ParameterValue = c.ParameterValue;
+            Constraint con = new Constraint(c.Condition, col.Name, col.QualifiedName, col.Name)
+                                 {
+                                     ParameterName = col.PropertyName,
+                                     ParameterValue = c.ParameterValue
+                                 };
 
             _query.Constraints.Add(con);
             return this;
@@ -320,10 +333,6 @@ namespace SubSonic.Query
             return this;
         }
 
-
-
         #endregion
-
-
     }
 }
