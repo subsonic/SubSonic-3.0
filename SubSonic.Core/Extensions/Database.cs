@@ -162,12 +162,15 @@ namespace SubSonic.Extensions
                 if(currentProp != null && !DBNull.Value.Equals(rdr.GetValue(i)))
                 {
                     Type valueType = rdr.GetValue(i).GetType();
-                    if(valueType == typeof(Boolean))
-                        currentProp.SetValue(item, (rdr.GetValue(i).ToString() == "1"), null);
-                    else if (currentProp.PropertyType == typeof(Guid))
+                    if (valueType == typeof(Boolean)) {
+                        string sval = rdr.GetValue(i).ToString();
+                        bool val = sval == "1" || sval == "True";
+                        currentProp.SetValue(item, (val), null);
+                    } else if (currentProp.PropertyType == typeof(Guid)) {
                         currentProp.SetValue(item, rdr.GetGuid(i), null);
-                    else
+                    } else {
                         currentProp.SetValue(item, rdr.GetValue(i).ChangeTypeTo(valueType), null);
+                    }
                 }
                 else if(currentField != null && !DBNull.Value.Equals(rdr.GetValue(i)))
                 {
