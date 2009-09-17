@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Reflection;
+using System.Linq;
 using SubSonic.DataProviders;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration.Schema;
@@ -162,6 +163,14 @@ namespace SubSonic.Extensions
         {
             string tableName = type.Name;
             tableName = tableName.MakePlural();
+
+			var typeAttributes = type.GetCustomAttributes(false);
+			var tableNameAttr = (SubSonicTableNameOverrideAttribute)typeAttributes.FirstOrDefault(x => x.ToString().Equals("SubSonic.SqlGeneration.Schema.SubSonicTableNameOverrideAttribute"));
+
+			if (tableNameAttr != null && tableNameAttr.IsSet)
+			{
+				tableName = tableNameAttr.TableName;
+			}
 
             var result = new DatabaseTable(tableName, provider);
             result.ClassName = type.Name;
