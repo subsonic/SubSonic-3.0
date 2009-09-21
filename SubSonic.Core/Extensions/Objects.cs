@@ -138,28 +138,36 @@ namespace SubSonic.Extensions
 
         private static bool CanGenerateSchemaFor(Type type)
         {
-            return type == typeof(string) ||
-                   type == typeof(Guid) ||
-                   type == typeof(Guid?) ||
-                   type == typeof(decimal) ||
-                   type == typeof(decimal?) ||
-                   type == typeof(double) ||
-                   type == typeof(double?) ||
-                   type == typeof(DateTime) ||
-                   type == typeof(DateTime?) ||
-                   type == typeof(bool) ||
-                   type == typeof(bool?) ||
-                   type == typeof(Int16) ||
-                   type == typeof(Int16?) ||
-                   type == typeof(Int32) ||
-                   type == typeof(Int32?) ||
-                   type == typeof(Int64) ||
-                   type == typeof(Int64?) ||
-                   type == typeof(float?) ||
-                   type == typeof(float);
+        	return type == typeof (string) ||
+        	       type == typeof (Guid) ||
+        	       type == typeof (Guid?) ||
+        	       type == typeof (decimal) ||
+        	       type == typeof (decimal?) ||
+        	       type == typeof (double) ||
+        	       type == typeof (double?) ||
+        	       type == typeof (DateTime) ||
+        	       type == typeof (DateTime?) ||
+        	       type == typeof (bool) ||
+        	       type == typeof (bool?) ||
+        	       type == typeof (Int16) ||
+        	       type == typeof (Int16?) ||
+        	       type == typeof (Int32) ||
+        	       type == typeof (Int32?) ||
+        	       type == typeof (Int64) ||
+        	       type == typeof (Int64?) ||
+        	       type == typeof (float?) ||
+        	       type == typeof (float) ||
+        	       type.IsEnum || IsNullableEnum(type);
         }
 
-        public static ITable ToSchemaTable(this Type type, IDataProvider provider)
+    	internal static bool IsNullableEnum(Type type)
+    	{
+    		var enumType = Nullable.GetUnderlyingType(type);
+
+			return enumType != null && enumType.IsEnum;
+    	}
+
+    	public static ITable ToSchemaTable(this Type type, IDataProvider provider)
         {
             string tableName = type.Name;
             tableName = tableName.MakePlural();
@@ -189,16 +197,9 @@ namespace SubSonic.Extensions
                 if(CanGenerateSchemaFor(prop.PropertyType) & !isIgnored)
                 {
                     var column = new DatabaseColumn(prop.Name, result);
-                    bool isNullable = prop.PropertyType.Name.Contains("Nullable");
+					bool isNullable = prop.PropertyType.Name.Contains("Nullable");
 
-                    //if this is a nullable type, we need to get at the underlying type
-                    if(isNullable)
-                    {
-                        var nullType = Nullable.GetUnderlyingType(prop.PropertyType);
-                        column.DataType = Database.GetDbType(nullType);
-                    }
-                    else
-                        column.DataType = Database.GetDbType(prop.PropertyType);
+                	column.DataType = IdentifyColumnDataType(prop.PropertyType, isNullable);
 
                     if(column.DataType == DbType.Decimal || column.DataType == DbType.Double)
                     {
@@ -295,5 +296,24 @@ namespace SubSonic.Extensions
                 throw new InvalidOperationException("Can't decide which property to consider the Key - you can create one called 'ID' or mark one with SubSonicPrimaryKey attribute");
             return result;
         }
+
+		private static DbType IdentifyColumnDataType(Type type, bool isNullable)
+    	{
+			//if this is a nullable type, we need to get at the underlying type
+			if (isNullable)
+			{
+				var nullType = Nullable.GetUnderlyingType(type);
+
+				return nullType.IsEnum ? GetEnumType(nullType) : Database.GetDbType(nullType);
+			}
+
+			return type.IsEnum ? GetEnumType(type) : Database.GetDbType(type);
+    	}
+
+    	private static DbType GetEnumType(Type type)
+    	{
+			var enumType = Enum.GetUnderlyingType(type);
+    		return Database.GetDbType(enumType);
+    	}
     }
 }

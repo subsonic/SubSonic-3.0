@@ -110,8 +110,8 @@ namespace SubSonic.Extensions
                 result = DbType.Guid;
             else if(type == typeof(bool))
                 result = DbType.Boolean;
-            else if(type == typeof(byte[]))
-                result = DbType.Byte;
+			else if (type == typeof(byte[]))
+				result = DbType.Byte;
             else
                 result = DbType.String;
 
@@ -168,7 +168,14 @@ namespace SubSonic.Extensions
                         currentProp.SetValue(item, value == "1" || value == "True", null);
                     }
                     else if(currentProp.PropertyType == typeof(Guid))
-                        currentProp.SetValue(item, rdr.GetGuid(i), null);
+                    {
+						currentProp.SetValue(item, rdr.GetGuid(i), null);
+					}
+					else if (Objects.IsNullableEnum(currentProp.PropertyType))
+					{
+						var nullEnumObjectValue = Enum.ToObject(Nullable.GetUnderlyingType(currentProp.PropertyType), rdr.GetValue(i));
+						currentProp.SetValue(item, nullEnumObjectValue, null);
+					}
                     else
                         currentProp.SetValue(item, rdr.GetValue(i).ChangeTypeTo(valueType), null);
                 }
@@ -181,7 +188,14 @@ namespace SubSonic.Extensions
                         currentField.SetValue(item, value == "1" || value == "True");
                     }
                     else if(currentField.FieldType == typeof(Guid))
-                        currentField.SetValue(item, rdr.GetGuid(i));
+                    {
+						currentField.SetValue(item, rdr.GetGuid(i));
+					}
+					else if (Objects.IsNullableEnum(currentField.FieldType))
+					{
+						var nullEnumObjectValue = Enum.ToObject(Nullable.GetUnderlyingType(currentField.FieldType), rdr.GetValue(i));
+						currentField.SetValue(item, nullEnumObjectValue);
+					}
                     else
                         currentField.SetValue(item, rdr.GetValue(i).ChangeTypeTo(valueType));
                 }
@@ -196,7 +210,7 @@ namespace SubSonic.Extensions
 
         }
 
-        /// <summary>
+    	/// <summary>
         /// Loads a single primitive value type
         /// </summary>
         /// <typeparam name="T"></typeparam>
