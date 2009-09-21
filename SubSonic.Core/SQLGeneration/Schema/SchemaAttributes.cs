@@ -15,6 +15,24 @@ using System;
 
 namespace SubSonic.SqlGeneration.Schema
 {
+	[AttributeUsage(AttributeTargets.Class)]
+	public class SubSonicTableNameOverrideAttribute : Attribute
+	{
+		public SubSonicTableNameOverrideAttribute(string tableName)
+        {
+			TableName = tableName;
+        }
+
+		public string TableName { get; set; }
+		public bool IsSet
+		{
+			get
+			{
+				return !string.IsNullOrEmpty(TableName);
+			}
+		}
+	}
+
     [AttributeUsage(AttributeTargets.Property)]
     public class SubSonicNullStringAttribute : Attribute {}
 

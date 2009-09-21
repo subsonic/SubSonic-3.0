@@ -110,8 +110,13 @@ namespace SubSonic.Extensions
                 result = DbType.Guid;
             else if(type == typeof(bool))
                 result = DbType.Boolean;
+<<<<<<< HEAD
             else if(type == typeof(byte[]))
                 result = DbType.Binary;
+=======
+			else if (type == typeof(byte[]))
+				result = DbType.Byte;
+>>>>>>> 34448e13b14037963f939b93c46efa15f9be77c6
             else
                 result = DbType.String;
 
