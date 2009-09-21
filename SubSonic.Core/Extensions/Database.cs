@@ -111,7 +111,7 @@ namespace SubSonic.Extensions
             else if(type == typeof(bool))
                 result = DbType.Boolean;
             else if(type == typeof(byte[]))
-                result = DbType.Byte;
+                result = DbType.Binary;
             else
                 result = DbType.String;
 
