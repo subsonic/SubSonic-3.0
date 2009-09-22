@@ -193,21 +193,28 @@ namespace SubSonic.Repository
                     query.CommandSql += "; SELECT SCOPE_IDENTITY() as new_id";
                 }
 
-                var rdr = provider.ExecuteReader(query);
-                if (rdr.Read())
-                    result = rdr[0];
-                // repopulate primary key column with newly generated ID
-                if (result != null && result != DBNull.Value) {
+                /** add "using" keywords to dispose IDataReader rdr object after its get out of the scope **/
+                using (var rdr = provider.ExecuteReader(query))
+                {
+                    if (rdr.Read())
+                        result = rdr[0];
+                    // repopulate primary key column with newly generated ID
+                    if (result != null && result != DBNull.Value)
+                    {
 
-                    try {
-                        var tbl = provider.FindOrCreateTable(typeof(T));
-                        var prop = item.GetType().GetProperty(tbl.PrimaryKey.Name);
-                        var settable = result.ChangeTypeTo(prop.PropertyType);
-                        prop.SetValue(item, settable, null);
+                        try
+                        {
+                            var tbl = provider.FindOrCreateTable(typeof(T));
+                            var prop = item.GetType().GetProperty(tbl.PrimaryKey.Name);
+                            var settable = result.ChangeTypeTo(prop.PropertyType);
+                            prop.SetValue(item, settable, null);
 
-                    } catch (Exception x) {
-                        //swallow it - I don't like this per se but this is a convenience and we
-                        //don't want to throw the whole thing just because we can't auto-set the value
+                        }
+                        catch (Exception x)
+                        {
+                            //swallow it - I don't like this per se but this is a convenience and we
+                            //don't want to throw the whole thing just because we can't auto-set the value
+                        }
                     }
                 }
 

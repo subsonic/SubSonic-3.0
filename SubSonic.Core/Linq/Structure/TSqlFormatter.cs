@@ -585,6 +585,16 @@ namespace SubSonic.Linq.Structure
                     sb.Append(")");
                     return m;
                 }
+                else if (m.Method.IsStatic && m.Method.DeclaringType == typeof(string))
+                {
+                    //Note: Not sure if this is best solution for fixing side issue with Issue #66
+                    sb.Append("(");
+                    this.Visit(m.Arguments[0]);
+                    sb.Append(" = ");
+                    this.Visit(m.Arguments[1]);
+                    sb.Append(")");
+                    return m;
+                }
             }
 
             throw new NotSupportedException(string.Format("The method '{0}' is not supported", m.Method.Name));
@@ -660,36 +670,6 @@ namespace SubSonic.Linq.Structure
                     throw new NotSupportedException(string.Format("The unary operator '{0}' is not supported", u.NodeType));
             }
             return u;
-        }
-
-        protected static BinaryExpression ConvertVbCompareString(BinaryExpression b)
-        {
-            if (b.Left.NodeType == ExpressionType.Call)
-            {
-                var compareStringCall = (MethodCallExpression)b.Left;
-
-                if ((compareStringCall.Method.DeclaringType.FullName == "Microsoft.VisualBasic.CompilerServices.Operators")
-                    && (compareStringCall.Method.Name == "CompareString"))
-                {
-                    var arg1 = compareStringCall.Arguments[0];
-                    var arg2 = compareStringCall.Arguments[1];
-
-                    switch (b.NodeType)
-                    {
-                        case ExpressionType.LessThan:
-                            return Expression.LessThan(arg1, arg2);
-                        case ExpressionType.LessThanOrEqual:
-                            return Expression.LessThanOrEqual(arg1, arg2);
-                        case ExpressionType.GreaterThan:
-                            return Expression.GreaterThan(arg1, arg2);
-                        case ExpressionType.GreaterThanOrEqual:
-                            return Expression.GreaterThanOrEqual(arg1, arg2);
-                        default:
-                            return Expression.Equal(arg1, arg2);
-                    }
-                }
-            }
-            return b;
         }
 
         protected override Expression VisitBinary(BinaryExpression b)

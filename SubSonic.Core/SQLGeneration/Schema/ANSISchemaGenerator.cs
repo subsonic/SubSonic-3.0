@@ -217,7 +217,7 @@ namespace SubSonic.SqlGeneration.Schema
             else if(column.IsString)
                 column.DefaultSetting = "";
             else if(column.DataType == DbType.Boolean)
-                column.DefaultSetting = false;
+                column.DefaultSetting = 0;
         }
     }
 }

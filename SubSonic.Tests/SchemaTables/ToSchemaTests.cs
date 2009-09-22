@@ -15,6 +15,7 @@ using System;
 using System.Data;
 using SubSonic.DataProviders;
 using SubSonic.Extensions;
+using SubSonic.SqlGeneration.Schema;
 using SubSonic.Tests.Migrations;
 using Xunit;
 
@@ -36,6 +37,25 @@ namespace SubSonic.Tests.SchemaTables
         public int ID { get; set; }
         public Double SomeDouble { get; set; }
     }
+
+	[SubSonicTableNameOverride("TestTableName")]
+	public class TestTypeWithTableNameOverride
+	{
+		public int ID { get; set; }
+	}
+
+	public enum TestIntBasedEnum
+	{
+		AnIntegerValue, AnotherIntegerValue
+	}
+
+	public class TestTypeWithEnum
+	{
+		public int ID { get; set; }
+		public TestIntBasedEnum SomeIntEnum { get; set; }
+		public TestIntBasedEnum? SomeNullableIntEnum { get; set; }
+	}
+
     public class ToSchemaTests
     {
         private readonly IDataProvider _provider;
@@ -164,8 +184,41 @@ namespace SubSonic.Tests.SchemaTables
             string sql = col.AlterSql;
             Assert.False(sql.Contains("float(10,2)"));
             Assert.True(sql.Contains("ALTER COLUMN SomeDouble float"));
+        }
 
+		[Fact]
+		public void ToSchemaTable_Should_Map_Enum_To_Underlying_DataType()
+		{
+			var table = typeof(TestTypeWithEnum).ToSchemaTable(_provider);
+			var col = table.GetColumnByPropertyName("SomeIntEnum");
             
+			Assert.Equal(DbType.Int32, col.DataType);
+		}
+
+		[Fact]
+		public void ToSchemaTable_Should_Map_Nullable_Enum()
+		{
+			var table = typeof(TestTypeWithEnum).ToSchemaTable(_provider);
+			var col = table.GetColumnByPropertyName("SomeNullableIntEnum");
+
+			Assert.True(col.IsNullable);
+		}
+
+		[Fact]
+		public void ToSchemaTable_Should_Map_Nullable_Enum_To_Underlying_DataType()
+		{
+			var table = typeof(TestTypeWithEnum).ToSchemaTable(_provider);
+			var col = table.GetColumnByPropertyName("SomeNullableIntEnum");
+
+			Assert.True(col.IsNullable);
+			Assert.Equal(DbType.Int32, col.DataType);
+		}
+
+		[Fact]
+		public void ToSchemaTable_Should_Set_TableName_To_TestTableName_When_TableNameOverrideAttribute_Used()
+		{
+			var table = typeof(TestTypeWithTableNameOverride).ToSchemaTable(_provider);
+			Assert.Equal(table.Name, "TestTableName");
         }
     }
 }

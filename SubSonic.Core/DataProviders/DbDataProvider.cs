@@ -28,7 +28,7 @@ namespace SubSonic.DataProviders
     public class DbClientTypeName
     {
         public const string MsSql = "System.Data.SqlClient";
-        //public const string MsSqlCe = "System.Data.SqlServerCe.3.5C:\Users\funky81\Documents\Visual Studio 2008\Projects\ISDS\ISDS\Views\Home\";
+        public const string MsSqlCe = "System.Data.SqlServerCe.3.5";
         public const string MySql = "MySql.Data.MySqlClient";
         //public const string OleDb = "System.Data.OleDb";
         public const string Oracle = "System.Data.OracleClient";
@@ -329,9 +329,8 @@ namespace SubSonic.DataProviders
             //}
 
             //var result = Schema.Tables.FirstOrDefault(x => x.Name.ToLower() == tableName.ToLower());
-            var result = Schema.Tables.FirstOrDefault(x => x.Name.Equals(tableName, StringComparison.InvariantCultureIgnoreCase));
-            if(result == null)
-                result = Schema.Tables.FirstOrDefault(x => x.ClassName.Equals(tableName, StringComparison.InvariantCultureIgnoreCase));
+            var result = Schema.Tables.FirstOrDefault(x => x.Name.Equals(tableName, StringComparison.InvariantCultureIgnoreCase)) ??
+                         Schema.Tables.FirstOrDefault(x => x.ClassName.Equals(tableName, StringComparison.InvariantCultureIgnoreCase));
 
             return result;
         }

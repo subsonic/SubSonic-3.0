@@ -147,7 +147,7 @@ namespace SubSonic.Query
             return _provider.ExecuteReader(_command);
         }
 
-        private static void LoadCommandParams(QueryCommand cmd, object[] values)
+        void LoadCommandParams(QueryCommand cmd, object[] values)
         {
             //load up the params
             List<string> paramList = ParseParameters(cmd.CommandSql);
@@ -161,7 +161,8 @@ namespace SubSonic.Query
 
             for(int i = 0; i < paramList.Count; i++)
             {
-                cmd.Parameters.Add(paramList[i], values[i]);
+                var dbType = Database.GetDbType(values[i].GetType());
+                cmd.Parameters.Add(paramList[i], values[i], dbType);
             }
         }
 

@@ -160,13 +160,14 @@ namespace SubSonic.SqlGeneration.Schema
             {
 
                 var defaultType = column.DefaultSetting.GetType();
+                var defaultValue = column.DefaultSetting;
                 if (defaultType == typeof(string) || defaultType == typeof(DateTime)) {
                     if(!column.DefaultSetting.ToString().EndsWith("()"))
-                        column.DefaultSetting = string.Format("'{0}'", column.DefaultSetting);
+                        defaultValue = string.Format("'{0}'", defaultValue);
                 }
                 
                 sb.Append(" CONSTRAINT DF_" + column.Table.Name + "_" + column.Name + " DEFAULT (" +
-                          column.DefaultSetting + ")");
+                          defaultValue + ")");
             }
 
             return sb.ToString();
