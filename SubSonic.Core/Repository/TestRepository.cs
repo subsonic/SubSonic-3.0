@@ -60,7 +60,7 @@ namespace SubSonic.Repository
 
         public IQueryable<T> Find(Expression<Func<T, bool>> expression)
         {
-            return _items.AsQueryable();
+            return GetAll().Where(expression);
         }
 
         public IQueryable<T> GetAll()
