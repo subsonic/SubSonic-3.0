@@ -10,6 +10,7 @@ namespace SubSonic.Schema
         int MaxLength { get; set; }
         bool IsNullable { get; set; }
         bool IsReadOnly { get; set; }
+        bool IsComputed { get; set; }
         bool AutoIncrement { get; set; }
         int NumberScale { get; set; }
         int NumericPrecision { get; set; }

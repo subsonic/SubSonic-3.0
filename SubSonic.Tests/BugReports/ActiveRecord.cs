@@ -13,6 +13,23 @@ namespace SubSonic.Tests.BugReports {
         /// Issue 32 - ActiveRecord - IsLoaded not set true when query is executed
         /// http://github.com/subsonic/SubSonic-3.0/issues#issue/32
         /// </summary>
+
+        [Fact]
+        public void Github_Issue95_Booleans_Always_Set_True() {
+            var p = Product.SingleOrDefault(x => x.ProductID == 1);
+            p.Discontinued = true;
+            p.Save();
+
+            p = Product.SingleOrDefault(x => x.ProductID == 1);
+            Assert.Equal(p.Discontinued, true);
+
+            p.Discontinued = false;
+            p.Save();
+            
+            p = Product.SingleOrDefault(x => x.ProductID == 1);
+            Assert.Equal(p.Discontinued, false);
+
+        }
         [Fact]
         public void UsingLinq_With_ActiveRecord_Product_Should_Set_IsLoaded_True() {
             var list = from p in Product.All()
