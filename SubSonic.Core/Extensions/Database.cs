@@ -363,11 +363,7 @@ namespace SubSonic.Extensions
                     IColumn col = tbl.GetColumn(key);
                     if(col != null)
                     {
-<<<<<<< HEAD
                         if(!col.IsPrimaryKey && !col.IsReadOnly)
-=======
-                        if(!col.IsPrimaryKey && !col.IsComputed)
->>>>>>> e8141cffb4c5a6c22269f402c7e08dcfc8ff6c23
                             query.Set(col).EqualTo(settings[key]);
                     }
                 }
@@ -403,11 +399,7 @@ namespace SubSonic.Extensions
                     IColumn col = tbl.GetColumn(key);
                     if(col != null)
                     {
-<<<<<<< HEAD
                         if(!col.AutoIncrement && !col.IsReadOnly)
-=======
-                        if(!col.AutoIncrement && !col.IsComputed)
->>>>>>> e8141cffb4c5a6c22269f402c7e08dcfc8ff6c23
                             query.Value(col.QualifiedName, hashed[key], col.DataType);
                     }
                 }
