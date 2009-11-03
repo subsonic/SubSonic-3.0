@@ -60,7 +60,7 @@ namespace SubSonic.Repository
 
         public IQueryable<T> Find(Expression<Func<T, bool>> expression)
         {
-            return _items.AsQueryable();
+            return GetAll().Where(expression);
         }
 
         public IQueryable<T> GetAll()
@@ -129,9 +129,9 @@ namespace SubSonic.Repository
 
         public int Update(T item)
         {
-            var update = _items.SingleOrDefault(x => x.KeyValue() == item.KeyValue());
-            _items.Remove(item);
-            _items.Add(update);
+            var index = _items.FindIndex(x => x.KeyValue().ToString() == item.KeyValue().ToString());
+            _items.RemoveAt(index);
+            _items.Add(item);
             return 0;
         }
 
