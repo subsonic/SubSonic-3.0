@@ -176,8 +176,19 @@ namespace SubSonic.Extensions
 						var nullEnumObjectValue = Enum.ToObject(Nullable.GetUnderlyingType(currentProp.PropertyType), rdr.GetValue(i));
 						currentProp.SetValue(item, nullEnumObjectValue, null);
 					}
-                    else
-                        currentProp.SetValue(item, rdr.GetValue(i).ChangeTypeTo(valueType), null);
+                    else{
+
+					    var val = rdr.GetValue(i);
+					    var valType = val.GetType();
+                        //try to assign it
+                        if (val.GetType().IsAssignableFrom(valueType)){
+                            currentProp.SetValue(item, val, null);
+                        } else {
+                            currentProp.SetValue(item, rdr.GetValue(i).ChangeTypeTo(valueType), null);
+                            
+                        }
+
+					}
                 }
                 else if(currentField != null && !DBNull.Value.Equals(rdr.GetValue(i)))
                 {

@@ -306,9 +306,9 @@ namespace SubSonic.Linq.Translation.MySql
                 if (m.Object.Type == typeof(string)) {
                     this.Visit(m.Object);  // no op
                 } else {
-                    sb.Append("CONVERT(VARCHAR(MAX), ");
+                    sb.Append("CONVERT(, ");
                     this.Visit(m.Object);
-                    sb.Append(")");
+                    sb.Append(", VARCHAR(200))");
                 }
                 return m;
             } else if (m.Method.Name == "Equals") {
