@@ -78,7 +78,7 @@ namespace SubSonic.Schema
 
         public bool IsNextPage
         {
-            get { return (PageIndex * PageSize) <= TotalCount; }
+            get { return ((PageIndex + 1) * PageSize) <= TotalCount; }
         }
 
         #endregion
