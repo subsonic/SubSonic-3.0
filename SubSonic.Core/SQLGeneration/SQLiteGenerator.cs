@@ -66,7 +66,7 @@ namespace SubSonic.SqlGeneration
 
             //cast it
             Insert i = insert;
-            sb.Append(SqlFragment.INSERT_INTO);
+            sb.Append(this.sqlFragment.INSERT_INTO);
             sb.Append(i.Table.QualifiedName);
             sb.Append("(");
             sb.Append(i.SelectColumns);
@@ -114,7 +114,7 @@ namespace SubSonic.SqlGeneration
 
             //cast it
 
-            sb.Append(SqlFragment.UPDATE);
+            sb.Append(this.sqlFragment.UPDATE);
             sb.Append(query.FromTables[0].QualifiedName);
 
             for(int i = 0; i < query.SetStatements.Count; i++)
@@ -122,7 +122,7 @@ namespace SubSonic.SqlGeneration
                 if(i == 0)
                 {
                     sb.AppendLine(" ");
-                    sb.Append(SqlFragment.SET);
+                    sb.Append(this.sqlFragment.SET);
                 }
                 else
                     sb.AppendLine(", ");

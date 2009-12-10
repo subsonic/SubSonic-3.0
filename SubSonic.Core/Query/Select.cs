@@ -24,6 +24,8 @@ namespace SubSonic.Query
     /// </summary>
     public class Select : SqlQuery
     {
+        private SqlFragment sqlFragment;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Select"/> class.
         /// </summary>
@@ -31,9 +33,10 @@ namespace SubSonic.Query
         /// <param name="columns">The columns.</param>
         public Select(IDataProvider provider, params string[] columns)
         {
+            this.sqlFragment = new SqlFragment(_provider);
             _provider = provider;
             SelectColumnList = columns;
-            SQLCommand = SqlFragment.SELECT;
+            SQLCommand = this.sqlFragment.SELECT;
         }
 
         /// <summary>
@@ -41,14 +44,16 @@ namespace SubSonic.Query
         /// </summary>
         public Select()
         {
-            SQLCommand = SqlFragment.SELECT;
             _provider = ProviderFactory.GetProvider();
+            this.sqlFragment = new SqlFragment(_provider);
+            SQLCommand = this.sqlFragment.SELECT;
         }
 
         public Select(IDataProvider provider)
         {
             _provider = provider;
-            SQLCommand = SqlFragment.SELECT;
+            this.sqlFragment = new SqlFragment(_provider);
+            SQLCommand = this.sqlFragment.SELECT;
         }
 
         /// <summary>
@@ -58,7 +63,8 @@ namespace SubSonic.Query
         public Select(params Aggregate[] aggregates)
         {
             _provider = ProviderFactory.GetProvider();
-            SQLCommand = SqlFragment.SELECT;
+            this.sqlFragment = new SqlFragment(_provider);
+            SQLCommand = this.sqlFragment.SELECT;
             foreach(Aggregate agg in aggregates)
                 Aggregates.Add(agg);
         }
@@ -70,8 +76,9 @@ namespace SubSonic.Query
         /// <param name="aggregates">The aggregates.</param>
         public Select(IDataProvider provider, params Aggregate[] aggregates)
         {
-            SQLCommand = SqlFragment.SELECT;
             _provider = provider;
+            this.sqlFragment = new SqlFragment(_provider);
+            SQLCommand = this.sqlFragment.SELECT;
             foreach(Aggregate agg in aggregates)
                 Aggregates.Add(agg);
         }
@@ -85,7 +92,8 @@ namespace SubSonic.Query
             if(columns.Length > 0)
             {
                 _provider = columns[0].Table.Provider;
-                SQLCommand = SqlFragment.SELECT;
+                this.sqlFragment = new SqlFragment(_provider);
+                SQLCommand = this.sqlFragment.SELECT;
                 
                 
                 SelectColumnList = new string[columns.Length];
@@ -109,7 +117,8 @@ namespace SubSonic.Query
         public Select(params string[] columns)
         {
             _provider = ProviderFactory.GetProvider();
-            SQLCommand = SqlFragment.SELECT;
+            this.sqlFragment = new SqlFragment(_provider);
+            SQLCommand = this.sqlFragment.SELECT;
             if(columns.Length == 1 && columns[0].Contains(","))
             {
                 //user entered a single string column list: "col1, col2, col3"
@@ -144,7 +153,9 @@ namespace SubSonic.Query
         /// <returns></returns>
         public Select Expression(string sqlExpression)
         {
-            SQLCommand = SqlFragment.SELECT;
+            _provider = ProviderFactory.GetProvider();
+            this.sqlFragment = new SqlFragment(_provider);
+            SQLCommand = this.sqlFragment.SELECT;
             Expressions.Add(sqlExpression);
             return this;
         }
@@ -156,7 +167,7 @@ namespace SubSonic.Query
         /// <returns></returns>
         public Select Top(string top)
         {
-            SQLCommand = SqlFragment.SELECT;
+            SQLCommand = this.sqlFragment.SELECT;
             if(!top.ToLower().Trim().Contains("top"))
                 top = String.Concat(" TOP ", top);
             TopSpec = top;

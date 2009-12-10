@@ -143,31 +143,31 @@ namespace SubSonic.Query
         /// </summary>
         /// <param name="j">The j.</param>
         /// <returns></returns>
-        public static string GetJoinTypeValue(JoinType j)
+        public static string GetJoinTypeValue(ISqlGenerator generator, JoinType j)
         {
-            string result = SqlFragment.INNER_JOIN;
+            string result = generator.sqlFragment.INNER_JOIN;
             switch(j)
             {
                 case JoinType.Outer:
-                    result = SqlFragment.OUTER_JOIN;
+                    result = generator.sqlFragment.OUTER_JOIN;
                     break;
                 case JoinType.LeftInner:
-                    result = SqlFragment.LEFT_INNER_JOIN;
+                    result = generator.sqlFragment.LEFT_INNER_JOIN;
                     break;
                 case JoinType.LeftOuter:
-                    result = SqlFragment.LEFT_OUTER_JOIN;
+                    result = generator.sqlFragment.LEFT_OUTER_JOIN;
                     break;
                 case JoinType.RightInner:
-                    result = SqlFragment.RIGHT_INNER_JOIN;
+                    result = generator.sqlFragment.RIGHT_INNER_JOIN;
                     break;
                 case JoinType.RightOuter:
-                    result = SqlFragment.RIGHT_OUTER_JOIN;
+                    result = generator.sqlFragment.RIGHT_OUTER_JOIN;
                     break;
                 case JoinType.Cross:
-                    result = SqlFragment.CROSS_JOIN;
+                    result = generator.sqlFragment.CROSS_JOIN;
                     break;
                 case JoinType.NotEqual:
-                    result = SqlFragment.UNEQUAL_JOIN;
+                    result = generator.sqlFragment.UNEQUAL_JOIN;
                     break;
             }
             return result;

@@ -20,7 +20,7 @@ using System.Text;
 using SubSonic.Extensions;
 using SubSonic.Query;
 using SubSonic.Schema;
-using Constraint=SubSonic.Query.Constraint;
+using Constraint = SubSonic.Query.Constraint;
 
 namespace SubSonic.SqlGeneration
 {
@@ -30,43 +30,54 @@ namespace SubSonic.SqlGeneration
     /// </summary>
     public class SqlFragment
     {
-        public const string AND = " AND ";
-        public const string AS = " AS ";
-        public const string ASC = " ASC";
-        public const string BETWEEN = " BETWEEN ";
-        public const string CROSS_JOIN = " CROSS JOIN ";
-        public const string DELETE_FROM = "DELETE FROM ";
-        public const string DESC = " DESC";
-        public const string DISTINCT = "DISTINCT ";
-        public const string EQUAL_TO = " = ";
-        public const string FROM = " FROM ";
-        public const string GROUP_BY = " GROUP BY ";
-        public const string HAVING = " HAVING ";
-        public const string IN = " IN ";
+        public string AND = " AND ";
+        public string AS = " AS ";
+        public string ASC = " ASC";
+        public string BETWEEN = " BETWEEN ";
+        public string CROSS_JOIN = " CROSS JOIN ";
+        public string DELETE_FROM = "DELETE FROM ";
+        public string DESC = " DESC";
+        public string DISTINCT = "DISTINCT ";
+        public string EQUAL_TO = " = ";
+        public string FROM = " FROM ";
+        public string GROUP_BY = " GROUP BY ";
+        public string HAVING = " HAVING ";
+        public string IN = " IN ";
 
-        public const string INNER_JOIN = " INNER JOIN ";
+        public string INNER_JOIN = " INNER JOIN ";
 
-        public const string INSERT_INTO = "INSERT INTO ";
-        public const string JOIN_PREFIX = "J";
-        public const string LEFT_INNER_JOIN = " LEFT INNER JOIN ";
-        public const string LEFT_JOIN = " LEFT JOIN ";
-        public const string LEFT_OUTER_JOIN = " LEFT OUTER JOIN ";
-        public const string NOT_EQUAL_TO = " <> ";
-        public const string NOT_IN = " NOT IN ";
-        public const string ON = " ON ";
-        public const string OR = " OR ";
-        public const string ORDER_BY = " ORDER BY ";
-        public const string OUTER_JOIN = " OUTER JOIN ";
-        public const string RIGHT_INNER_JOIN = " RIGHT INNER JOIN ";
-        public const string RIGHT_JOIN = " RIGHT JOIN ";
-        public const string RIGHT_OUTER_JOIN = " RIGHT OUTER JOIN ";
-        public const string SELECT = "SELECT ";
-        public const string SET = " SET ";
-        public const string SPACE = " ";
-        public const string TOP = "TOP ";
-        public const string UNEQUAL_JOIN = " JOIN ";
-        public const string UPDATE = "UPDATE ";
-        public const string WHERE = " WHERE ";
+        public string INSERT_INTO = "INSERT INTO ";
+        public string JOIN_PREFIX = "J";
+        public string LEFT_INNER_JOIN = " LEFT INNER JOIN ";
+        public string LEFT_JOIN = " LEFT JOIN ";
+        public string LEFT_OUTER_JOIN = " LEFT OUTER JOIN ";
+        public string NOT_EQUAL_TO = " <> ";
+        public string NOT_IN = " NOT IN ";
+        public string ON = " ON ";
+        public string OR = " OR ";
+        public string ORDER_BY = " ORDER BY ";
+        public string OUTER_JOIN = " OUTER JOIN ";
+        public string RIGHT_INNER_JOIN = " RIGHT INNER JOIN ";
+        public string RIGHT_JOIN = " RIGHT JOIN ";
+        public string RIGHT_OUTER_JOIN = " RIGHT OUTER JOIN ";
+        public string SELECT = "SELECT ";
+        public string SET = " SET ";
+        public string SPACE = " ";
+        public string TOP = "TOP ";
+        public string UNEQUAL_JOIN = " JOIN ";
+        public string UPDATE = "UPDATE ";
+        public string WHERE = " WHERE ";
+
+        public SqlFragment(DataProviders.IDataProvider provider)
+        {
+            switch (provider.Client)
+            {
+                case SubSonic.DataProviders.DataClient.SqlClient:
+                    this.LEFT_INNER_JOIN = this.LEFT_JOIN;  //MSSQL Doesn't like standard left join syntax.
+                    this.RIGHT_INNER_JOIN = this.RIGHT_JOIN;
+                    break;
+            }
+        }
     }
 
     /// <summary>
@@ -105,6 +116,7 @@ namespace SubSonic.SqlGeneration
 
         internal Insert insert;
         internal SqlQuery query;
+        public SqlFragment sqlFragment { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ANSISqlGenerator"/> class.
@@ -112,6 +124,7 @@ namespace SubSonic.SqlGeneration
         /// <param name="q">The q.</param>
         public ANSISqlGenerator(SqlQuery q)
         {
+            this.sqlFragment = new SqlFragment(q._provider);
             query = q;
         }
 
@@ -135,10 +148,10 @@ namespace SubSonic.SqlGeneration
         public IColumn FindColumn(string columnName)
         {
             IColumn result = null;
-            foreach(ITable t in query.FromTables)
+            foreach (ITable t in query.FromTables)
             {
                 result = t.GetColumn(columnName);
-                if(result != null)
+                if (result != null)
                     return result;
             }
             return result;
@@ -152,20 +165,20 @@ namespace SubSonic.SqlGeneration
         {
             string result = String.Empty;
 
-            if(query.Aggregates.Count > 0)
+            if (query.Aggregates.Count > 0)
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine();
 
                 bool isFirst = true;
-                foreach(SubSonic.Query.Aggregate agg in query.Aggregates)
+                foreach (SubSonic.Query.Aggregate agg in query.Aggregates)
                 {
-                    if(agg.AggregateType == AggregateFunction.GroupBy)
+                    if (agg.AggregateType == AggregateFunction.GroupBy)
                     {
-                        if(!isFirst)
+                        if (!isFirst)
                             sb.Append(", ");
                         else
-                            sb.Append(SqlFragment.GROUP_BY);
+                            sb.Append(this.sqlFragment.GROUP_BY);
 
                         sb.Append(string.Format("[{0}]", agg.ColumnName));
                         isFirst = false;
@@ -187,7 +200,7 @@ namespace SubSonic.SqlGeneration
             //start with the SqlCommand - SELECT, UPDATE, INSERT, DELETE
             sb.Append(query.SQLCommand);
             string columnList;
-            if(query.Aggregates.Count > 0)
+            if (query.Aggregates.Count > 0)
                 columnList = BuildAggregateCommands();
             else
             {
@@ -195,7 +208,7 @@ namespace SubSonic.SqlGeneration
                 sb.Append(query.TopSpec);
 
                 //decide the columns
-                if(query.SelectColumnList.Length == 0)
+                if (query.SelectColumnList.Length == 0)
                     columnList = GenerateSelectColumnList();
                 else
                 {
@@ -205,15 +218,15 @@ namespace SubSonic.SqlGeneration
                     //need to get the schema
                     //so for each column, loop the FromList until we find the column
                     bool isFirst = true;
-                    foreach(string s in query.SelectColumnList)
+                    foreach (string s in query.SelectColumnList)
                     {
-                        if(!isFirst)
+                        if (!isFirst)
                             sbCols.Append(", ");
                         isFirst = false;
                         //find the column
                         IColumn c = FindColumn(s);
 
-                        if(c != null)
+                        if (c != null)
                             sbCols.Append(c.QualifiedName);
                         else
                         {
@@ -227,10 +240,10 @@ namespace SubSonic.SqlGeneration
             }
             sb.Append(columnList);
 
-            if(query.Expressions.Count > 0)
+            if (query.Expressions.Count > 0)
             {
                 //add in expression                
-                foreach(string s in query.Expressions)
+                foreach (string s in query.Expressions)
                 {
                     sb.Append(", ");
                     sb.Append(s);
@@ -248,20 +261,20 @@ namespace SubSonic.SqlGeneration
         {
             StringBuilder sb = new StringBuilder();
 
-            if(query.Joins.Count > 0)
+            if (query.Joins.Count > 0)
             {
                 sb.AppendLine();
                 //build up the joins
-                foreach(Join j in query.Joins)
+                foreach (Join j in query.Joins)
                 {
-                    string joinType = Join.GetJoinTypeValue(j.Type);
+                    string joinType = Join.GetJoinTypeValue(this, j.Type);
                     string equality = " = ";
-                    if(j.Type == Join.JoinType.NotEqual)
+                    if (j.Type == Join.JoinType.NotEqual)
                         equality = " <> ";
 
                     sb.Append(joinType);
                     sb.Append(j.FromColumn.Table.QualifiedName);
-                    if(j.Type != Join.JoinType.Cross)
+                    if (j.Type != Join.JoinType.Cross)
                     {
                         sb.Append(" ON ");
                         sb.Append(j.ToColumn.QualifiedName);
@@ -281,18 +294,18 @@ namespace SubSonic.SqlGeneration
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine();
-            sb.Append(SqlFragment.FROM);
+            sb.Append(this.sqlFragment.FROM);
 
             bool isFirst = true;
-            foreach(ITable tbl in query.FromTables)
+            foreach (ITable tbl in query.FromTables)
             {
                 // EK: The line below is intentional. See: http://weblogs.asp.net/fbouma/archive/2009/06/25/linq-beware-of-the-access-to-modified-closure-demon.aspx
                 ITable table = tbl;
 
                 //Can't pop a table into the FROM list if it's also in a JOIN
-                if(!query.Joins.Any(x => x.FromColumn.Table.Name.Equals(table.Name, StringComparison.InvariantCultureIgnoreCase)))
+                if (!query.Joins.Any(x => x.FromColumn.Table.Name.Equals(table.Name, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    if(!isFirst)
+                    if (!isFirst)
                         sb.Append(", ");
                     sb.Append(tbl.QualifiedName);
                     isFirst = false;
@@ -307,10 +320,10 @@ namespace SubSonic.SqlGeneration
         /// <returns></returns>
         public virtual string GenerateConstraints()
         {
-            string whereOperator = SqlFragment.WHERE;
+            string whereOperator = this.sqlFragment.WHERE;
 
-            if(query.Aggregates.Count > 0 && query.Aggregates.Any(x => x.AggregateType == AggregateFunction.GroupBy))
-                whereOperator = SqlFragment.HAVING;
+            if (query.Aggregates.Count > 0 && query.Aggregates.Any(x => x.AggregateType == AggregateFunction.GroupBy))
+                whereOperator = this.sqlFragment.HAVING;
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine();
@@ -319,15 +332,15 @@ namespace SubSonic.SqlGeneration
             //int paramCount;
             bool expressionIsOpen = false;
             int indexer = 0;
-            foreach(Constraint c in query.Constraints)
+            foreach (Constraint c in query.Constraints)
             {
                 string columnName = String.Empty;
                 bool foundColumn = false;
-                if(c.ConstructionFragment == c.ColumnName && c.ConstructionFragment != "##")
+                if (c.ConstructionFragment == c.ColumnName && c.ConstructionFragment != "##")
                 {
                     IColumn col = FindColumn(c.ColumnName);
 
-                    if(col != null)
+                    if (col != null)
                     {
                         columnName = col.QualifiedName;
                         c.ParameterName = string.Format("{0}{1}", GetParameterPrefix(), indexer);
@@ -336,18 +349,18 @@ namespace SubSonic.SqlGeneration
                     }
                 }
 
-                if(!foundColumn && c.ConstructionFragment != "##")
+                if (!foundColumn && c.ConstructionFragment != "##")
                 {
                     bool isAggregate = false;
                     //this could be an expression
                     //string rawColumnName = c.ConstructionFragment;
-                    if(c.ConstructionFragment.StartsWith("("))
+                    if (c.ConstructionFragment.StartsWith("("))
                     {
                         //rawColumnName = c.ConstructionFragment.Replace("(", String.Empty);
                         expressionIsOpen = true;
                     }
-                        //this could be an aggregate function
-                    else if(c.IsAggregate ||
+                    //this could be an aggregate function
+                    else if (c.IsAggregate ||
                             (c.ConstructionFragment.Contains("(") && c.ConstructionFragment.Contains(")")))
                     {
                         //rawColumnName = c.ConstructionFragment.Replace("(", String.Empty).Replace(")", String.Empty);
@@ -355,7 +368,7 @@ namespace SubSonic.SqlGeneration
                     }
 
                     IColumn col = FindColumn(c.ColumnName);
-                    if(!isAggregate && col != null)
+                    if (!isAggregate && col != null)
                     {
                         columnName = c.ConstructionFragment.FastReplace(col.Name, col.QualifiedName);
                         c.ParameterName = String.Concat(col.ParameterName, indexer.ToString());
@@ -370,34 +383,34 @@ namespace SubSonic.SqlGeneration
 
                 //paramCount++;
 
-                if(!isFirst)
+                if (!isFirst)
                 {
                     whereOperator = Enum.GetName(typeof(ConstraintType), c.Condition);
                     whereOperator = String.Concat(" ", whereOperator.ToUpper(), " ");
                 }
 
-                if(c.Comparison != Comparison.OpenParentheses && c.Comparison != Comparison.CloseParentheses)
+                if (c.Comparison != Comparison.OpenParentheses && c.Comparison != Comparison.CloseParentheses)
                     sb.Append(whereOperator);
 
-                if(c.Comparison == Comparison.BetweenAnd)
+                if (c.Comparison == Comparison.BetweenAnd)
                 {
                     sb.Append(columnName);
-                    sb.Append(SqlFragment.BETWEEN);
+                    sb.Append(this.sqlFragment.BETWEEN);
                     sb.Append(c.ParameterName + "_start");
-                    sb.Append(SqlFragment.AND);
+                    sb.Append(this.sqlFragment.AND);
                     sb.Append(c.ParameterName + "_end");
                 }
-                else if(c.Comparison == Comparison.In || c.Comparison == Comparison.NotIn)
+                else if (c.Comparison == Comparison.In || c.Comparison == Comparison.NotIn)
                 {
                     sb.Append(columnName);
-                    if(c.Comparison == Comparison.In)
-                        sb.Append(SqlFragment.IN);
+                    if (c.Comparison == Comparison.In)
+                        sb.Append(this.sqlFragment.IN);
                     else
-                        sb.Append(SqlFragment.NOT_IN);
+                        sb.Append(this.sqlFragment.NOT_IN);
 
                     sb.Append("(");
 
-                    if(c.InSelect != null)
+                    if (c.InSelect != null)
                     {
                         //create a sql statement from the passed-in select
                         string sql = c.InSelect.BuildSqlStatement();
@@ -410,9 +423,9 @@ namespace SubSonic.SqlGeneration
                         StringBuilder sbIn = new StringBuilder();
                         bool first = true;
                         int i = 1;
-                        while(en.MoveNext())
+                        while (en.MoveNext())
                         {
-                            if(!first)
+                            if (!first)
                                 sbIn.Append(",");
                             else
                                 first = false;
@@ -428,27 +441,27 @@ namespace SubSonic.SqlGeneration
 
                     sb.Append(")");
                 }
-                else if(c.Comparison == Comparison.OpenParentheses)
+                else if (c.Comparison == Comparison.OpenParentheses)
                 {
                     expressionIsOpen = true;
                     sb.Append("(");
                 }
-                else if(c.Comparison == Comparison.CloseParentheses)
+                else if (c.Comparison == Comparison.CloseParentheses)
                 {
                     expressionIsOpen = false;
                     sb.Append(")");
                 }
                 else
                 {
-                    if(columnName.StartsWith("("))
+                    if (columnName.StartsWith("("))
                         expressionIsOpen = true;
-                    if(c.ConstructionFragment != "##")
+                    if (c.ConstructionFragment != "##")
                     {
                         sb.Append(columnName);
                         sb.Append(Constraint.GetComparisonOperator(c.Comparison));
-                        if(c.Comparison == Comparison.Is || c.Comparison == Comparison.IsNot)
+                        if (c.Comparison == Comparison.Is || c.Comparison == Comparison.IsNot)
                         {
-                            if(c.ParameterValue == null || c.ParameterValue == DBNull.Value)
+                            if (c.ParameterValue == null || c.ParameterValue == DBNull.Value)
                                 sb.Append("NULL");
                         }
                         else
@@ -462,7 +475,7 @@ namespace SubSonic.SqlGeneration
 
             string result = sb.ToString();
             //a little help...
-            if(expressionIsOpen & !result.EndsWith(")"))
+            if (expressionIsOpen & !result.EndsWith(")"))
                 result = String.Concat(result, ")");
 
             return result;
@@ -475,14 +488,14 @@ namespace SubSonic.SqlGeneration
         public virtual string GenerateOrderBy()
         {
             StringBuilder sb = new StringBuilder();
-            if(query.OrderBys.Count > 0)
+            if (query.OrderBys.Count > 0)
             {
                 sb.AppendLine();
-                sb.Append(SqlFragment.ORDER_BY);
+                sb.Append(this.sqlFragment.ORDER_BY);
                 bool isFirst = true;
-                foreach(string s in query.OrderBys)
+                foreach (string s in query.OrderBys)
                 {
-                    if(!isFirst)
+                    if (!isFirst)
                         sb.Append(", ");
                     sb.Append(s);
                     isFirst = false;
@@ -500,16 +513,16 @@ namespace SubSonic.SqlGeneration
             List<string> result = new List<string>();
             string columns;
 
-            if(query.SelectColumnList.Length == 0)
+            if (query.SelectColumnList.Length == 0)
             {
                 columns = GenerateSelectColumnList();
-                string[] columnList = columns.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
-                foreach(string s in columnList)
+                string[] columnList = columns.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string s in columnList)
                     result.Add(s);
             }
             else
             {
-                foreach(string s in query.SelectColumnList)
+                foreach (string s in query.SelectColumnList)
                     result.Add(s);
             }
 
@@ -535,10 +548,10 @@ namespace SubSonic.SqlGeneration
             string sqlType;
 
             IColumn idCol = FindColumn(idColumn);
-            if(idCol != null)
+            if (idCol != null)
             {
                 string pkType = String.Empty;
-                if(idCol.IsString)
+                if (idCol.IsString)
                     pkType = String.Concat("(", idCol.MaxLength, ")");
                 sqlType = Enum.GetName(typeof(SqlDbType), idCol.DataType.GetSqlDBType());
                 sqlType = String.Concat(sqlType, pkType);
@@ -560,7 +573,7 @@ namespace SubSonic.SqlGeneration
             string tweakedWheres = wheres.Replace("WHERE", "AND");
             string orderby = GenerateOrderBy();
 
-            if(query.Aggregates.Count > 0)
+            if (query.Aggregates.Count > 0)
                 joins = String.Concat(joins, GenerateGroupBy());
 
             //this uses SQL2000-compliant paging
@@ -588,7 +601,7 @@ namespace SubSonic.SqlGeneration
         {
             StringBuilder sql = new StringBuilder();
 
-            if(query.PageSize > 0)
+            if (query.PageSize > 0)
                 sql.Append(BuildPagedSelectStatement());
             else
             {
@@ -614,15 +627,15 @@ namespace SubSonic.SqlGeneration
 
             //cast it
 
-            sb.Append(SqlFragment.UPDATE);
+            sb.Append(this.sqlFragment.UPDATE);
             sb.Append(query.FromTables[0].QualifiedName);
 
-            for(int i = 0; i < query.SetStatements.Count; i++)
+            for (int i = 0; i < query.SetStatements.Count; i++)
             {
-                if(i == 0)
+                if (i == 0)
                 {
                     sb.AppendLine(" ");
-                    sb.Append(SqlFragment.SET);
+                    sb.Append(this.sqlFragment.SET);
                 }
                 else
                     sb.AppendLine(", ");
@@ -634,7 +647,7 @@ namespace SubSonic.SqlGeneration
 
                 sb.Append("=");
 
-                if(!query.SetStatements[i].IsExpression)
+                if (!query.SetStatements[i].IsExpression)
                     sb.Append(query.SetStatements[i].ParameterName);
                 else
                     sb.Append(query.SetStatements[i].Value.ToString());
@@ -656,22 +669,22 @@ namespace SubSonic.SqlGeneration
 
             //cast it
             Insert i = insert;
-            sb.Append(SqlFragment.INSERT_INTO);
+            sb.Append(this.sqlFragment.INSERT_INTO);
             sb.Append(i.Table.QualifiedName);
             sb.Append("(");
             sb.Append(i.SelectColumns);
             sb.AppendLine(")");
 
             //if the values list is set, use that
-            if(i.Inserts.Count > 0)
+            if (i.Inserts.Count > 0)
             {
                 sb.Append(" VALUES (");
                 bool isFirst = true;
-                foreach(InsertSetting s in i.Inserts)
+                foreach (InsertSetting s in i.Inserts)
                 {
-                    if(!isFirst)
+                    if (!isFirst)
                         sb.Append(",");
-                    if(!s.IsExpression)
+                    if (!s.IsExpression)
                         sb.Append(s.ParameterName);
                     else
                         sb.Append(s.Value);
@@ -681,7 +694,7 @@ namespace SubSonic.SqlGeneration
             }
             else
             {
-                if(i.SelectValues != null)
+                if (i.SelectValues != null)
                 {
                     string selectSql = i.SelectValues.BuildSqlStatement();
                     sb.AppendLine(selectSql);
@@ -702,7 +715,7 @@ namespace SubSonic.SqlGeneration
         public virtual string BuildDeleteStatement()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(SqlFragment.DELETE_FROM);
+            sb.Append(this.sqlFragment.DELETE_FROM);
             sb.Append(query.FromTables[0].QualifiedName);
 
             sb.Append(GenerateConstraints());
@@ -737,9 +750,9 @@ namespace SubSonic.SqlGeneration
         {
             StringBuilder sb = new StringBuilder();
             bool isFirst = true;
-            foreach(IColumn tc in table.Columns)
+            foreach (IColumn tc in table.Columns)
             {
-                if(!isFirst)
+                if (!isFirst)
                     sb.Append(", ");
 
                 sb.Append(tc.QualifiedName);
@@ -758,14 +771,14 @@ namespace SubSonic.SqlGeneration
             StringBuilder sbColumns = new StringBuilder();
             int loopCount = 1;
 
-            foreach(ITable tbl in query.FromTables)
+            foreach (ITable tbl in query.FromTables)
             {
-                if(tbl.Columns.Count > 0)
+                if (tbl.Columns.Count > 0)
                 {
                     string columnList = GetQualifiedSelect(tbl);
                     sbColumns.Append(columnList);
 
-                    if(loopCount < query.FromTables.Count)
+                    if (loopCount < query.FromTables.Count)
                         sbColumns.AppendLine(", ");
 
                     loopCount++;
@@ -787,9 +800,9 @@ namespace SubSonic.SqlGeneration
         {
             StringBuilder sb = new StringBuilder();
             bool isFirst = true;
-            foreach(SubSonic.Query.Aggregate agg in query.Aggregates)
+            foreach (SubSonic.Query.Aggregate agg in query.Aggregates)
             {
-                if(!isFirst)
+                if (!isFirst)
                     sb.Append(", ");
                 sb.Append(GenerateAggregateSelect(agg));
                 isFirst = false;
@@ -810,11 +823,11 @@ namespace SubSonic.SqlGeneration
         {
             bool hasAlias = !String.IsNullOrEmpty(aggregate.Alias);
 
-            if(aggregate.AggregateType == AggregateFunction.GroupBy && hasAlias)
+            if (aggregate.AggregateType == AggregateFunction.GroupBy && hasAlias)
                 return String.Format("{0} AS {1}", aggregate.ColumnName, aggregate.Alias);
-            if(aggregate.AggregateType == AggregateFunction.GroupBy)
+            if (aggregate.AggregateType == AggregateFunction.GroupBy)
                 return string.Format("{0}", aggregate.ColumnName);
-            if(hasAlias)
+            if (hasAlias)
             {
                 return String.Format("{0}({1}) AS {2}", SubSonic.Query.Aggregate.GetFunctionType(aggregate).ToUpper(),
                     aggregate.ColumnName, aggregate.Alias);

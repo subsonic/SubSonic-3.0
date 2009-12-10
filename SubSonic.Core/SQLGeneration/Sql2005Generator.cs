@@ -60,7 +60,7 @@ WHERE  Row >= {5} AND Row <= {6}";
             string orderby = GenerateOrderBy();
 
             if(String.IsNullOrEmpty(orderby.Trim()))
-                orderby = String.Concat(SqlFragment.ORDER_BY, idColumn);
+                orderby = String.Concat(this.sqlFragment.ORDER_BY, idColumn);
 
             if(qry.Aggregates.Count > 0)
                 joins = String.Concat(joins, GenerateGroupBy());
@@ -82,7 +82,7 @@ WHERE  Row >= {5} AND Row <= {6}";
 
             //cast it
             Insert i = insert;
-            sb.Append(SqlFragment.INSERT_INTO);
+            sb.Append(this.sqlFragment.INSERT_INTO);
             sb.Append(i.Table.QualifiedName);
             sb.Append("(");
             sb.Append(i.SelectColumns);

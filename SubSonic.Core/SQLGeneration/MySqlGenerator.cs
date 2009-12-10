@@ -120,7 +120,7 @@ namespace SubSonic.SqlGeneration
         public override string GenerateFromList()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(SqlFragment.FROM);
+            sb.Append(this.sqlFragment.FROM);
 
             bool isFirst = true;
             foreach(ITable tbl in query.FromTables)
@@ -234,7 +234,7 @@ namespace SubSonic.SqlGeneration
                         if(!isFirst)
                             sb.Append(", ");
                         else
-                            sb.Append(SqlFragment.GROUP_BY);
+                            sb.Append(this.sqlFragment.GROUP_BY);
 
                         sb.Append(string.Format("`{0}`", agg.ColumnName));
                         isFirst = false;
@@ -258,7 +258,7 @@ namespace SubSonic.SqlGeneration
 
             //cast it
 
-            sb.Append(SqlFragment.UPDATE);
+            sb.Append(this.sqlFragment.UPDATE);
             sb.Append(query.FromTables[0].QualifiedName);
 
             for(int i = 0; i < query.SetStatements.Count; i++)
@@ -266,7 +266,7 @@ namespace SubSonic.SqlGeneration
                 if(i == 0)
                 {
                     sb.AppendLine(" ");
-                    sb.Append(SqlFragment.SET);
+                    sb.Append(this.sqlFragment.SET);
                 }
                 else
                     sb.AppendLine(", ");
