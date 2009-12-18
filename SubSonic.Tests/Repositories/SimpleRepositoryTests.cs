@@ -47,6 +47,13 @@ namespace SubSonic.Tests.Repositories
         public Guid? NullKey { get; set; }
         public int Underscored_Column { get; set; }
     }
+
+    public class DummyForDelete
+    {
+        public int Id { get; set; }
+        public String Name { get; set; }
+    }
+
     internal class SQLitey
     {
         public SQLitey()
@@ -74,6 +81,12 @@ namespace SubSonic.Tests.Repositories
             try
             {
                 var qry = new CodingHorror(_provider, "DROP TABLE Shwerkos").Execute();
+            }
+            catch { }
+
+            try
+            {
+                new CodingHorror(_provider, "DROP TABLE DummyForDeletes").Execute();
             }
             catch { }
         }
@@ -307,5 +320,45 @@ namespace SubSonic.Tests.Repositories
             Assert.True(shwerko.ID > 0);
         }
 
+        [Fact]
+        public void Simple_Repo_Should_Run_Migrations_Before_DeleteMany()
+        {
+            _repo.DeleteMany<DummyForDelete>(x => true);
+
+            var existing = _repo.All<DummyForDelete>().Count();
+            Assert.Equal(0, existing);
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Run_Migrations_Before_DeleteMany_WithItemsCollection()
+        {
+            var toDelete = new DummyForDelete[] 
+            {
+                new DummyForDelete 
+                {
+                    Id = 1,
+                    Name = "AName"
+                },
+                new DummyForDelete 
+                {
+                    Id = 2,
+                    Name = "BName"
+                }
+            };
+
+            _repo.DeleteMany(toDelete);
+
+            var existing = _repo.All<DummyForDelete>().Count();
+            Assert.Equal(0, existing);
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Run_Migrations_Before_Delete()
+        {
+            _repo.Delete<DummyForDelete>(10);
+
+            var existing = _repo.All<DummyForDelete>().Count();
+            Assert.Equal(0, existing);
+        }
     }
 }
