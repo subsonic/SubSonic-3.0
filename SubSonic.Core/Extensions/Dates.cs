@@ -278,14 +278,14 @@ namespace SubSonic.Extensions
             }
             else if(days > 0)
             {
-                result = months.Pluralize(MONTH);
+				result = days.Pluralize(DAY);
                 if(hours != 0)
                     result += ", " + hours.Pluralize(HOUR);
                 result += " ago";
             }
             else if(hours > 0)
             {
-                result = months.Pluralize(MONTH);
+				result = hours.Pluralize(HOUR);
                 if(minutes != 0)
                     result += ", " + minutes.Pluralize(MINUTE);
                 result += " ago";
