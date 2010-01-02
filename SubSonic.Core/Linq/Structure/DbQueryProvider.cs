@@ -274,28 +274,30 @@ namespace SubSonic.Linq.Structure
             if (type.Name.Contains("AnonymousType") || type.Name.StartsWith("Grouping`") || type.FullName.StartsWith("System.")) {
                 var reader = _provider.ExecuteReader(cmd);
                 result = Project(reader, query.Projector);
-            } else
-            {
+            } 
+			else {
 
-                using (var reader = _provider.ExecuteReader(cmd))
-                {
+            	using (var reader = _provider.ExecuteReader(cmd)) {
 
-                    //use our reader stuff
-                    //thanks to Pascal LaCroix for the help here...
-                    var resultType = typeof (T);
-                    if (resultType.IsValueType)
-                    {
-                        result = reader.ToEnumerableValueType<T>();
+            		//use our reader stuff
+            		//thanks to Pascal LaCroix for the help here...
+            		var resultType = typeof (T);
+            		if (resultType.IsValueType) {
+            			result = reader.ToEnumerableValueType<T>();
 
-                    }
-                    else
-                    {
-                        result = reader.ToEnumerable<T>();
+            		}
+            		else {
+            			if (query.ColumnNames.Count != 0) {//mike check to see if we have ColumnNames
+							result = reader.ToEnumerable<T>(query.ColumnNames);
+						}
+            			else {
+            				result = reader.ToEnumerable<T>(null);
+            			}
+            		}
 
-                    }
-                }
+            	}
             }
-            return result;
+        	return result;
 
 
         }

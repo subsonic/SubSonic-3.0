@@ -195,7 +195,26 @@ namespace SubSonic.Linq.Structure
             return BuildInner(projection);
         }
 
-        private Expression ExecuteProjection(ProjectionExpression projection, bool okayToDefer)
+		//mike
+		internal class ColumnNamedGatherer : DbExpressionVisitor {
+			List<string> columnNames = new List<string>();
+			internal static List<string> Gather(Expression ex) {
+				ColumnNamedGatherer gatherer = new ColumnNamedGatherer();
+				gatherer.Visit(ex);
+				return gatherer.columnNames;
+			}
+
+			protected override Expression VisitMemberInit(MemberInitExpression init) {
+				//var ex = this.VisitBinding(init.Bindings[0]);
+				foreach (var binding in init.Bindings) {
+					this.columnNames.Add(binding.Member.Name);
+				}
+				return init;
+			}
+		}
+		// end mike
+
+		private Expression ExecuteProjection(ProjectionExpression projection, bool okayToDefer)
         {
             okayToDefer &= (receivingMember != null && policy.IsDeferLoaded(receivingMember));
 
@@ -213,7 +232,7 @@ namespace SubSonic.Linq.Structure
             scope = new Scope(scope, reader, projection.Source.Alias, projection.Source.Columns);
             LambdaExpression projector = Expression.Lambda(Visit(projection.Projector), reader);
             scope = saveScope;
-
+			List<string> columnNames = ColumnNamedGatherer.Gather(projector.Body);//mike
             string commandText = policy.Mapping.Language.Format(projection.Source);
             ReadOnlyCollection<NamedValueExpression> namedValues = NamedValueGatherer.Gather(projection.Source);
             string[] names = namedValues.Select(v => v.Name).ToArray();
@@ -234,7 +253,7 @@ namespace SubSonic.Linq.Structure
                                                         GetConstructors()[0],
                                                     Expression.Constant(commandText),
                                                     Expression.Constant(names),
-                                                    projector
+													projector, Expression.Constant(columnNames)
                                                     ),
                                                 Expression.NewArrayInit(typeof (object), values)
                 );
