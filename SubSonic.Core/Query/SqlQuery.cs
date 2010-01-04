@@ -948,6 +948,7 @@ namespace SubSonic.Query
         /// <returns></returns>
         public SqlQuery OrderAsc(params string[] columns)
         {
+            ISqlGenerator generator = GetGenerator();
             StringBuilder sb = new StringBuilder();
             bool isFirst = true;
             foreach(string s in columns)
@@ -955,7 +956,7 @@ namespace SubSonic.Query
                 if(!isFirst)
                     sb.Append(", ");
                 sb.Append(s);
-                sb.Append(SqlFragment.ASC);
+                sb.Append(generator.sqlFragment.ASC);
                 isFirst = false;
             }
             OrderBys.Add(sb.ToString());
@@ -969,6 +970,7 @@ namespace SubSonic.Query
         /// <returns></returns>
         public SqlQuery OrderDesc(params string[] columns)
         {
+            ISqlGenerator generator = GetGenerator();
             StringBuilder sb = new StringBuilder();
             bool isFirst = true;
             foreach(string s in columns)
@@ -976,7 +978,7 @@ namespace SubSonic.Query
                 if(!isFirst)
                     sb.Append(", ");
                 sb.Append(s);
-                sb.Append(SqlFragment.DESC);
+                sb.Append(generator.sqlFragment.DESC);
                 isFirst = false;
             }
             OrderBys.Add(sb.ToString());

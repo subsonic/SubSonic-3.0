@@ -44,7 +44,7 @@ namespace SubSonic.Query
         public BatchQuery(IDataProvider provider)
         {
             _queries = new List<ISqlQuery>();
-            _linqProvider=new DbQueryProvider(provider);
+            _linqProvider = new DbQueryProvider(provider);
             sb = new StringBuilder();
             _provider = provider;
             _fixedCommands = new List<QueryCommand>();
@@ -59,7 +59,7 @@ namespace SubSonic.Query
             _fixedCommands = new List<QueryCommand>();
         }
 
-        public BatchQuery() : this(ProviderFactory.GetProvider()) {}
+        public BatchQuery() : this(ProviderFactory.GetProvider()) { }
 
 
         #region ISqlQuery Members
@@ -71,10 +71,10 @@ namespace SubSonic.Query
         public string BuildSqlStatement()
         {
             ResetCommands();
-            foreach(QueryCommand cmd in _fixedCommands)
+            foreach (QueryCommand cmd in _fixedCommands)
             {
                 string sql = cmd.CommandSql;
-                if(!sql.EndsWith(";"))
+                if (!sql.EndsWith(";"))
                     sql += ";\r\n";
                 sb.Append(sql);
             }
@@ -109,9 +109,9 @@ namespace SubSonic.Query
             QueryCommand result = new QueryCommand(sql, _provider);
 
             //add in the tweakered params
-            foreach(var cmd in _fixedCommands)
+            foreach (var cmd in _fixedCommands)
             {
-                foreach(var p in cmd.Parameters)
+                foreach (var p in cmd.Parameters)
                     result.Parameters.Add(p);
             }
 
@@ -127,7 +127,7 @@ namespace SubSonic.Query
         /// <param name="query">The query.</param>
         public void Queue(ISqlQuery query)
         {
-            
+
             _queries.Add(query);
         }
 
@@ -140,7 +140,7 @@ namespace SubSonic.Query
         {
             QueryCommand cmd = _linqProvider.GetCommand(query.Expression);
             List<object> paramValues = new List<object>();
-            foreach(var p in cmd.Parameters)
+            foreach (var p in cmd.Parameters)
                 paramValues.Add(p.ParameterValue);
             ISqlQuery q = new CodingHorror(_provider, cmd.CommandSql, paramValues.ToArray());
 
@@ -181,13 +181,13 @@ namespace SubSonic.Query
         /// </summary>
         public void ExecuteTransaction()
         {
-            using(var scope = new AutomaticConnectionScope(_provider))
+            using (var scope = new AutomaticConnectionScope(_provider))
             {
-                using(var trans = scope.Connection.BeginTransaction())
+                using (var trans = scope.Connection.BeginTransaction())
                 {
-                    foreach(var cmd in _fixedCommands)
+                    foreach (var cmd in _fixedCommands)
                     {
-                        if(!String.IsNullOrEmpty(cmd.CommandSql))
+                        if (!String.IsNullOrEmpty(cmd.CommandSql))
                         {
                             var dbCommand = cmd.ToDbCommand();
                             dbCommand.Connection = scope.Connection;
@@ -207,15 +207,16 @@ namespace SubSonic.Query
         {
             _fixedCommands.Clear();
             int indexer = 0;
-            foreach(var qry in _queries)
+            foreach (var qry in _queries)
             {
                 QueryCommand cmd = qry.GetCommand();
                 string commandText = cmd.CommandSql;
-                foreach(var p in cmd.Parameters)
+                foreach (var p in cmd.Parameters)
                 {
                     string oldParamName = p.ParameterName;
                     p.ParameterName = _provider.ParameterPrefix + indexer;
-                    commandText = commandText.Replace(oldParamName, _provider.ParameterPrefix + "p" + indexer);
+
+                    commandText = System.Text.RegularExpressions.Regex.Replace(commandText, oldParamName + @"(\s)", _provider.ParameterPrefix + "p" + indexer + "$1");
                     indexer++;
                 }
                 cmd.CommandSql = commandText.Replace(_provider.ParameterPrefix + "p", _provider.ParameterPrefix);

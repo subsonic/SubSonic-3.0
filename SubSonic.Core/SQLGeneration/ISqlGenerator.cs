@@ -23,6 +23,11 @@ namespace SubSonic.SqlGeneration
     public interface ISqlGenerator
     {
         /// <summary>
+        /// SqlFragment. Field values may change depending on the inheriting Generator.
+        /// </summary>
+        SqlFragment sqlFragment { get; }
+
+        /// <summary>
         /// Generates the command line.
         /// </summary>
         /// <returns></returns>
