@@ -157,7 +157,14 @@ namespace SubSonic.Repository
             if (_options.Contains(SimpleRepositoryOptions.RunMigrations))
                 Migrate<T>();
             var tbl = _provider.FindOrCreateTable<T>();
-            var qry = new Select(_provider).From(tbl).Paged(pageIndex + 1, pageSize).OrderAsc(sortBy);
+
+            var qry = new Select(_provider).From(tbl).Paged(pageIndex + 1, pageSize);
+
+            if (!sortBy.EndsWith(" desc", StringComparison.InvariantCultureIgnoreCase))
+                qry.OrderAsc(sortBy);
+            else
+                qry.OrderDesc(sortBy.FastReplace(" desc", ""));
+
             var total =
                 new Select(_provider, new Aggregate(tbl.PrimaryKey, AggregateFunction.Count)).From<T>().ExecuteScalar();
 

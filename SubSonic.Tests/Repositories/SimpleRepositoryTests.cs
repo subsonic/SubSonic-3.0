@@ -360,5 +360,31 @@ namespace SubSonic.Tests.Repositories
             var existing = _repo.All<DummyForDelete>().Count();
             Assert.Equal(0, existing);
         }
+
+        [Fact]
+        public void Simple_Repo_GetPaged_Should_Allow_Descending_Order()
+        {
+            GivenShwerkosWithNames("aaa", "bbb", "a");
+
+            var paged = _repo.GetPaged<Shwerko>("Name desc", 0, 1);
+            Assert.Equal("bbb", paged[0].Name);
+        }
+
+        [Fact]
+        public void Simple_Repo_GetPaged_Should_Not_Expect_Case_Sensitive_Order()
+        {
+            GivenShwerkosWithNames("aaa", "bbb", "ccc");
+            var paged = _repo.GetPaged<Shwerko>("Name DESC", 0, 10);
+            Assert.Equal("ccc", paged[0].Name);
+            Assert.Equal("bbb", paged[1].Name);
+            Assert.Equal("aaa", paged[2].Name);
+        }
+
+        private void GivenShwerkosWithNames(params string[] names)
+        {
+            var shwerkos = names.Select(x => new Shwerko { Name = x, ElDate = new DateTime(2010, 1, 1) });
+
+            _repo.AddMany(shwerkos);
+        }
     }
 }
