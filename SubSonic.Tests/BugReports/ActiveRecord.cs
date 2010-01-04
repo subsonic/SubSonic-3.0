@@ -83,7 +83,6 @@ namespace SubSonic.Tests.BugReports {
             }
         }
 
-
         [Fact]
         public void Issue55_Delete_Should_Have_Two_Constraints() {
 
@@ -91,7 +90,13 @@ namespace SubSonic.Tests.BugReports {
 
         }
 
+        [Fact]
+        public void Issue158_GetPaged_With_SortOrder_Should_Not_Expect_Case_Sensitive_Order()
+        {
+            var paged = Category.GetPaged("CategoryName DESC", 1, 10);
 
+            Assert.Equal("Seafood", paged[0].CategoryName);
+        }
     }
 
 }
