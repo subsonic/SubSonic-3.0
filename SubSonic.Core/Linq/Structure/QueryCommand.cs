@@ -13,15 +13,16 @@ namespace SubSonic.Linq.Structure
 {
     public class QueryCommand<T>
     {
-        public QueryCommand(string commandText, IEnumerable<string> paramNames, Func<DbDataReader, T> projector)
+		public QueryCommand(string commandText, IEnumerable<string> paramNames, Func<DbDataReader, T> projector, List<string> ColumnNames)//mike ColumnNames added to support project
         {
             CommandText = commandText;
             ParameterNames = new List<string>(paramNames).AsReadOnly();
             Projector = projector;
+			this.ColumnNames = ColumnNames;//mike added to support project
         }
 
         public string CommandText { get; private set; }
-
+		public List<string> ColumnNames = new List<string>();//mike added to support project
         public ReadOnlyCollection<string> ParameterNames { get; private set; }
 
         public Func<DbDataReader, T> Projector { get; private set; }

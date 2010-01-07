@@ -140,7 +140,7 @@ namespace SubSonic.Extensions
         /// <summary>
         /// Coerces an IDataReader to try and load an object using name/property matching
         /// </summary>
-        public static void Load<T>(this IDataReader rdr, T item)
+        public static void Load<T>(this IDataReader rdr, T item, List<string> ColumnNames) //mike added ColumnNames
         {
             Type iType = typeof(T);
 
@@ -155,8 +155,13 @@ namespace SubSonic.Extensions
                 string pName = rdr.GetName(i);
                 currentProp = cachedProps.SingleOrDefault(x => x.Name.Equals(pName, StringComparison.InvariantCultureIgnoreCase));
 
-                //if the property is null, likely it's a Field
-                if(currentProp == null)
+				//mike if the property is null and ColumnNames has data then look in ColumnNames for match
+				if (currentProp == null && CilumnNames != null && ColumnNames.Count > i) {
+					currentProp = cachedProps.First(x => x.Name == ColumnNames[i]);
+				}
+                
+				//if the property is null, likely it's a Field
+				if(currentProp == null)
                     currentField = cachedFields.SingleOrDefault(x => x.Name.Equals(pName, StringComparison.InvariantCultureIgnoreCase));
 
                 if(currentProp != null && !DBNull.Value.Equals(rdr.GetValue(i)))
@@ -292,15 +297,15 @@ namespace SubSonic.Extensions
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="rdr"></param>
-        public static IEnumerable<T> ToEnumerable<T>(this IDataReader rdr)
-        {
+
+    	public static IEnumerable<T> ToEnumerable<T>(this IDataReader rdr, List<string> ColumnNames){//mike added ColumnNames
+
             List<T> result = new List<T>();
-            while(rdr.Read())
-            {
+            while(rdr.Read()){
                 T instance = default(T);
                 var type = typeof(T);
-                if(type.Name.Contains("AnonymousType"))
-                {
+                if(type.Name.Contains("AnonymousType")){
+                
                     //this is an anon type and it has read-only fields that are set
                     //in a constructor. So - read the fields and build it
                     //http://stackoverflow.com/questions/478013/how-do-i-create-and-access-a-new-instance-of-an-anonymous-class-passed-as-a-param
@@ -323,7 +328,7 @@ namespace SubSonic.Extensions
                     instance = Activator.CreateInstance<T>();
 
                 //do we have a parameterless constructor?
-                Load(rdr, instance);
+                Load(rdr, instance,ColumnNames);//mike added ColumnNames
                 result.Add(instance);
             }
             return result.AsEnumerable();
@@ -341,7 +346,7 @@ namespace SubSonic.Extensions
             while(rdr.Read())
             {
                 T item = new T();
-                rdr.Load(item);
+                rdr.Load(item,null);//mike added null to match ColumnNames
                 result.Add(item);
             }
             return result;
