@@ -136,6 +136,9 @@ namespace SubSonic.Extensions
             }
             return query.Constraints;
         }
+        public static void Load<T>(this IDataReader rdr, T item) {
+            Load<T>(rdr, item, new List<string>());
+        }
 
         /// <summary>
         /// Coerces an IDataReader to try and load an object using name/property matching
@@ -156,7 +159,7 @@ namespace SubSonic.Extensions
                 currentProp = cachedProps.SingleOrDefault(x => x.Name.Equals(pName, StringComparison.InvariantCultureIgnoreCase));
 
 				//mike if the property is null and ColumnNames has data then look in ColumnNames for match
-				if (currentProp == null && CilumnNames != null && ColumnNames.Count > i) {
+				if (currentProp == null && ColumnNames != null && ColumnNames.Count > i) {
 					currentProp = cachedProps.First(x => x.Name == ColumnNames[i]);
 				}
                 
