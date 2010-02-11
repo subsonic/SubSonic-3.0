@@ -14,12 +14,13 @@
 using System;
 using SubSonic.Extensions;
 using Xunit;
+using System.IO;
 
 namespace SubSonic.Tests.Extensions
 {
     public class FileTests
     {
-        private readonly string tempPath = Environment.GetEnvironmentVariable("TMP");
+		private readonly string tempPath = Path.GetTempPath();
 
         [Fact]
         public void GetFileText_Should_Read_Text_From_Existing_File()
