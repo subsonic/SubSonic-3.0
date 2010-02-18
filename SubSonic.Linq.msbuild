@@ -1,0 +1,8 @@
+<project defaulttargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<usingtask assemblyfile="lib\xunit.runner.msbuild.dll" taskname="Xunit.Runner.MSBuild.xunit">
+	<target name="Build">
+		<msbuild projects="SubSonic.Linq.sln" targets="Build" properties="Configuration=Debug">
+		<!-- <xunit assembly="SubSonic.Tests\bin\Debug\MyProjectTests.dll"></xunit></msbuild> -->
+	</target>
+	</usingtask>
+</project>
