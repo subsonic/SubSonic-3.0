@@ -157,7 +157,14 @@ namespace SubSonic.Repository
             if (_options.Contains(SimpleRepositoryOptions.RunMigrations))
                 Migrate<T>();
             var tbl = _provider.FindOrCreateTable<T>();
-            var qry = new Select(_provider).From(tbl).Paged(pageIndex + 1, pageSize).OrderAsc(sortBy);
+
+            var qry = new Select(_provider).From(tbl).Paged(pageIndex + 1, pageSize);
+
+            if (!sortBy.EndsWith(" desc", StringComparison.InvariantCultureIgnoreCase))
+                qry.OrderAsc(sortBy);
+            else
+                qry.OrderDesc(sortBy.FastReplace(" desc", ""));
+
             var total =
                 new Select(_provider, new Aggregate(tbl.PrimaryKey, AggregateFunction.Count)).From<T>().ExecuteScalar();
 
@@ -190,6 +197,7 @@ namespace SubSonic.Repository
                     var settable = result.ChangeTypeTo(prop.PropertyType);
                     prop.SetValue(item, settable, null);
 
+                	return settable;
                 } catch(Exception x) {
                     //swallow it - I don't like this per se but this is a convenience and we
                     //don't want to throw the whole thing just because we can't auto-set the value

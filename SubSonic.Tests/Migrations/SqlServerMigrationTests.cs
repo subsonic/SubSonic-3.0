@@ -49,6 +49,7 @@ namespace SubSonic.Tests.Migrations
   [Long] decimal(10, 3),
   [SomeFlag] bit NOT NULL,
   [SomeNullableFlag] bit,
+  [BinaryAttachment] image,
   [LongText] nvarchar(MAX) NOT NULL,
   [MediumText] nvarchar(800) NOT NULL 
 );ALTER TABLE [SubSonicTests]
@@ -56,8 +57,6 @@ ADD CONSTRAINT PK_SubSonicTests_Key PRIMARY KEY([Key])";
             
             var sql = typeof (SubSonicTest).ToSchemaTable(_provider).CreateSql;
             Assert.Equal(shouldbe, sql);
-
-            
         }
 
         [Fact]

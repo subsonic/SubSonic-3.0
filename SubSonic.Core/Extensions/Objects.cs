@@ -157,6 +157,7 @@ namespace SubSonic.Extensions
         	       type == typeof (Int64?) ||
         	       type == typeof (float?) ||
         	       type == typeof (float) ||
+                   type == typeof(byte[]) ||
         	       type.IsEnum || IsNullableEnum(type);
         }
 
@@ -236,6 +237,10 @@ namespace SubSonic.Extensions
                                 isNullable = true;
                             }
                         }
+                    }
+                    else if (column.DataType == DbType.Binary)
+                    {
+                        isNullable = true;
                     }
 
                     if(isNullable)
