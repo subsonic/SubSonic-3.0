@@ -2,7 +2,7 @@
 	<UsingTask AssemblyFile="lib\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />		
 		<Target Name="Build">
 			<MSBuild Projects="SubSonic.Linq.sln" Targets="Build" Properties="Configuration=Debug">
-				<!-- <xunit assembly="SubSonic.Tests\bin\Debug\SubSonic.Tests.dll"></xunit> -->
+				<xunit assembly="SubSonic.Tests\bin\Debug\SubSonic.Tests.dll"></xunit>
 			</MSBuild>
 		</Target>
 </Project>
