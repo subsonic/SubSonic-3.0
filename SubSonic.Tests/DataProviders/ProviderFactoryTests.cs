@@ -23,22 +23,26 @@ namespace SubSonic.Tests
     public class ProviderFactoryTests
     {
         [Fact]
-        public void Getting_a_named_provider_that_depends_on_a_nonexistant_connection_string()
+        public void Provider_Factory_Should_Throw_Exception_When_Requesting_Nonexistent_Provider()
         {
+            // Arrange
+            var nonexistent = "nonexistent_provider";
+            var expectedMessage = String.Format("Connection string '{0}' does not exist", nonexistent);
+            Exception expectedException = null;
+
+            // Act
             try
             {
-                ProviderFactory.GetProvider("nonexistant");
+                ProviderFactory.GetProvider(nonexistent);
             }
             catch(Exception ex)
             {
-                Assert.Equal(ex.Message, "Object reference not set to an instance of an object.");
+                expectedException = ex;
             }
 
-            //var ex = Assert.Throws<InvalidOperationException>(() => { IDataProvider provider = ProviderFactory.GetProvider("nonexistant"); });
-
-            //Assert.Equal(
-            //    "There was a problem getting the ConnectionString 'nonexistant' from your config file; please make sure it's there. If this is a test project it MUST be in the app.config",
-            //    ex.Message);
+            // Assert
+            Assert.NotNull(expectedException);
+            Assert.Equal(expectedMessage, expectedException.Message);
         }
     }
 }
