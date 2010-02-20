@@ -78,11 +78,28 @@ namespace SubSonic.Tests.BugReports {
 
         [Fact]
         public void Issue54_Looping_List_Calling_Update_Should_Work() {
+
+            // Arrange
+            Exception expectedException = null;
             var list = Product.Find(x => x.ProductID < 10);
-            foreach(Product p in list){
-                p.UnitPrice=100;
-                p.Update();
+
+            // Act
+            try
+            {
+                foreach (Product p in list)
+                {
+                    p.UnitPrice = 100;
+                    p.Update();
+                }
             }
+            catch (Exception ex)
+            {
+                expectedException = ex;
+            }
+
+            // Assert
+            Assert.Null(expectedException);
+
         }
 
         [Fact]
