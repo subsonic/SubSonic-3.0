@@ -54,28 +54,14 @@ namespace SubSonic.Tests.Repositories
         public String Name { get; set; }
     }
 
-    internal class SQLitey
-    {
-        public SQLitey()
-        {
-            if (!File.Exists(TestConfiguration.SQLiteRepositoryFilePath))
-                throw new InvalidOperationException("Can't find the DB");
-            Connection = TestConfiguration.SQLiteRepositoryConnectionString;
-        }
-
-        public string Connection { get; set; }
-    }
-
-    public class SimpleRepositoryTests
+    public abstract class SimpleRepositoryTests
     {
         private readonly IDataProvider _provider;
         private readonly IRepository _repo;
 
-        public SimpleRepositoryTests()
+        public SimpleRepositoryTests(IDataProvider provider)
         {
-            _provider = ProviderFactory.GetProvider("WestWind");
-            //_provider = ProviderFactory.GetProvider(new SQLitey().Connection,"System.Data.SQLite");
-            //_provider = ProviderFactory.GetProvider(@"server=localhost;database=SubSonic;user id=root; password=;","MySql.Data.MySqlClient");
+            _provider = provider;
 
             _repo = new SimpleRepository(_provider, SimpleRepositoryOptions.RunMigrations);
             try
@@ -104,9 +90,6 @@ namespace SubSonic.Tests.Repositories
             item.Underscored_Column = 1;
             return item;
         }
-
-
-
 
         [Fact]
         public void Simple_Repo_Should_Create_Schema_And_Save_Shwerko()
