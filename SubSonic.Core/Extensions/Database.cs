@@ -189,13 +189,11 @@ namespace SubSonic.Extensions
 					    var val = rdr.GetValue(i);
 					    var valType = val.GetType();
                         //try to assign it
-                        if (val.GetType().IsAssignableFrom(valueType)){
+                        if (currentProp.PropertyType.IsAssignableFrom(valueType)) {
                             currentProp.SetValue(item, val, null);
                         } else {
-                            currentProp.SetValue(item, rdr.GetValue(i).ChangeTypeTo(valueType), null);
-                            
+                            currentProp.SetValue(item, val.ChangeTypeTo(currentProp.PropertyType), null);
                         }
-
 					}
                 }
                 else if(currentField != null && !DBNull.Value.Equals(rdr.GetValue(i)))
