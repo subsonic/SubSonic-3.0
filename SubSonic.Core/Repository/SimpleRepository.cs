@@ -167,8 +167,9 @@ namespace SubSonic.Repository
 
             var total =
                 new Select(_provider, new Aggregate(tbl.PrimaryKey, AggregateFunction.Count)).From<T>().ExecuteScalar();
-
-            return new PagedList<T>(qry.ToList<T>(), (int)total, pageIndex, pageSize);
+            int totalRecords = 0;
+            int.TryParse(total.ToString(), out totalRecords);
+            return new PagedList<T>(qry.ToList<T>(), totalRecords, pageIndex, pageSize);
         }
 
         /// <summary>
