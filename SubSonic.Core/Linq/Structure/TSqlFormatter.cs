@@ -10,6 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using SubSonic.DataProviders;
+using System.Globalization;
 
 namespace SubSonic.Linq.Structure
 {
@@ -1022,6 +1023,30 @@ namespace SubSonic.Linq.Structure
                         sb.Append("'");
                         sb.Append(value);
                         sb.Append("'");
+                        break;
+                    case TypeCode.Decimal:
+                        sb.Append(((Decimal)value).ToString(CultureInfo.InvariantCulture));
+                        break;
+                    case TypeCode.Double:
+                        sb.Append(((Double)value).ToString(CultureInfo.InvariantCulture));
+                        break;
+                    case TypeCode.Int16:
+                        sb.Append(((Int16)value).ToString(CultureInfo.InvariantCulture));
+                        break;
+                    case TypeCode.Int32:
+                        sb.Append(((Int32)value).ToString(CultureInfo.InvariantCulture));
+                        break;
+                    case TypeCode.Int64:
+                        sb.Append(((Int64)value).ToString(CultureInfo.InvariantCulture));
+                        break;
+                    case TypeCode.UInt16:
+                        sb.Append(((UInt16)value).ToString(CultureInfo.InvariantCulture));
+                        break;
+                    case TypeCode.UInt32:
+                        sb.Append(((UInt32)value).ToString(CultureInfo.InvariantCulture));
+                        break;
+                    case TypeCode.UInt64:
+                        sb.Append(((UInt64)value).ToString(CultureInfo.InvariantCulture));
                         break;
                     case TypeCode.Object:
                         if (value.GetType().IsEnum)
