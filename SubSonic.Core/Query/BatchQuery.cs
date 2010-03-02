@@ -216,7 +216,7 @@ namespace SubSonic.Query
                     string oldParamName = p.ParameterName;
                     p.ParameterName = _provider.ParameterPrefix + indexer;
 
-                    commandText = System.Text.RegularExpressions.Regex.Replace(commandText, oldParamName + @"(\s)", _provider.ParameterPrefix + "p" + indexer + "$1");
+                    commandText = System.Text.RegularExpressions.Regex.Replace(commandText, oldParamName + @"(\s|$)", _provider.ParameterPrefix + "p" + indexer + "$1");
                     indexer++;
                 }
                 cmd.CommandSql = commandText.Replace(_provider.ParameterPrefix + "p", _provider.ParameterPrefix);
