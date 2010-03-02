@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SubSonic.Tests.Unit.LINQ.SqlStrings
+﻿
+namespace SubSonic.Tests.Unit.Linq.SqlStrings
 {
 	public class Sql2008DateTestsSql : IDateTestsSql
 	{

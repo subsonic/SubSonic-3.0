@@ -11,15 +11,7 @@
 //   implied. See the License for the specific language governing
 //   rights and limitations under the License.
 // 
-using System;
-using System.Linq.Expressions;
-using System.Reflection;
 using SubSonic.DataProviders;
-using SubSonic.Extensions;
-using SubSonic.Linq.Structure;
-using SubSonic.Query;
-using SubSonic.Schema;
-using SubSonic.Tests.Unit.TestClasses;
 
 namespace SubSonic.Tests.Unit.Linq.TestBases
 {

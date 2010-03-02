@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using SubSonic.Linq.Structure;
 
-namespace SubSonic.Tests.Unit.LINQ.TestBases
+namespace SubSonic.Tests.Unit.Linq.TestBases
 {
 	internal static class Extensions
 	{

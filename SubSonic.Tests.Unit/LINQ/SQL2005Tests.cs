@@ -12,10 +12,8 @@
 //   rights and limitations under the License.
 // 
 using SubSonic.DataProviders;
+using SubSonic.Tests.Unit.Linq.SqlStrings;
 using SubSonic.Tests.Unit.Linq.TestBases;
-using Xunit;
-using SubSonic.Tests.Unit.LINQ.TestBases;
-using SubSonic.Tests.Unit.LINQ.SqlStrings;
 
 namespace SubSonic.Tests.Unit.Linq
 {

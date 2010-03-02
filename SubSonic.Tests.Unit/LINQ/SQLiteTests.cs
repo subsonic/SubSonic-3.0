@@ -11,58 +11,48 @@
 //   implied. See the License for the specific language governing
 //   rights and limitations under the License.
 // 
-using System;
-using System.IO;
-using SubSonic.Tests.Unit.Linq.TestBases;
-using Xunit;
 
+using SubSonic.Tests.Unit.Linq.TestBases;
+using SubSonic.Tests.Unit.Linq.SqlStrings;
 namespace SubSonic.Tests.Unit.Linq
 {
     // ReSharper disable InconsistentNaming
     // these are unit tests and I like underscores
     // suck it Osherove :)
 
-		//internal class SQLitey
-		//{
-		//    public SQLitey()
-		//    {
-		//        if(!File.Exists(TestConfiguration.SQLiteTestsFilePath))
-		//            throw new InvalidOperationException("Can't find the DB");
-		//        Connection = TestConfiguration.SQLiteTestsConnectionString;
-		//    }
+	public class SQLiteSelectTests : SelectTests
+	{
+		public SQLiteSelectTests()
+		{
+			selectTestsSql = new SQLiteSelectTestsSql();
+			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DataProviders.DbClientTypeName.SqlLite);
+		}
+	}
 
-		//    public string Connection { get; set; }
-		//}
+	public class SQLiteNumberTests : NumberTests
+	{
+		public SQLiteNumberTests()
+		{
+			numberTestsSql = new SQLiteNumberTestsSql();
+			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DataProviders.DbClientTypeName.SqlLite);
+		}
+	}
 
-		//public class SQLiteSelectTests : SelectTests
-		//{
-		//    public SQLiteSelectTests()
-		//    {
-		//      _db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DataProviders.DbClientTypeName.SqlLite);
-		//    }
-		//}
+	public class SQLiteStringTests : StringTests
+	{
+		public SQLiteStringTests()
+		{
+			stringTestsSql = new SQLiteStringTestsSql();
+			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DataProviders.DbClientTypeName.SqlLite);
+		}
+	}
 
-		//public class SQLiteNumberTests : NumberTests
-		//{
-		//    public SQLiteNumberTests()
-		//    {
-		//        _db = new TestDB(new SQLitey().Connection, DataProviders.DbClientTypeName.SqlLite);
-		//    }
-		//}
-
-		//public class SQLiteStringTests : StringTests
-		//{
-		//    public SQLiteStringTests()
-		//    {
-		//        _db = new TestDB(new SQLitey().Connection, DataProviders.DbClientTypeName.SqlLite);
-		//    }
-		//}
-
-		//public class SQLiteDateTests : DateTests
-		//{
-		//    public SQLiteDateTests()
-		//    {
-		//        _db = new TestDB(new SQLitey().Connection, DataProviders.DbClientTypeName.SqlLite);
-		//    }
-		//}
+	public class SQLiteDateTests : DateTests
+	{
+		public SQLiteDateTests()
+		{
+			dateTestsSql = new SQLiteDateTestsSql();
+			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DataProviders.DbClientTypeName.SqlLite);
+		}
+	}
 }

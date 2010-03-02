@@ -11,45 +11,49 @@
 //   implied. See the License for the specific language governing
 //   rights and limitations under the License.
 // 
-using SubSonic.DataProviders;
-using SubSonic.Tests.Unit.Linq.TestBases;
-using Xunit;
 
+using SubSonic.Tests.Unit.Linq.TestBases;
+using SubSonic.DataProviders;
+using SubSonic.Tests.Unit.Linq.SqlStrings;
 namespace SubSonic.Tests.Unit.Linq
 {
     // ReSharper disable InconsistentNaming
     // these are unit tests and I like underscores
     // suck it Osherove :)
 
-		//public class MySQLSelectTests : SelectTests
-		//{
-		//    public MySQLSelectTests()
-		//    {
-		//        _db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
-		//    }
-		//}
+	public class MySQLSelectTests : SelectTests
+	{
+		public MySQLSelectTests()
+		{
+			selectTestsSql = new MySqlSelectTestsSql();
+			_db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
+		}
+	}
 
-		//public class MySQLNumberTests : NumberTests
-		//{
-		//    public MySQLNumberTests()
-		//    {
-		//        _db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
-		//    }
-		//}
+	public class MySQLNumberTests : NumberTests
+	{
+		public MySQLNumberTests()
+		{
+			numberTestsSql = new MySqlNumberTestsSql();
+			_db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
+		}
+	}
 
-		//public class MySQLStringTests : StringTests
-		//{
-		//    public MySQLStringTests()
-		//    {
-		//        _db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
-		//    }
-		//}
+	public class MySQLStringTests : StringTests
+	{
+		public MySQLStringTests()
+		{
+			stringTestsSql = new MySqlStringTestsSql();
+			_db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
+		}
+	}
 
-		//public class MySQLDateTests : DateTests
-		//{
-		//    public MySQLDateTests()
-		//    {
-		//        _db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
-		//    }
-		//}
+	public class MySQLDateTests : DateTests
+	{
+		public MySQLDateTests()
+		{
+			dateTestsSql = new MySqlDateTestsSql();
+			_db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
+		}
+	}
 }

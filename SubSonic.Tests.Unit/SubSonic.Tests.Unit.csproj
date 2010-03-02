@@ -57,35 +57,35 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LINQ\SqlStrings\IDateTestsSql.cs" />
-    <Compile Include="LINQ\SqlStrings\INumberTestsSql.cs" />
-    <Compile Include="LINQ\SqlStrings\ISelectTestsSql.cs" />
-    <Compile Include="LINQ\SqlStrings\IStringTestsSql.cs" />
-    <Compile Include="LINQ\SqlStrings\Sql2005DateTestsSql.cs" />
-    <Compile Include="LINQ\SqlStrings\Sql2005NumberTestsSql.cs" />
-    <Compile Include="LINQ\SqlStrings\Sql2005SelectTestsSql.cs" />
-    <Compile Include="LINQ\SqlStrings\Sql2005StringTestsSql.cs" />
-    <Compile Include="LINQ\SqlStrings\Sql2008DateTestsSql.cs" />
-    <Compile Include="LINQ\SqlStrings\Sql2008NumberTestsSql.cs" />
-    <Compile Include="LINQ\SqlStrings\Sql2008SelectTestsSql.cs" />
-    <Compile Include="LINQ\SqlStrings\Sql2008StringTestsSql.cs" />
-    <Compile Include="LINQ\TestBases\DateTests.cs" />
-    <Compile Include="LINQ\TestBases\Extensions.cs" />
-    <Compile Include="LINQ\TestBases\NumberTests.cs" />
-    <Compile Include="LINQ\TestBases\SelectTests.cs" />
+    <Compile Include="Linq\SqlStrings\IDateTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\INumberTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\ISelectTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\IStringTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\Sql2005DateTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\Sql2005NumberTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\Sql2005SelectTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\Sql2005StringTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\Sql2008DateTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\Sql2008NumberTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\Sql2008SelectTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\Sql2008StringTestsSql.cs" />
+    <Compile Include="Linq\TestBases\DateTests.cs" />
+    <Compile Include="Linq\TestBases\Extensions.cs" />
+    <Compile Include="Linq\TestBases\NumberTests.cs" />
+    <Compile Include="Linq\TestBases\SelectTests.cs" />
     <Compile Include="Extensions\DatabaseTests.cs" />
     <Compile Include="Extensions\DateTests.cs" />
     <Compile Include="Extensions\FileTests.cs" />
     <Compile Include="Extensions\NumericTests.cs" />
     <Compile Include="Extensions\ObjectTests.cs" />
-    <Compile Include="LINQ\MySqlTests.cs" />
-    <Compile Include="LINQ\SQL2005Tests.cs" />
-    <Compile Include="LINQ\SQL2008Tests.cs" />
-    <Compile Include="LINQ\SQLiteTests.cs" />
-    <Compile Include="LINQ\TestBases\Setup.cs" />
-    <Compile Include="LINQ\TestBases\TestDB.cs" />
+    <Compile Include="Linq\MySqlTests.cs" />
+    <Compile Include="Linq\SQL2005Tests.cs" />
+    <Compile Include="Linq\SQL2008Tests.cs" />
+    <Compile Include="Linq\SQLiteTests.cs" />
+    <Compile Include="Linq\TestBases\Setup.cs" />
+    <Compile Include="Linq\TestBases\TestDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LINQ\TestBases\StringTests.cs" />
+    <Compile Include="Linq\TestBases\StringTests.cs" />
     <Compile Include="TestClasses\Category.cs" />
     <Compile Include="TestClasses\Customer.cs" />
     <Compile Include="TestClasses\Order.cs" />
@@ -101,6 +101,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Compile Include="DataProviders\ProviderFactoryTests.cs" />
+    <Compile Include="Linq\SqlStrings\MySqlDateTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\MySqlNumberTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\MySqlSelectTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\MySqlStringTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\SQLiteDateTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\SQLiteNumberTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\SQLiteSelectTestsSql.cs" />
+    <Compile Include="Linq\SqlStrings\SQLiteStringTestsSql.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

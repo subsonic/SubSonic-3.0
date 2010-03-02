@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using SubSonic.Query;
-using SubSonic.Linq.Structure;
-using SubSonic.Schema;
 using System.Reflection;
-using SubSonic.Tests.Unit.TestClasses;
 using SubSonic.DataProviders;
 using SubSonic.Extensions;
+using SubSonic.Linq.Structure;
+using SubSonic.Query;
+using SubSonic.Schema;
+using SubSonic.Tests.Unit.TestClasses;
 
-namespace SubSonic.Tests.Unit.LINQ.TestBases
+namespace SubSonic.Tests.Unit.Linq.TestBases
 {
 	public class TestDB : IQuerySurface
 	{

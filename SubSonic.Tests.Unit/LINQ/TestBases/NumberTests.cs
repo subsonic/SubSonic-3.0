@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using SubSonic.Tests.Unit.Linq.SqlStrings;
 using Xunit;
-using SubSonic.DataProviders;
-using SubSonic.Linq.Structure;
-using SubSonic.Tests.Unit.TestClasses;
-using SubSonic.Tests.Unit.LINQ.TestBases;
-using SubSonic.Tests.Unit.LINQ.SqlStrings;
 
 namespace SubSonic.Tests.Unit.Linq.TestBases
 {

@@ -1,15 +1,10 @@
-﻿	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Text;
-	using Xunit;
-	using SubSonic.DataProviders;
-	using SubSonic.Tests.Unit.TestClasses;
-	using SubSonic.Linq.Structure;
-	using System.Threading;
-	using System.Globalization;
-	using SubSonic.Tests.Unit.LINQ.TestBases;
-	using SubSonic.Tests.Unit.LINQ.SqlStrings;
+﻿using System;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using SubSonic.Linq.Structure;
+using SubSonic.Tests.Unit.Linq.SqlStrings;
+using Xunit;
 
 	namespace SubSonic.Tests.Unit.Linq.TestBases
 	{
