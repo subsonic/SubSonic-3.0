@@ -37,14 +37,14 @@ namespace SubSonic.Tests.Migrations
         public void CreateTable_Should_CreateValid_SQL_For_SubSonicTest()
         {
             var shouldbe =
-                @"CREATE TABLE [SubSonicTests] (
-  [Key] uniqueidentifier NOT NULL,
+				@"CREATE TABLE [SubSonicTests] (
+  [Key] uniqueidentifier NOT NULL CONSTRAINT DF_SubSonicTests_Key DEFAULT (NEWID()),
   [Thinger] int NOT NULL,
   [Name] nvarchar(255) NOT NULL,
   [UserName] nvarchar(500) NOT NULL,
   [CreatedOn] datetime NOT NULL,
   [Price] decimal(10, 2) NOT NULL,
-  [Discount] float(10, 2) NOT NULL,
+  [Discount] float NOT NULL,
   [Lat] decimal(10, 3),
   [Long] decimal(10, 3),
   [SomeFlag] bit NOT NULL,
