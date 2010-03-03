@@ -263,49 +263,49 @@ namespace SubSonic.Linq.Translation.SQLite
             } else if (m.Member.DeclaringType == typeof(DateTime) || m.Member.DeclaringType == typeof(DateTimeOffset)) {
                 switch (m.Member.Name) {
                     case "Day":
-                        sb.Append("strftime('%d',");
+                        sb.Append("CAST(strftime('%d',");
                         this.Visit(m.Expression);
-                        sb.Append(")");
+                        sb.Append(") AS INTEGER)");
                         return m;
                     case "Month":
-                        sb.Append("strftime('%m',");
+                        sb.Append("CAST(strftime('%m',");
                         this.Visit(m.Expression);
-                        sb.Append(")");
+                        sb.Append(") AS INTEGER)");
                         return m;
                     case "Year":
-                        sb.Append("strftime('%y',");
+                        sb.Append("CAST(strftime('%Y',");
                         this.Visit(m.Expression);
-                        sb.Append(")");
+                        sb.Append(") AS INTEGER)");
                         return m;
                     case "Hour":
-                        sb.Append("strftime('%H',");
+                        sb.Append("CAST(strftime('%H',");
                         this.Visit(m.Expression);
-                        sb.Append(")");
+                        sb.Append(") AS INTEGER)");
                         return m;
                     case "Minute":
-                        sb.Append("strftime('%M',");
+                        sb.Append("CAST(strftime('%M',");
                         this.Visit(m.Expression);
-                        sb.Append(")");
+                        sb.Append(") AS INTEGER)");
                         return m;
                     case "Second":
-                        sb.Append("strftime('%S',");
+                        sb.Append("CAST(strftime('%S',");
                         this.Visit(m.Expression);
-                        sb.Append(")");
+                        sb.Append(") AS INTEGER)");
                         return m;
                     case "Millisecond":
-                        sb.Append("strftime('%f',");
+                        sb.Append("CAST(strftime('%f',");
                         this.Visit(m.Expression);
-                        sb.Append(")");
+                        sb.Append(") AS INTEGER)");
                         return m;
                     case "DayOfWeek":
-                        sb.Append("strftime('%w',");
+                        sb.Append("CAST(strftime('%w',");
                         this.Visit(m.Expression);
-                        sb.Append(")");
+                        sb.Append(") AS INTEGER)");
                         return m;
                     case "DayOfYear":
-                        sb.Append("DATE( ");
+                        sb.Append("CAST(DATE( ");
                         this.Visit(m.Expression);
-                        sb.Append(",'MM/DD/YYYY')");
+                        sb.Append(",'MM/DD/YYYY') AS INTEGER)");
                         return m;
                 }
             }
