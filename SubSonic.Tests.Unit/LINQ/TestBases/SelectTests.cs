@@ -34,16 +34,6 @@ using Xunit;
 						_db.Customers.Where(
 								c => _db.Orders.Where(o => o.CustomerID == c.CustomerID).All(o => o.OrderDate > DateTime.Parse("5/1/2008")));
 
-				Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
-				string expectedSql = @"SELECT [t0].[Address], [t0].[City], [t0].[CompanyName], [t0].[ContactName], [t0].[Country], [t0].[CustomerID], [t0].[Region]
-	FROM [Customers] AS t0
-	WHERE NOT EXISTS(
-		SELECT NULL 
-		FROM [Orders] AS t1
-		WHERE (([t1].[CustomerID] = [t0].[CustomerID]) AND NOT ([t1].[OrderDate] > 05/01/2008 00:00:00))
-		)";
-
 				Assert.Equal(selectTestsSql.All_With_SubQuery, result.GetQueryText());
 			}
 
@@ -143,7 +133,6 @@ using Xunit;
 			public void Distinct_GroupBy()
 			{
 				var result = _db.Orders.Distinct().GroupBy(o => o.CustomerID);
-				string expectedSql = "SELECT [t0].[CustomerID]\r\nFROM (\r\n  SELECT DISTINCT [t1].[CustomerID], [t1].[OrderDate], [t1].[OrderID], [t1].[RequiredDate], [t1].[ShippedDate]\r\n  FROM [Orders] AS t1\r\n  ) AS t0\r\nGROUP BY [t0].[CustomerID]\n\nSELECT DISTINCT [t0].[CustomerID], [t0].[OrderDate], [t0].[OrderID], [t0].[RequiredDate], [t0].[ShippedDate]\r\nFROM [Orders] AS t0\r\nWHERE (([t0].[CustomerID] IS NULL AND [t1].[CustomerID] IS NULL) OR ([t0].[CustomerID] = [t1].[CustomerID]))";
 				Assert.Equal(selectTestsSql.Distinct_GroupBy, result.GetQueryText());
 			}
 
