@@ -33,8 +33,9 @@ namespace SubSonic.Query
         /// <param name="columns">The columns.</param>
         public Select(IDataProvider provider, params string[] columns)
         {
-            this.sqlFragment = new SqlFragment(_provider);
             _provider = provider;
+            this.sqlFragment = new SqlFragment(_provider);
+
             SelectColumnList = columns;
             SQLCommand = this.sqlFragment.SELECT;
         }
