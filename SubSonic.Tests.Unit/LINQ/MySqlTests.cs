@@ -25,7 +25,7 @@ namespace SubSonic.Tests.Unit.Linq
 	{
 		public MySQLSelectTests()
 		{
-			selectTestsSql = new MySqlSelectTestsSql();
+			_selectTestsSql = new MySqlSelectTestsSql();
 			_db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
 		}
 	}
@@ -34,7 +34,7 @@ namespace SubSonic.Tests.Unit.Linq
 	{
 		public MySQLNumberTests()
 		{
-			numberTestsSql = new MySqlNumberTestsSql();
+			_numberTestsSql = new MySqlNumberTestsSql();
 			_db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
 		}
 	}
@@ -43,7 +43,7 @@ namespace SubSonic.Tests.Unit.Linq
 	{
 		public MySQLStringTests()
 		{
-			stringTestsSql = new MySqlStringTestsSql();
+			_stringTestsSql = new MySqlStringTestsSql();
 			_db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
 		}
 	}
@@ -52,7 +52,7 @@ namespace SubSonic.Tests.Unit.Linq
 	{
 		public MySQLDateTests()
 		{
-			dateTestsSql = new MySqlDateTestsSql();
+			_dateTestsSql = new MySqlDateTestsSql();
 			_db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
 		}
 	}

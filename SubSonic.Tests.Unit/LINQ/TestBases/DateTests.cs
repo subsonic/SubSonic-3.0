@@ -6,17 +6,16 @@ using Xunit;
 namespace SubSonic.Tests.Unit.Linq.TestBases
 {
 	// ReSharper disable InconsistentNaming
-	public abstract class DateTests
+	public abstract class DateTests : LinqTestsBase
 	{
-		protected TestDB _db;
-		protected IDateTestsSql dateTestsSql;
+		protected IDateTestsSql _dateTestsSql;
 
 		[Fact]
 		public void DateTime_Day()
 		{
 			var result = _db.Orders.Where(o => o.OrderDate.Day == 5);
 
-			Assert.Equal(dateTestsSql.DateTime_Day, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_dateTestsSql.DateTime_Day, result.GetQueryText());
 		}
 
 		[Fact]
@@ -24,7 +23,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderDate.DayOfWeek == DayOfWeek.Friday);
 
-			Assert.Equal(dateTestsSql.DateTime_DayOfWeek, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_dateTestsSql.DateTime_DayOfWeek, result.GetQueryText());
 		}
 
 		[Fact]
@@ -32,7 +31,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderDate.DayOfYear == 360);
 
-			Assert.Equal(dateTestsSql.DateTime_DayOfYear, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_dateTestsSql.DateTime_DayOfYear, result.GetQueryText());
 		}
 
 		[Fact]
@@ -40,7 +39,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderDate.Hour == 6);
 
-			Assert.Equal(dateTestsSql.DateTime_Hour, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_dateTestsSql.DateTime_Hour, result.GetQueryText());
 		}
 
 		[Fact]
@@ -48,7 +47,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderDate.Millisecond == 200);
 
-			Assert.Equal(dateTestsSql.DateTime_Millisecond, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_dateTestsSql.DateTime_Millisecond, result.GetQueryText());
 		}
 
 		[Fact]
@@ -56,7 +55,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderDate.Minute == 32);
 
-			Assert.Equal(dateTestsSql.DateTime_Minute, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_dateTestsSql.DateTime_Minute, result.GetQueryText());
 		}
 
 		[Fact]
@@ -64,7 +63,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderDate.Month == 12);
 
-			Assert.Equal(dateTestsSql.DateTime_Month, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_dateTestsSql.DateTime_Month, result.GetQueryText());
 		}
 
 		[Fact]
@@ -72,7 +71,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderDate.Second == 47);
 
-			Assert.Equal(dateTestsSql.DateTime_Second, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_dateTestsSql.DateTime_Second, result.GetQueryText());
 		}
 
 		[Fact]
@@ -80,7 +79,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderDate.Year == 2007);
 
-			Assert.Equal(dateTestsSql.DateTime_Year, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_dateTestsSql.DateTime_Year, result.GetQueryText());
 		}
 	}
 	// ReSharper restore InconsistentNaming

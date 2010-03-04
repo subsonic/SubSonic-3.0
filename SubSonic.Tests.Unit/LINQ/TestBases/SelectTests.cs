@@ -12,10 +12,9 @@ using Xunit;
 		// these are unit tests and I like underscores
 		// suck it Osherove :)
 		// [TestFixture]
-		public abstract class SelectTests
+		public abstract class SelectTests : LinqTestsBase
 		{
-			protected TestDB _db;
-			protected ISelectTestsSql selectTestsSql;
+			protected ISelectTestsSql _selectTestsSql;
 
 			//[Fact]
 			//public void All_With_StartsWith()
@@ -34,7 +33,7 @@ using Xunit;
 						_db.Customers.Where(
 								c => _db.Orders.Where(o => o.CustomerID == c.CustomerID).All(o => o.OrderDate > DateTime.Parse("5/1/2008")));
 
-				Assert.Equal(selectTestsSql.All_With_SubQuery, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.All_With_SubQuery, result.GetQueryText());
 			}
 
 			//[Fact]
@@ -50,7 +49,7 @@ using Xunit;
 				string[] ids = new[] { "TEST1", "TEST2" };
 				var result = _db.Customers.Where(c => ids.Any(id => c.CustomerID == id));
 			
-				Assert.Equal(selectTestsSql.Any_With_Collection, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Any_With_Collection, result.GetQueryText());
 			}
 
 			[Fact]
@@ -58,7 +57,7 @@ using Xunit;
 			{
 				string[] ids = new[] { "ABCDE", "TEST1" };
 				var result = _db.Customers.Where(c => ids.Any(id => c.CustomerID == id));
-				Assert.Equal(selectTestsSql.Any_With_Collection_One_False, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Any_With_Collection_One_False, result.GetQueryText());
 			}
 
 			[Fact]
@@ -66,7 +65,7 @@ using Xunit;
 			{
 				var result =
 						_db.Customers.Where(x => x.ContactName.Contains("har"));
-				Assert.Equal(selectTestsSql.Contains_Resolves_Literal, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Contains_Resolves_Literal, result.GetQueryText());
 			}
 
 			[Fact]
@@ -75,7 +74,7 @@ using Xunit;
 				string[] ids = new[] { "TEST2", "TEST1" };
 				var result =
 						_db.Customers.Where(c => ids.Contains(c.CustomerID));
-				Assert.Equal(selectTestsSql.Contains_With_LocalCollection_2_True, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Contains_With_LocalCollection_2_True, result.GetQueryText());
 			}
 
 			[Fact]
@@ -84,7 +83,7 @@ using Xunit;
 				string[] ids = new[] { "ABCDE", "TEST1" };
 				var result =
 						_db.Customers.Where(c => ids.Contains(c.CustomerID));
-				Assert.Equal(selectTestsSql.Contains_With_LocalCollection_OneFalse, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Contains_With_LocalCollection_OneFalse, result.GetQueryText());
 			}
 
 			[Fact]
@@ -93,7 +92,7 @@ using Xunit;
 				var result =
 						_db.Customers.Where(c => _db.Orders.Select(o => o.CustomerID).Contains(c.CustomerID));
 				
-				Assert.Equal(selectTestsSql.Contains_With_Subquery, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Contains_With_Subquery, result.GetQueryText());
 			}
 
 			[Fact]
@@ -101,7 +100,7 @@ using Xunit;
 			{
 				var result = _db.Customers.Select(c => c.City).Distinct();
 				
-				Assert.Equal(selectTestsSql.Count_Distinct, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Count_Distinct, result.GetQueryText());
 			}
 
 			//[Fact]
@@ -110,7 +109,7 @@ using Xunit;
 			//  // Hits DB
 			//  var result = _db.Customers.Distinct().Count(x => x.CustomerID == "TEST1");
 
-			//  Assert.Equal(1, result);
+			//  AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(1, result);
 			//}
 
 			[Fact]
@@ -118,7 +117,7 @@ using Xunit;
 			{
 				var result = _db.Orders.Select(o => o.OrderID);
 				
-				Assert.Equal(selectTestsSql.Count_No_Args, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Count_No_Args, result.GetQueryText());
 			}
 
 			//[Fact]
@@ -126,14 +125,14 @@ using Xunit;
 			//{
 			//  // Hits DB
 			//  var result = _db.Orders.Count(x => x.OrderID > 0);
-			//  Assert.Equal(100, result);
+			//  AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(100, result);
 			//}
 
 			[Fact]
 			public void Distinct_GroupBy()
 			{
 				var result = _db.Orders.Distinct().GroupBy(o => o.CustomerID);
-				Assert.Equal(selectTestsSql.Distinct_GroupBy, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Distinct_GroupBy, result.GetQueryText());
 			}
 
 			[Fact]
@@ -141,7 +140,7 @@ using Xunit;
 			{
 				var result = _db.Customers.Distinct();
 				
-				Assert.Equal(selectTestsSql.Distinct_Should_Not_Fail, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Distinct_Should_Not_Fail, result.GetQueryText());
 			}
 
 			[Fact]
@@ -149,7 +148,7 @@ using Xunit;
 			{
 				var result = _db.Customers.Select(x => x.City).Distinct();
 
-				Assert.Equal(selectTestsSql.Distinct_Should_Return_11_For_Scalar_CustomerCity, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Distinct_Should_Return_11_For_Scalar_CustomerCity, result.GetQueryText());
 			}
 
 			[Fact]
@@ -157,7 +156,7 @@ using Xunit;
 			{
 				var result = _db.Customers.Select(x => x.City).Distinct().OrderBy(x => x);
 
-				Assert.Equal(selectTestsSql.Distinct_Should_Return_69_For_Scalar_CustomerCity_Ordered, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Distinct_Should_Return_69_For_Scalar_CustomerCity_Ordered, result.GetQueryText());
 			}
 
 			//[Fact]
@@ -171,14 +170,14 @@ using Xunit;
 			public void GroupBy_Basic()
 			{
 				var result = _db.Customers.GroupBy(c => c.City);
-				Assert.Equal(selectTestsSql.GroupBy_Basic, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.GroupBy_Basic, result.GetQueryText());
 			}
 
 			[Fact]
 			public void GroupBy_Distinct()
 			{
 				var result = _db.Orders.GroupBy(o => o.CustomerID).Distinct();
-				Assert.Equal(selectTestsSql.GroupBy_Distinct, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.GroupBy_Distinct, result.GetQueryText());
 			}
 			
 
@@ -187,7 +186,7 @@ using Xunit;
 			{
 				var result = _db.Customers.GroupBy(c => c.City).SelectMany(x => x);
 
-				Assert.Equal(selectTestsSql.GroupBy_SelectMany, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.GroupBy_SelectMany, result.GetQueryText());
 			}
 
 			[Fact]
@@ -202,7 +201,7 @@ using Xunit;
 																																		Avg = g.Average(o => o.OrderID)
 																																	});
 
-				Assert.Equal(selectTestsSql.GroupBy_Sum, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.GroupBy_Sum, result.GetQueryText());
 			}
 
 			[Fact]
@@ -215,7 +214,7 @@ using Xunit;
 							Max = g.Max()
 						});
 
-				Assert.Equal(selectTestsSql.GroupBy_Sum_With_Element_Selector_Sum_Max, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.GroupBy_Sum_With_Element_Selector_Sum_Max, result.GetQueryText());
 			}
 
 			[Fact]
@@ -230,7 +229,7 @@ using Xunit;
 																														 Avg = g.Average(o => o.OrderID)
 																													 });
 
-				Assert.Equal(selectTestsSql.GroupBy_Sum_With_Result_Selector, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.GroupBy_Sum_With_Result_Selector, result.GetQueryText());
 			}
 
 			[Fact]
@@ -242,7 +241,7 @@ using Xunit;
 							o.OrderID
 						}).Select(g => g.Sum(x => x.OrderID));
 
-				Assert.Equal(selectTestsSql.GroupBy_With_Anon_Element, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.GroupBy_With_Anon_Element, result.GetQueryText());
 			}
 
 			[Fact]
@@ -251,7 +250,7 @@ using Xunit;
 				// note: groups are retrieved through a separately execute subquery per row
 				var result = _db.Orders.GroupBy(o => o.CustomerID, o => o.OrderID);
 
-				Assert.Equal(selectTestsSql.GroupBy_With_Element_Selector, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.GroupBy_With_Element_Selector, result.GetQueryText());
 			}
 
 			[Fact]
@@ -259,7 +258,7 @@ using Xunit;
 			{
 				var result = _db.Orders.GroupBy(o => o.CustomerID, o => o.OrderID).Select(g => g.Sum());
 
-				Assert.Equal(selectTestsSql.GroupBy_With_Element_Selector_Sum, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.GroupBy_With_Element_Selector_Sum, result.GetQueryText());
 			}
 
 			[Fact]
@@ -268,7 +267,7 @@ using Xunit;
 				var result =
 						_db.Orders.OrderBy(o => o.OrderID).GroupBy(o => o.CustomerID).Select(g => g.Sum(o => o.OrderID));
 
-				Assert.Equal(selectTestsSql.GroupBy_With_OrderBy, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.GroupBy_With_OrderBy, result.GetQueryText());
 			}
 
 			[Fact]
@@ -278,7 +277,7 @@ using Xunit;
 										 join p in _db.Products on c.CategoryID equals p.CategoryID
 										 select p;
 
-				Assert.Equal(selectTestsSql.Join_To_Categories, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Join_To_Categories, result.GetQueryText());
 			}
 
 			[Fact]
@@ -288,7 +287,7 @@ using Xunit;
 											orderby c.CustomerID
 											select c);
 
-				Assert.Equal(selectTestsSql.OrderBy_CustomerID, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.OrderBy_CustomerID, result.GetQueryText());
 			}
 
 			[Fact]
@@ -298,7 +297,7 @@ using Xunit;
 											orderby c.CustomerID descending
 											select c);
 
-				Assert.Equal(selectTestsSql.OrderBy_CustomerID_Descending, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.OrderBy_CustomerID_Descending, result.GetQueryText());
 			}
 
 			[Fact]
@@ -306,7 +305,7 @@ using Xunit;
 			{
 				var result = _db.Customers.OrderByDescending(x => x.CustomerID).ThenBy(x => x.City).Select(x => x.City);
 
-				Assert.Equal(selectTestsSql.OrderBy_CustomerID_Descending_ThenBy_City, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.OrderBy_CustomerID_Descending_ThenBy_City, result.GetQueryText());
 			}
 
 			[Fact]
@@ -314,7 +313,7 @@ using Xunit;
 			{
 				var result = _db.Customers.OrderByDescending(x => x.CustomerID).ThenByDescending(x => x.City).Select(x => x.City);
 
-				Assert.Equal(selectTestsSql.OrderBy_CustomerID_Descending_ThenByDescending_City, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.OrderBy_CustomerID_Descending_ThenByDescending_City, result.GetQueryText());
 			}
 
 			[Fact]
@@ -322,7 +321,7 @@ using Xunit;
 			{
 				var result = _db.Customers.OrderBy(x => x.CompanyName).OrderBy(x => x.City).Select(x => x.City);
 
-				Assert.Equal(selectTestsSql.OrderBy_CustomerID_OrderBy_Company_City, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.OrderBy_CustomerID_OrderBy_Company_City, result.GetQueryText());
 			}
 
 			[Fact]
@@ -330,7 +329,7 @@ using Xunit;
 			{
 				var result = _db.Customers.OrderBy(x => x.CustomerID).ThenBy(x => x.City).Select(x => x.City);
 
-				Assert.Equal(selectTestsSql.OrderBy_CustomerID_ThenBy_City, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.OrderBy_CustomerID_ThenBy_City, result.GetQueryText());
 			}
 
 			[Fact]
@@ -340,7 +339,7 @@ using Xunit;
 											orderby c.CustomerID
 											select c).Select(c => c.Address);
 
-				Assert.Equal(selectTestsSql.OrderBy_CustomerID_With_Select, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.OrderBy_CustomerID_With_Select, result.GetQueryText());
 			}
 
 			[Fact]
@@ -354,7 +353,7 @@ using Xunit;
 												o.OrderID
 											});
 
-				Assert.Equal(selectTestsSql.OrderBy_Join, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.OrderBy_Join, result.GetQueryText());
 			}
 
 			[Fact]
@@ -369,21 +368,21 @@ using Xunit;
 												o.OrderID
 											});
 
-				Assert.Equal(selectTestsSql.OrderBy_SelectMany, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.OrderBy_SelectMany, result.GetQueryText());
 			}
 
 			[Fact]
 			public void Paging_With_Skip_Take()
 			{
 				var result = _db.Products.Skip(10).Take(20).OrderBy(x => x.ProductID);
-				Assert.Equal(selectTestsSql.Paging_With_Skip_Take, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Paging_With_Skip_Take, result.GetQueryText());
 			}
 
 			[Fact]
 			public void Paging_With_Take()
 			{
 				var result = _db.Products.Take(20);
-				Assert.Equal(selectTestsSql.Paging_With_Take, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Paging_With_Take, result.GetQueryText());
 			}
 
 			[Fact]
@@ -391,7 +390,7 @@ using Xunit;
 			{
 				var result = _db.Products.Where(x => false);
 
-				Assert.Equal(selectTestsSql.Select_0_When_Set_False, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_0_When_Set_False, result.GetQueryText());
 			}
 
 			[Fact]
@@ -399,7 +398,7 @@ using Xunit;
 			{
 				var result = _db.Products.Where(x => true);
 
-				Assert.Equal(selectTestsSql.Select_100_When_Set_True, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_100_When_Set_True, result.GetQueryText());
 			}
 
 			[Fact]
@@ -407,7 +406,7 @@ using Xunit;
 			{
 				var result = _db.Products.Select(x => 1);
 
-				Assert.Equal(selectTestsSql.Select_Anon_Constant_Int, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_Anon_Constant_Int, result.GetQueryText());
 			}
 
 			[Fact]
@@ -415,7 +414,7 @@ using Xunit;
 			{
 				var result = _db.Products.Select(x => (string)null);
 
-				Assert.Equal(selectTestsSql.Select_Anon_Constant_NullString, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_Anon_Constant_NullString, result.GetQueryText());
 			}
 
 			[Fact]
@@ -423,7 +422,7 @@ using Xunit;
 			{
 				var result = _db.Products.Select(x => new { });
 
-				Assert.Equal(selectTestsSql.Select_Anon_Empty, (result.Provider as IQueryText).GetQueryText(result.Expression));
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_Anon_Empty, (result.Provider as IQueryText).GetQueryText(result.Expression));
 			}
 
 			[Fact]
@@ -434,7 +433,7 @@ using Xunit;
 					Thing = 1
 				});
 
-				Assert.Equal(selectTestsSql.Select_Anon_Literal, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_Anon_Literal, result.GetQueryText());
 			}
 
 			[Fact]
@@ -449,7 +448,7 @@ using Xunit;
 					}
 				});
 
-				Assert.Equal(selectTestsSql.Select_Anon_Nested, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_Anon_Nested, result.GetQueryText());
 			}
 
 			[Fact]
@@ -460,7 +459,7 @@ using Xunit;
 					x.ProductName
 				});
 
-				Assert.Equal(selectTestsSql.Select_Anon_One, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_Anon_One, result.GetQueryText());
 			}
 
 			[Fact]
@@ -472,7 +471,7 @@ using Xunit;
 					x
 				});
 
-				Assert.Equal(selectTestsSql.Select_Anon_One_And_Object, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_Anon_One_And_Object, result.GetQueryText());
 			}
 
 			[Fact]
@@ -485,7 +484,7 @@ using Xunit;
 					x.Discontinued
 				});
 				
-				Assert.Equal(selectTestsSql.Select_Anon_Three, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_Anon_Three, result.GetQueryText());
 			}
 
 			[Fact]
@@ -497,7 +496,7 @@ using Xunit;
 					x.UnitPrice
 				});
 
-				Assert.Equal(selectTestsSql.Select_Anon_Two, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_Anon_Two, result.GetQueryText());
 			}
 
 			[Fact]
@@ -506,7 +505,7 @@ using Xunit;
 				int thing = 10;
 				var result = _db.Products.Select(x => thing);
 
-				Assert.Equal(selectTestsSql.Select_Anon_With_Local, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_Anon_With_Local, result.GetQueryText());
 			}
 
 			[Fact]
@@ -516,7 +515,7 @@ using Xunit;
 										 where p.ProductID == 1
 										 select _db.OrderDetails.Where(x => x.ProductID == p.ProductID).Count();
 
-				Assert.Equal(selectTestsSql.Select_Nested_Collection, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_Nested_Collection, result.GetQueryText());
 			}
 
 			[Fact]
@@ -529,7 +528,7 @@ using Xunit;
 											 Thing = _db.OrderDetails.Where(x => x.ProductID == p.ProductID)
 										 };
 
-			Assert.Equal(selectTestsSql.Select_Nested_Collection_With_AnonType, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_Nested_Collection_With_AnonType, result.GetQueryText());
 			}
 
 			[Fact]
@@ -537,7 +536,7 @@ using Xunit;
 			{
 				var result = _db.Products.Select(x => x);
 
-				Assert.Equal(selectTestsSql.Select_On_Self, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_On_Self, result.GetQueryText());
 			}
 
 			[Fact]
@@ -545,7 +544,7 @@ using Xunit;
 			{
 				var result = _db.Products.Select(x => x.ProductName);
 
-				Assert.Equal(selectTestsSql.Select_Scalar, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Select_Scalar, result.GetQueryText());
 			}
 
 			//[Fact]
@@ -557,7 +556,7 @@ using Xunit;
 			//                select p).SingleOrDefault();
 
 			//  Assert.NotNull(result);
-			//  Assert.Equal(1, result.ProductID);
+			//  AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(1, result.ProductID);
 			//}
 
 			[Fact]
@@ -572,7 +571,7 @@ using Xunit;
 											 o.OrderID
 										 };
 
-				Assert.Equal(selectTestsSql.SelectMany_Customer_Orders, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.SelectMany_Customer_Orders, result.GetQueryText());
 			}
 
 			//[Fact]
@@ -587,7 +586,7 @@ using Xunit;
 			//{
 			//  // Hits DB
 			//  var result = _db.Orders.Select(o => o.OrderID).Sum();
-			//  Assert.Equal(5050, result);
+			//  AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(5050, result);
 			//}
 					
 			//[Fact]
@@ -595,7 +594,7 @@ using Xunit;
 			//{
 			//  // Hits DB
 			//  var result = _db.Orders.Sum(x => x.OrderID);
-			//  Assert.Equal(5050, result);
+			//  AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(5050, result);
 			//}
 
 			[Fact]
@@ -604,7 +603,7 @@ using Xunit;
 				var result =
 						_db.Customers.Where(c => c.City.EndsWith("10"));
 
-				Assert.Equal(selectTestsSql.Where_Resolves_String_EndsWith_Literal, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Where_Resolves_String_EndsWith_Literal, result.GetQueryText());
 			}
 
 			[Fact]
@@ -613,7 +612,7 @@ using Xunit;
 				var result =
 						_db.Customers.Where(c => c.ContactName.EndsWith(c.ContactName));
 
-				Assert.Equal(selectTestsSql.Where_Resolves_String_EndsWith_OtherColumn, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Where_Resolves_String_EndsWith_OtherColumn, result.GetQueryText());
 			}
 
 			[Fact]
@@ -622,7 +621,7 @@ using Xunit;
 				var result =
 						_db.Customers.Where(c => string.IsNullOrEmpty(c.City));
 
-				Assert.Equal(selectTestsSql.Where_Resolves_String_IsNullOrEmpty, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Where_Resolves_String_IsNullOrEmpty, result.GetQueryText());
 			}
 
 			[Fact]
@@ -631,7 +630,7 @@ using Xunit;
 				var result =
 						_db.Customers.Where(c => c.City.Length == 7);
 
-				Assert.Equal(selectTestsSql.Where_Resolves_String_Length, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Where_Resolves_String_Length, result.GetQueryText());
 			}
 
 			[Fact]
@@ -640,7 +639,7 @@ using Xunit;
 				var result =
 						_db.Customers.Where(c => c.ContactName.StartsWith("C"));
 
-				Assert.Equal(selectTestsSql.Where_Resolves_String_StartsWith_Literal, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Where_Resolves_String_StartsWith_Literal, result.GetQueryText());
 			}
 
 			[Fact]
@@ -649,7 +648,7 @@ using Xunit;
 				var result =
 						_db.Customers.Where(c => c.ContactName.StartsWith(c.ContactName));
 
-				Assert.Equal(selectTestsSql.Where_Resolves_String_StartsWith_OtherColumn, result.GetQueryText());
+				AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.Where_Resolves_String_StartsWith_OtherColumn, result.GetQueryText());
 			}
 		}
 		// ReSharper restore InconsistentNaming

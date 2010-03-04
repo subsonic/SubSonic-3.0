@@ -6,12 +6,11 @@ using Xunit;
 namespace SubSonic.Tests.Unit.Linq.TestBases
 {
 	// ReSharper disable InconsistentNaming
-	public abstract class NumberTests
+	public abstract class NumberTests : LinqTestsBase
 	{
-		#region Fields (2) 
+		#region Fields (1) 
 
-		protected TestDB _db;
-		protected INumberTestsSql numberTestsSql;
+		protected INumberTestsSql _numberTestsSql;
 
 		#endregion Fields 
 
@@ -24,7 +23,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID > 0 && o.OrderID < 2000);
 
-			Assert.Equal(numberTestsSql.And, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.And, result.GetQueryText());
 		}
 
 		[Fact]
@@ -32,7 +31,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Customers.Where(c => (c.City ?? c.Country ?? "Seattle") == "Seattle");
 
-			Assert.Equal(numberTestsSql.Coalesce2, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Coalesce2, result.GetQueryText());
 		}
 
 		[Fact]
@@ -40,7 +39,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Customers.Where(c => (c.City ?? "Seattle") == "Seattle");
 
-			Assert.Equal(numberTestsSql.Coalsce, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Coalsce, result.GetQueryText());
 		}
 
 		[Fact]
@@ -48,7 +47,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => decimal.Add(o.OrderID, 0.0m) == 0.0m);
 
-			Assert.Equal(numberTestsSql.Decimal_Add, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Decimal_Add, result.GetQueryText());
 		}
 
 		[Fact]
@@ -56,7 +55,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => decimal.Ceiling(o.OrderID) == 0.0m);
 
-			Assert.Equal(numberTestsSql.Decimal_Ceiling, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Decimal_Ceiling, result.GetQueryText());
 		}
 
 		[Fact]
@@ -65,7 +64,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 			// prove that type.Compare(x,y) works with decimal
 			var result = _db.Orders.Where(o => decimal.Compare(o.OrderID, 0.0m) == 0);
 
-			Assert.Equal(numberTestsSql.Decimal_Compare, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Decimal_Compare, result.GetQueryText());
 		}
 
 		[Fact]
@@ -73,7 +72,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => decimal.Divide(o.OrderID, 1.0m) == 1.0m);
 
-			Assert.Equal(numberTestsSql.Decimal_Divide, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Decimal_Divide, result.GetQueryText());
 		}
 
 		[Fact]
@@ -81,7 +80,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => decimal.Floor(o.OrderID) == 0.0m);
 
-			Assert.Equal(numberTestsSql.Decimal_Floor, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Decimal_Floor, result.GetQueryText());
 		}
 
 		[Fact]
@@ -90,7 +89,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 			// prove that decimals are treated normally with respect to normal comparison operators
 			var result = _db.Orders.Where(o => (o.OrderID) < 0.0m);
 
-			Assert.Equal(numberTestsSql.Decimal_LT, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Decimal_LT, result.GetQueryText());
 		}
 
 		[Fact]
@@ -98,7 +97,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => decimal.Multiply(o.OrderID, 1.0m) == 1.0m);
 
-			Assert.Equal(numberTestsSql.Decimal_Multiply, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Decimal_Multiply, result.GetQueryText());
 		}
 
 		[Fact]
@@ -106,7 +105,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => decimal.Negate(o.OrderID) == 1.0m);
 
-			Assert.Equal(numberTestsSql.Decimal_Negate, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Decimal_Negate, result.GetQueryText());
 		}
 
 		[Fact]
@@ -114,7 +113,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => decimal.Remainder(o.OrderID, 1.0m) == 0.0m);
 
-			Assert.Equal(numberTestsSql.Decimal_Remainder, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Decimal_Remainder, result.GetQueryText());
 		}
 
 		[Fact]
@@ -122,7 +121,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => decimal.Round(o.OrderID) == 0m);
 
-			Assert.Equal(numberTestsSql.Decimal_RoundDefault, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Decimal_RoundDefault, result.GetQueryText());
 		}
 
 		[Fact]
@@ -130,7 +129,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => decimal.Round(o.OrderID, 2) == 0.00m);
 
-			Assert.Equal(numberTestsSql.Decimal_RoundPlaces, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Decimal_RoundPlaces, result.GetQueryText());
 		}
 
 		[Fact]
@@ -138,7 +137,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => decimal.Subtract(o.OrderID, 0.0m) == 0.0m);
 
-			Assert.Equal(numberTestsSql.Decimal_Subtract, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Decimal_Subtract, result.GetQueryText());
 		}
 
 		[Fact]
@@ -146,7 +145,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => decimal.Truncate(o.OrderID) == 0m);
 
-			Assert.Equal(numberTestsSql.Decimal_Truncate, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Decimal_Truncate, result.GetQueryText());
 		}
 
 		[Fact]
@@ -154,7 +153,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Customers.Where(c => c.City == null);
 
-			Assert.Equal(numberTestsSql.EqualNull, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.EqualNull, result.GetQueryText());
 		}
 
 		[Fact]
@@ -162,7 +161,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Customers.Where(c => null == c.City);
 
-			Assert.Equal(numberTestsSql.EqualNullReverse, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.EqualNullReverse, result.GetQueryText());
 		}
 
 		[Fact]
@@ -170,7 +169,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID + 0 == 0);
 
-			Assert.Equal(numberTestsSql.Int_Add, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_Add, result.GetQueryText());
 		}
 
 		[Fact]
@@ -178,7 +177,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => (o.OrderID & 1) == 0);
 
-			Assert.Equal(numberTestsSql.Int_BitwiseAnd, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_BitwiseAnd, result.GetQueryText());
 		}
 
 		[Fact]
@@ -186,7 +185,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => ~o.OrderID == 0);
 
-			Assert.Equal(numberTestsSql.Int_BitwiseNot, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_BitwiseNot, result.GetQueryText());
 		}
 
 		[Fact]
@@ -194,7 +193,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => (o.OrderID | 1) == 1);
 
-			Assert.Equal(numberTestsSql.Int_BitwiseOr, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_BitwiseOr, result.GetQueryText());
 		}
 
 		[Fact]
@@ -203,7 +202,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 			// prove that x.CompareTo(y) works for types other than string
 			var result = _db.Orders.Where(o => o.OrderID.CompareTo(1000) == 0);
 
-			Assert.Equal(numberTestsSql.Int_CompareTo, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_CompareTo, result.GetQueryText());
 		}
 
 		[Fact]
@@ -211,7 +210,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID / 1 == 1);
 
-			Assert.Equal(numberTestsSql.Int_Divide, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_Divide, result.GetQueryText());
 		}
 
 		[Fact]
@@ -219,7 +218,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID == 0);
 
-			Assert.Equal(numberTestsSql.Int_Equal, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_Equal, result.GetQueryText());
 		}
 
 		[Fact]
@@ -227,7 +226,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID > 0);
 
-			Assert.Equal(numberTestsSql.Int_GreaterThan, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_GreaterThan, result.GetQueryText());
 		}
 
 		[Fact]
@@ -235,7 +234,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID >= 0);
 
-			Assert.Equal(numberTestsSql.Int_GreaterThanOrEqual, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_GreaterThanOrEqual, result.GetQueryText());
 		}
 
 		[Fact]
@@ -243,7 +242,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID << 1 == 0);
 
-			Assert.Equal(numberTestsSql.Int_LeftShift, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_LeftShift, result.GetQueryText());
 		}
 
 		[Fact]
@@ -251,7 +250,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID < 0);
 
-			Assert.Equal(numberTestsSql.Int_LessThan, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_LessThan, result.GetQueryText());
 		}
 
 		[Fact]
@@ -259,7 +258,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID <= 0);
 
-			Assert.Equal(numberTestsSql.Int_LessThanOrEqual, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_LessThanOrEqual, result.GetQueryText());
 		}
 
 		[Fact]
@@ -267,7 +266,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID % 1 == 0);
 
-			Assert.Equal(numberTestsSql.Int_Modulo, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_Modulo, result.GetQueryText());
 		}
 
 		[Fact]
@@ -275,7 +274,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID * 1 == 1);
 
-			Assert.Equal(numberTestsSql.Int_Multiply, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_Multiply, result.GetQueryText());
 		}
 
 		[Fact]
@@ -283,7 +282,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => -o.OrderID == -1);
 	
-			Assert.Equal(numberTestsSql.Int_Negate, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_Negate, result.GetQueryText());
 		}
 
 		[Fact]
@@ -291,7 +290,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID != 0);
 
-			Assert.Equal(numberTestsSql.Int_NotEqual, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_NotEqual, result.GetQueryText());
 		}
 
 		[Fact]
@@ -299,7 +298,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID >> 1 == 0);
 
-			Assert.Equal(numberTestsSql.Int_RightShift, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_RightShift, result.GetQueryText());
 		}
 
 		[Fact]
@@ -307,7 +306,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID - 0 == 0);
 
-			Assert.Equal(numberTestsSql.Int_Subtract, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Int_Subtract, result.GetQueryText());
 		}
 
 		[Fact]
@@ -315,7 +314,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => Math.Abs(o.OrderID) == 10);
 
-			Assert.Equal(numberTestsSql.Math_Abs, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Math_Abs, result.GetQueryText());
 		}
 
 		[Fact]
@@ -323,7 +322,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => Math.Atan(o.OrderID) == 0);
 
-			Assert.Equal(numberTestsSql.Math_Atan, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Math_Atan, result.GetQueryText());
 		}
 
 		[Fact]
@@ -331,7 +330,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => Math.Atan2(o.OrderID, 3) == 0);
 
-			Assert.Equal(numberTestsSql.Math_Atan2, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Math_Atan2, result.GetQueryText());
 		}
 
 		[Fact]
@@ -339,7 +338,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => Math.Ceiling((double)o.OrderID) == 0);
 
-			Assert.Equal(numberTestsSql.Math_Ceiling, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Math_Ceiling, result.GetQueryText());
 		}
 
 		[Fact]
@@ -347,7 +346,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => Math.Cos(o.OrderID) == 0);
 
-			Assert.Equal(numberTestsSql.Math_Cos, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Math_Cos, result.GetQueryText());
 		}
 
 		[Fact]
@@ -355,7 +354,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => Math.Floor((double)o.OrderID) == 0);
 
-			Assert.Equal(numberTestsSql.Math_Floor, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Math_Floor, result.GetQueryText());
 		}
 
 		//[Fact]
@@ -368,7 +367,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => Math.Log(o.OrderID) == 0);
 
-			Assert.Equal(numberTestsSql.Math_Log, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Math_Log, result.GetQueryText());
 		}
 
 		[Fact]
@@ -376,7 +375,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => Math.Log10(o.OrderID) == 0);
 
-			Assert.Equal(numberTestsSql.Math_Log10, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Math_Log10, result.GetQueryText());
 		}
 
 		//[Fact]
@@ -389,7 +388,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => Math.Round((decimal)o.OrderID) == 0);
 
-			Assert.Equal(numberTestsSql.Math_RoundDefault, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Math_RoundDefault, result.GetQueryText());
 		}
 
 		[Fact]
@@ -397,7 +396,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => Math.Round((decimal)o.OrderID, 2) == 0);
 
-			Assert.Equal(numberTestsSql.Math_RoundToPlace, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Math_RoundToPlace, result.GetQueryText());
 		}
 
 		[Fact]
@@ -405,7 +404,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => Math.Sin(o.OrderID) == 0);
 
-			Assert.Equal(numberTestsSql.Math_Sin, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Math_Sin, result.GetQueryText());
 		}
 
 		[Fact]
@@ -413,7 +412,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => Math.Sqrt(o.OrderID) == 0);
 
-			Assert.Equal(numberTestsSql.Math_Sqrt, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Math_Sqrt, result.GetQueryText());
 		}
 
 		[Fact]
@@ -421,7 +420,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => Math.Tan(o.OrderID) == 0);
 
-			Assert.Equal(numberTestsSql.Math_Tan, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Math_Tan, result.GetQueryText());
 		}
 
 		[Fact]
@@ -429,7 +428,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => Math.Truncate((double)o.OrderID) == 0);
 
-			Assert.Equal(numberTestsSql.Math_Truncate, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Math_Truncate, result.GetQueryText());
 		}
 
 		[Fact]
@@ -437,7 +436,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => !(o.OrderID == 0));
 
-			Assert.Equal(numberTestsSql.Not, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Not, result.GetQueryText());
 		}
 
 		[Fact]
@@ -445,7 +444,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 		{
 			var result = _db.Orders.Where(o => o.OrderID < 5 || o.OrderID > 10);
 
-			Assert.Equal(numberTestsSql.Or, result.GetQueryText());
+			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_numberTestsSql.Or, result.GetQueryText());
 		}
 
 		#endregion Methods 

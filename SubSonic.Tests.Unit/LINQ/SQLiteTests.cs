@@ -24,7 +24,7 @@ namespace SubSonic.Tests.Unit.Linq
 	{
 		public SQLiteSelectTests()
 		{
-			selectTestsSql = new SQLiteSelectTestsSql();
+			_selectTestsSql = new SQLiteSelectTestsSql();
 			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DataProviders.DbClientTypeName.SqlLite);
 		}
 	}
@@ -33,7 +33,7 @@ namespace SubSonic.Tests.Unit.Linq
 	{
 		public SQLiteNumberTests()
 		{
-			numberTestsSql = new SQLiteNumberTestsSql();
+			_numberTestsSql = new SQLiteNumberTestsSql();
 			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DataProviders.DbClientTypeName.SqlLite);
 		}
 	}
@@ -42,7 +42,7 @@ namespace SubSonic.Tests.Unit.Linq
 	{
 		public SQLiteStringTests()
 		{
-			stringTestsSql = new SQLiteStringTestsSql();
+			_stringTestsSql = new SQLiteStringTestsSql();
 			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DataProviders.DbClientTypeName.SqlLite);
 		}
 	}
@@ -51,7 +51,7 @@ namespace SubSonic.Tests.Unit.Linq
 	{
 		public SQLiteDateTests()
 		{
-			dateTestsSql = new SQLiteDateTestsSql();
+			_dateTestsSql = new SQLiteDateTestsSql();
 			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DataProviders.DbClientTypeName.SqlLite);
 		}
 	}

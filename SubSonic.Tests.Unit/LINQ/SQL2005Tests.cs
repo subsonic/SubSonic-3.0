@@ -26,7 +26,7 @@ namespace SubSonic.Tests.Unit.Linq
 		public Sql2005SelectTests()
 		{
 			_db = new TestDB(TestConfiguration.MsSql2005TestConnectionString, DbClientTypeName.MsSql);
-			selectTestsSql = new Sql2005SelectTestsSql();
+			_selectTestsSql = new Sql2005SelectTestsSql();
 		}
 	}
 
@@ -35,7 +35,7 @@ namespace SubSonic.Tests.Unit.Linq
 		public Sql2005NumberTests()
 		{
 			_db = new TestDB(TestConfiguration.MsSql2005TestConnectionString, DbClientTypeName.MsSql);
-			numberTestsSql = new Sql2005NumberTestsSql();
+			_numberTestsSql = new Sql2005NumberTestsSql();
 		}
 	}
 
@@ -44,7 +44,7 @@ namespace SubSonic.Tests.Unit.Linq
 		public Sql2005StringTests()
 		{
 			_db = new TestDB(TestConfiguration.MsSql2005TestConnectionString, DbClientTypeName.MsSql);
-			stringTestsSql = new Sql2005StringTestsSql();
+			_stringTestsSql = new Sql2005StringTestsSql();
 		}
 	}
 
@@ -53,7 +53,7 @@ namespace SubSonic.Tests.Unit.Linq
 		public Sql2005DateTests()
 		{
 			_db = new TestDB(TestConfiguration.MsSql2005TestConnectionString, DbClientTypeName.MsSql);
-			dateTestsSql = new Sql2005DateTestsSql();
+			_dateTestsSql = new Sql2005DateTestsSql();
 		}
 	}
 }

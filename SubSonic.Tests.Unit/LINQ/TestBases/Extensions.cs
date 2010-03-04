@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using SubSonic.Linq.Structure;
+using Xunit;
 
 namespace SubSonic.Tests.Unit.Linq.TestBases
 {
