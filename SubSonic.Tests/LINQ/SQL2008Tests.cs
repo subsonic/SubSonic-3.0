@@ -34,31 +34,4 @@ namespace SubSonic.Tests.Linq
             setup.LoadTestData();
         }
     }
-
-    // [TestFixture]
-    public class Sql2008NumberTests : NumberTests
-    {
-        public Sql2008NumberTests()
-        {
-            _db = new TestDB(TestConfiguration.MsSql2008TestConnectionString, DbClientTypeName.MsSql);
-        }
-    }
-
-    // [TestFixture]
-    public class Sql2008StringTests : StringTests
-    {
-        public Sql2008StringTests()
-        {
-            _db = new TestDB(TestConfiguration.MsSql2008TestConnectionString, DbClientTypeName.MsSql);
-        }
-    }
-
-    // [TestFixture]
-    public class Sql2008DateTests : DateTests
-    {
-        public Sql2008DateTests()
-        {
-            _db = new TestDB(TestConfiguration.MsSql2008TestConnectionString, DbClientTypeName.MsSql);
-        }
-    }
 }

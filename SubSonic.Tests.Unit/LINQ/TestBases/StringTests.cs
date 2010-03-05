@@ -7,7 +7,15 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 	// ReSharper disable InconsistentNaming
 	public abstract class StringTests : LinqTestsBase
 	{
+		#region Fields (1) 
+
 		protected IStringTestsSql _stringTestsSql;
+
+		#endregion Fields 
+
+		#region Methods (22) 
+
+		// Public Methods (22) 
 
 		[Fact]
 		public void String_CompareEQ()
@@ -185,6 +193,8 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 
 			AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_stringTestsSql.String_Trim, result.GetQueryText());
 		}
+
+		#endregion Methods 
 	}
 
 	// ReSharper restore InconsistentNaming
