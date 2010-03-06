@@ -98,8 +98,7 @@ namespace SubSonic.Linq.Structure
         /// <returns></returns>
         public virtual IEnumerable<MemberInfo> GetMappedMembers(Type rowType)
         {
-            HashSet<MemberInfo> members = new HashSet<MemberInfo>(rowType.GetFields().Cast<MemberInfo>().Where(m => this.IsMapped(m)));
-            members.UnionWith(rowType.GetProperties().Cast<MemberInfo>().Where(m => this.IsMapped(m)));
+            HashSet<MemberInfo> members = new HashSet<MemberInfo>(rowType.GetProperties().Cast<MemberInfo>().Where(m => this.IsMapped(m)));
             return members.OrderBy(m => m.Name);
         }
 

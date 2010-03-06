@@ -78,6 +78,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Structs.tt</DependentUpon>
     </Compile>
+    <Compile Include="BugReports\Generated\Territory.cs" />
     <Compile Include="BugReports\Linq.cs" />
     <Compile Include="BugReports\LinqGeneratorBugs.cs" />
     <Compile Include="BugReports\Update.cs" />
