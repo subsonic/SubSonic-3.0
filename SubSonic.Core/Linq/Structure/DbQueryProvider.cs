@@ -311,11 +311,19 @@ namespace SubSonic.Linq.Structure
         /// <returns></returns>
         public virtual IEnumerable<T> Project<T>(DbDataReader reader, Func<DbDataReader, T> fnProjector)
         {
-            while (reader.Read())
+            try
             {
-                yield return fnProjector(reader);
+                var readValues = new List<T>();
+                while (reader.Read())
+                {
+                    readValues.Add(fnProjector(reader));
+                }
+                return readValues;
             }
-            reader.Dispose();
+            finally
+            {
+                reader.Dispose();
+            }
         }
 
         /// <summary>
