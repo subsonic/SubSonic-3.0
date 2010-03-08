@@ -200,6 +200,8 @@ namespace SubSonic.SqlGeneration
             return sql;
         }
 
+        // Removed: This is a duplicate of ANSISqlGenerator functionality with additional (but unneeded) spacing!
+        /*
         protected override string GenerateAggregateSelect(Aggregate aggregate)
         {
             bool hasAlias = !String.IsNullOrEmpty(aggregate.Alias);
@@ -215,7 +217,7 @@ namespace SubSonic.SqlGeneration
             }
 
             return String.Format("{0}(`{1}`)", Aggregate.GetFunctionType(aggregate).ToUpper(), aggregate.ColumnName);
-        }
+        }*/
 
         public override string GenerateGroupBy()
         {
