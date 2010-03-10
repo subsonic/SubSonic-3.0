@@ -186,5 +186,69 @@ namespace SubSonic.Extensions
             }
             return b;
         }
+
+				/// Converts the string method calls Contains,EndsWith and StartsWith into queries
+				/// </summary>
+				/// <param name="m">The MethodCall we are attempting to map to a query.</param>
+				/// <returns>an expression tree.</returns>
+				protected override Expression VisitMethodCall(MethodCallExpression methodCallExpression)
+				{
+					Expression result = methodCallExpression;
+					var obj = methodCallExpression.Object as MemberExpression;
+					if (obj != null)
+					{
+						var constraint = new Constraint();
+						switch (methodCallExpression.Method.Name)
+						{
+							case "Contains":
+								constraint.Comparison = Comparison.Like;
+								break;
+							case "EndsWith":
+								constraint.Comparison = Comparison.StartsWith;
+								break;
+							case "StartsWith":
+								constraint.Comparison = Comparison.StartsWith;
+								break;
+							default:
+								return base.VisitMethodCall(methodCallExpression);
+						}
+						// Set the starting / ending wildcards on the parameter value... not the best place to do this, but I'm 
+						// attempting to constrain the scope of the change.
+						constraint.ConstructionFragment = obj.Member.Name;
+						// Set the current constraint... Visit will be using it, I don't know what it would do with multiple args....
+						current = constraint;
+						foreach (var arg in methodCallExpression.Arguments)
+						{
+							isLeft = false;
+							Visit(arg);
+						}
+						isLeft = true;
+						// After Visit, the current constraint will have some parameters, so set the wildcards on the parameter.
+						SetConstraintWildcards(constraint);
+					}
+
+					AddConstraint();
+					return methodCallExpression;
+				}
+
+				protected void SetConstraintWildcards(Constraint constraint)
+				{
+					if (constraint.ParameterValue is string)
+					{
+						switch (constraint.Comparison)
+						{
+							case Comparison.StartsWith:
+								constraint.ParameterValue = constraint.ParameterValue + "%";
+								break;
+							case Comparison.EndsWith:
+								constraint.ParameterValue = "%" + constraint.ParameterValue;
+								break;
+							case Comparison.Like:
+								constraint.ParameterValue = "%" + constraint.ParameterValue + "%";
+								break;
+						}
+					}
+				}
+
     }
 }
