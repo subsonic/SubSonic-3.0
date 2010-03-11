@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Xunit;
 using SouthWind;
+using SubSonic.Tests.Linq.TestBases;
+using SubSonic.Linq.Structure;
 
 namespace SubSonic.Tests.BugReports {
    
@@ -13,7 +15,7 @@ namespace SubSonic.Tests.BugReports {
         /// Issue 32 - ActiveRecord - IsLoaded not set true when query is executed
         /// http://github.com/subsonic/SubSonic-3.0/issues#issue/32
         /// </summary>
-
+			
         [Fact]
         public void Github_Issue95_Booleans_Always_Set_True() {
             var p = Product.SingleOrDefault(x => x.ProductID == 1);
@@ -97,6 +99,18 @@ namespace SubSonic.Tests.BugReports {
 
             Assert.Equal("Seafood", paged[0].CategoryName);
         }
+
+				[Fact]
+				public void Issue148_TestMode_Field_Should_Not_Be_Included_In_Query()
+				{
+					var value = from employees in Employee.All()
+											join employeeTerritories in EmployeeTerritory.All() on employees.EmployeeID equals employeeTerritories.EmployeeID
+											join territories in Territory.All() on employeeTerritories.TerritoryID equals territories.TerritoryID
+											select territories.Region;
+
+						
+					Assert.DoesNotContain("TestMode", (value as Query<Region>).QueryText);					 
+				}
     }
 
 }

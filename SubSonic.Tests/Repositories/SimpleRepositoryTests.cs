@@ -382,5 +382,31 @@ namespace SubSonic.Tests.Repositories
 
 			Assert.IsType(typeof (int), _repo.Add(newShwerko));
 		}
+
+		[Fact]
+		public void Simple_Repo_Should_Implement_String_StartsWith()
+		{
+			// Arrange
+			_repo.Add<Shwerko>(CreateTestRecord(Guid.NewGuid()));
+
+			// Act
+			Shwerko shwerko = _repo.Find<Shwerko>(s => s.Name.StartsWith("c")).FirstOrDefault();
+
+			// Assert	
+			Assert.NotNull(shwerko);
+		}
+
+		[Fact]
+		public void Simple_Repo_Should_Implement_String_Contains()
+		{
+			// Arrange
+			_repo.Add<Shwerko>(CreateTestRecord(Guid.NewGuid()));
+
+			// Act
+			Shwerko shwerko = _repo.Find<Shwerko>(s => s.Name.Contains("a")).FirstOrDefault();
+
+			// Assert
+			Assert.NotNull(shwerko);
+		}
     }
 }

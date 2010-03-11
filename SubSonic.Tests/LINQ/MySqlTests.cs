@@ -43,31 +43,4 @@ namespace SubSonic.Tests.Linq
             setup.LoadTestData();
         }
     }
-
-    // [TestFixture]
-    public class MySQLNumberTests : NumberTests
-    {
-        public MySQLNumberTests()
-        {
-            _db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
-        }
-    }
-
-    // [TestFixture]
-    public class MySQLStringTests : StringTests
-    {
-        public MySQLStringTests()
-        {
-            _db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
-        }
-    }
-
-    // [TestFixture]
-    public class MySQLDateTests : DateTests
-    {
-        public MySQLDateTests()
-        {
-            _db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
-        }
-    }
 }

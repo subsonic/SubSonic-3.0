@@ -11,27 +11,17 @@
 //   implied. See the License for the specific language governing
 //   rights and limitations under the License.
 // 
-//using NUnit.Framework;
 using SubSonic.DataProviders;
-using SubSonic.Tests.Linq.TestBases;
-using Xunit;
 
-namespace SubSonic.Tests.Linq
+namespace SubSonic.Tests.Unit.Linq.TestBases
 {
-    // ReSharper disable InconsistentNaming
-    // these are unit tests and I like underscores
-    // suck it Osherove :)
-
-    // [TestFixture]
-    public class Sql2008SelectTests : SelectTests
+    public class Setup
     {
-        public Sql2008SelectTests()
+        private IDataProvider _provider;
+
+        public Setup(IDataProvider provider)
         {
-            _db = new TestDB(TestConfiguration.MsSql2008TestConnectionString, DbClientTypeName.MsSql);
-            var setup = new Setup(_db.Provider);
-            setup.DropTestTables();
-            setup.CreateTestTable();
-            setup.LoadTestData();
+            _provider = provider;
         }
     }
 }

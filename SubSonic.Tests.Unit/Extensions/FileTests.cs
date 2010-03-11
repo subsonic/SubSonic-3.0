@@ -1,4 +1,5 @@
-﻿// 
+﻿using System.IO;
+// 
 //   SubSonic - http://subsonicproject.com
 // 
 //   The contents of this file are subject to the New BSD
@@ -11,12 +12,10 @@
 //   implied. See the License for the specific language governing
 //   rights and limitations under the License.
 // 
-using System;
 using SubSonic.Extensions;
 using Xunit;
-using System.IO;
 
-namespace SubSonic.Tests.Extensions
+namespace SubSonic.Tests.Unit.Extensions
 {
     public class FileTests
     {

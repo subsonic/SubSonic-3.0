@@ -78,10 +78,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Structs.tt</DependentUpon>
     </Compile>
+    <Compile Include="BugReports\Generated\Territory.cs" />
     <Compile Include="BugReports\Linq.cs" />
     <Compile Include="BugReports\LinqGeneratorBugs.cs" />
     <Compile Include="BugReports\Update.cs" />
-    <Compile Include="DataProviders\ProviderFactoryTests.cs" />
     <Compile Include="Repositories\MySQLSimpleRepositoryTests.cs" />
     <Compile Include="Repositories\SQLiteSimpleRepositoryTests.cs" />
     <Compile Include="Repositories\SqlServerSimpleRepositoryTests.cs" />
@@ -92,10 +92,7 @@
     <Compile Include="LINQ\SQLiteTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LINQ\TestBases\DateTests.cs" />
-    <Compile Include="LINQ\TestBases\NumberTests.cs" />
     <Compile Include="LINQ\TestBases\Setup.cs" />
-    <Compile Include="LINQ\TestBases\StringTests.cs" />
     <Compile Include="LINQ\TestBases\SelectTests.cs" />
     <Compile Include="Migrations\SQLiteMigrationTests.cs" />
     <Compile Include="Migrations\SqlServerMigrationTests.cs" />
@@ -105,16 +102,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\SimpleRepositoryTests.cs" />
     <Compile Include="SchemaTables\ToSchemaTests.cs" />
-    <Compile Include="Session.cs" />
     <Compile Include="SimpleQuery\DeleteTests.cs" />
     <Compile Include="SimpleQuery\InsertTests.cs" />
     <Compile Include="SimpleQuery\SelectTests.cs" />
     <Compile Include="SimpleQuery\UpdateTests.cs" />
-    <Compile Include="Extensions\DatabaseTests.cs" />
-    <Compile Include="Extensions\DateTests.cs" />
-    <Compile Include="Extensions\FileTests.cs" />
-    <Compile Include="Extensions\NumericTests.cs" />
-    <Compile Include="Extensions\ObjectTests.cs" />
     <Compile Include="TestClasses\Category.cs" />
     <Compile Include="TestClasses\Customer.cs" />
     <Compile Include="TestClasses\Order.cs" />
