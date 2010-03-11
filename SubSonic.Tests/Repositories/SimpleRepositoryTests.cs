@@ -34,6 +34,8 @@ namespace SubSonic.Tests.Repositories
         public DateTime? NullElDate { get; set; }
         public Guid? NullKey { get; set; }
         public int Underscored_Column { get; set; }
+        public Salutation Salutation { get; set; }
+        public Salutation? NullableSalutation { get; set; }
     }
 
     public class Shwerko2 {
@@ -46,6 +48,12 @@ namespace SubSonic.Tests.Repositories
         public DateTime? NullElDate { get; set; }
         public Guid? NullKey { get; set; }
         public int Underscored_Column { get; set; }
+    }
+
+    public enum Salutation
+    {
+        Mr,
+        Ms
     }
 
     public class DummyForDelete
@@ -408,5 +416,35 @@ namespace SubSonic.Tests.Repositories
 			// Assert
 			Assert.NotNull(shwerko);
 		}
+
+        [Fact]
+        public void Simple_Repo_Should_Load_Enums()
+        {
+            // Arrange
+            var shwerko = CreateTestRecord(Guid.NewGuid());
+            shwerko.Salutation = Salutation.Mr;
+            var id = (int)_repo.Add<Shwerko>(shwerko);
+
+            // Act
+            var loadedShwerko = _repo.Single<Shwerko>(id);
+
+            // Assert
+            Assert.Equal(Salutation.Mr, loadedShwerko.Salutation);
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Load_Nullable_Enums()
+        {
+            // Arrange
+            var shwerko = CreateTestRecord(Guid.NewGuid());
+            shwerko.NullableSalutation = Salutation.Ms;
+            var id = (int)_repo.Add<Shwerko>(shwerko);
+
+            // Act
+            var loadedShwerko = _repo.Single<Shwerko>(id);
+
+            // Assert
+            Assert.Equal(Salutation.Ms, loadedShwerko.NullableSalutation);
+        }
     }
 }
