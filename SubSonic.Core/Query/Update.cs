@@ -190,7 +190,7 @@ namespace SubSonic.Query
             Setting s = new Setting
                             {
                                 query = this,
-                                ColumnName = column.Name,
+                                ColumnName = column.QualifiedName,
                                 ParameterName = (_provider.ParameterPrefix + "up_" + column.Name),
                                 IsExpression = isExpression,
                                 DataType = column.DataType
