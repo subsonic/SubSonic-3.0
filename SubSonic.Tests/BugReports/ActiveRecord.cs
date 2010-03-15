@@ -78,11 +78,28 @@ namespace SubSonic.Tests.BugReports {
 
         [Fact]
         public void Issue54_Looping_List_Calling_Update_Should_Work() {
+
+            // Arrange
+            Exception expectedException = null;
             var list = Product.Find(x => x.ProductID < 10);
-            foreach(Product p in list){
-                p.UnitPrice=100;
-                p.Update();
+
+            // Act
+            try
+            {
+                foreach (Product p in list)
+                {
+                    p.UnitPrice = 100;
+                    p.Update();
+                }
             }
+            catch (Exception ex)
+            {
+                expectedException = ex;
+            }
+
+            // Assert
+            Assert.Null(expectedException);
+
         }
 
         [Fact]
@@ -111,6 +128,17 @@ namespace SubSonic.Tests.BugReports {
 						
 					Assert.DoesNotContain("TestMode", (value as Query<Region>).QueryText);					 
 				}
+
+			  //[Fact] // TODO: This test illustrates issue 151, it should pass once that issue is fixed (updated templates may already have fixed this)
+				//public void Issue151_Update_Should_Work_After_Save()
+				//{
+				//  Category category = new Category { CategoryName = "Test Category" };
+				//  category.Save();
+				//  category.CategoryName = "New Test Category";
+				//  category.Update();
+				//  Category loadedCategory = Category.Find(cat => cat.CategoryID == category.CategoryID).First();
+				//  Assert.Equal(category.CategoryName, loadedCategory.CategoryName);
+				//}
     }
 
 }

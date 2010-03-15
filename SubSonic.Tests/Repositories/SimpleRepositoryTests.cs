@@ -425,6 +425,19 @@ namespace SubSonic.Tests.Repositories
 			Assert.NotNull(shwerko);
 		}
 
+
+		//[Fact] // TODO: This test illustrates issue 183, it should pass once that issue is fixed
+		//public void Issue183_ToString_Should_Generate_Valid_Sql()
+		//{
+		//  // Arrange
+		//  _repo.Add<Shwerko>(CreateTestRecord(Guid.NewGuid()));
+		//  string[] numbers = new string[] { "1", "2", "3" };
+		//  // Act
+		//  IQueryable<Shwerko> shwerkos = _repo.All<Shwerko>().Where(p => numbers.Contains(p.SomeNumber.ToString()));
+		//  // Assert
+		//  Assert.NotEqual(0, shwerkos.Count());
+		//}
+
         [Fact]
         public void Simple_Repo_Should_Load_Enums()
         {
