@@ -81,6 +81,7 @@
     <Compile Include="BugReports\Generated\Territory.cs" />
     <Compile Include="BugReports\Linq.cs" />
     <Compile Include="BugReports\LinqGeneratorBugs.cs" />
+    <Compile Include="BugReports\QueryCommandBugs.cs" />
     <Compile Include="BugReports\Update.cs" />
     <Compile Include="Repositories\MySQLSimpleRepositoryTests.cs" />
     <Compile Include="Repositories\SQLiteSimpleRepositoryTests.cs" />
