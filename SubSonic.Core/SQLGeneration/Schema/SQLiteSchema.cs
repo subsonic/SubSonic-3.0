@@ -46,7 +46,7 @@ namespace SubSonic.SqlGeneration.Schema
                 case DbType.SByte:
                 case DbType.Binary:
                 case DbType.Byte:
-                    return "longblob";
+                    return "blob";
                 case DbType.Currency:
                     return "money";
                 case DbType.Time:
