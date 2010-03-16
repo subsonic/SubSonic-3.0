@@ -4,12 +4,11 @@
 MySQL
 =====
 These tests require MySQL 5.0 + and you can get that from http://mysql.org
-  * Make sure to download MySQL Workbench as well N.B. Make sure you get at least version 5.2 (as of writing this is a Development Release)
+  * Make sure to download MySQL Workbench as well N.B. Make sure you get at least version 5.2 of Workbench (as of writing this is a Development Release)
   * Open up the MySQL Workbench and create a new database called "Northwind" and one called "subsonic"
   * Open up the MySQL Query Browser against Northwind, then select File/Open Script.
   * Open up Northwind_Schema_Data_MySQL.sql in the Query Browser, and select Execute (green lighting button)
   * The tests expect MySQL to be installed at localhost, this is the default
-  * Now you can run the tests
 
 SQL2005
 =======
@@ -33,6 +32,15 @@ SQLite
 ======
 Nothing, the DBs are included in the project as are the required assemblies (I <3 SQLite :)
 
+Running the tests
+=================
+
+We use xUnit  for testing so to you'll need a test runner (a tool that runs the tests) such as:
+  * TestDriven.net - http://www.testdriven.net/quickstart.aspx
+  * The xUnit console based test runner - http://xunit.codeplex.com/wikipage?title=HowToUse
+  * The (experimental) xUnit GUI test runner - http://bradwilson.typepad.com/blog/2009/09/xunitnet-15-shipped.html
+  * ReSharper - http://www.jetbrains.com/resharper/plugins/
+
 FAQ
 ===
 Where are the DbScripts to create required databases?
@@ -41,3 +49,6 @@ In the DbScripts folder at the root of the solution
 Where are the connection strings specified?
 For ActiveRecord - In the App.config the Northwind connectionstring is used
 For all other tests - In the TestConfiguration.cs file in the root of SubSonic.Tests (next to this file) 
+
+Why don't you use MSTest?
+Because it's not available in the Express versions of Visual Studio
