@@ -41,12 +41,16 @@ namespace SubSonic.Repository
             return item.KeyValue();
         }
 
-        public int DeleteMany(Expression<Func<T, bool>> expression)
-        {
-            return 0;
-        }
-
-        public int Delete(object key)
+		public int DeleteMany(Expression<Func<T, bool>> expression)
+		{
+			foreach (var x in _items.AsQueryable().Where(expression).ToList())
+			{
+				_items.Remove(x);
+			}
+			return 0;
+		}
+		
+		public int Delete(object key)
         {
             _items.Remove(_items.SingleOrDefault(x => x.KeyValue() == key));
             return 0;
