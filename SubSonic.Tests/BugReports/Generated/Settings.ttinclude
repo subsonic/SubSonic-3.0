@@ -25,13 +25,15 @@
     //the repository. By default we set it to the connection string name
     const string DatabaseName = "Northwind";
 
+    const bool TreatTinyint1AsBool = false;
+
     //this is a list of tables you don't want generated
     string[] ExcludeTables = new string[]{
     "sysdiagrams",
     "BuildVersion",
     };
 
-    string CleanUp(string tableName){
+     string CleanUp(string tableName){
 	    string result=tableName;
     	
 	    //strip blanks
@@ -41,6 +43,7 @@
     	
 	    return result;
     }
+    
     string CheckNullable(Column col){
         string result="";
         if(col.IsNullable && col.SysType !="byte[]" && col.SysType !="string")
@@ -170,7 +173,7 @@
         }
         public Column PK{
             get{
-                return this.Columns.SingleOrDefault(x=>x.IsPK) ?? this.Columns[0];
+                return this.Columns.FirstOrDefault(x=>x.IsPK) ?? this.Columns[0];
             }
         }
         public Column Descriptor{

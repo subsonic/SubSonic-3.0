@@ -59,12 +59,19 @@ const string COLUMN_SQL=@"SELECT
   
 List<SPParam> GetSPParams(string spName){
     var result=new List<SPParam>();
-    string[] restrictions = new string[4] { DatabaseName, null, spName, null };
+	
+	string dbName = null;
+    
+    if(!String.IsNullOrEmpty(DatabaseName))
+		dbName = DatabaseName;
+    
+    string[] restrictions = new string[4] { dbName , null, spName, null };
+	
     using(SqlConnection conn=new SqlConnection(ConnectionString)){
         conn.Open();
 		var sprocs=conn.GetSchema("ProcedureParameters", restrictions);
 		conn.Close();
-		foreach(DataRow row in sprocs.Rows){
+	    foreach(DataRow row in sprocs.Select("", "ORDINAL_POSITION")){
 		    SPParam p=new SPParam();
 			p.SysType=GetSysType(row["DATA_TYPE"].ToString());
 			p.DbType=GetDbType(row["DATA_TYPE"].ToString()).ToString();
@@ -90,7 +97,7 @@ List<SP> GetSPs(){
 		conn.Close();
 	}
 	
-    foreach(DataRow row in sprocs.Rows){
+	foreach(DataRow row in sprocs.Rows){
 	    string spType=row["ROUTINE_TYPE"].ToString();
         var sp=new SP();
 	    sp.Name=row["ROUTINE_NAME"].ToString();
@@ -245,6 +252,7 @@ string GetSysType(string sqlType){
 			 break;
 		case "smalldatetime":
 		case "datetime":
+		case "date":
 			sysType=  "DateTime";
 			  break;
 		case "float":
@@ -266,11 +274,13 @@ string GetSysType(string sqlType){
 		case "image":
 		case "binary":
 		case "varbinary":
+		case "timestamp":
 			sysType=  "byte[]";
 			 break;
 	}
 	return sysType;
 }
+
 DbType GetDbType(string sqlType){
 	switch(sqlType)
     {
@@ -326,7 +336,9 @@ DbType GetDbType(string sqlType){
             return DbType.Byte;
         case "varbinary":
             return DbType.Binary;
-        default:
+         case "xml":
+            return DbType.Xml;
+       default:
             return DbType.AnsiString;
     }
 
