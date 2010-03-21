@@ -39,6 +39,8 @@ namespace SubSonic.Tests.Migrations
         public bool SomeFlag { get; set; }
         public bool? SomeNullableFlag { get; set; }
 
+        public byte[] BinaryAttachment { get; set; }
+
         [SubSonicLongString]
         public string LongText { get; set; }
 
@@ -47,7 +49,5 @@ namespace SubSonic.Tests.Migrations
 
         [SubSonicIgnore]
         public int IgnoreMe { get; set; }
-
-
     }
 }

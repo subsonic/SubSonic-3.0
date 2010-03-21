@@ -262,17 +262,21 @@ namespace SubSonic.Tests.Linq.TestBases
 
         public void DropTestTables()
         {
-            var sql = "DROP TABLE Products;\r\n";
-            sql += "DROP TABLE Orders;\r\n";
-            sql += "DROP TABLE OrderDetails;\r\n";
-            sql += "DROP TABLE Customers;\r\n";
-            sql += "DROP TABLE Categories;\r\n";
+            DropTestTable("Products");
+            DropTestTable("Orders");
+            DropTestTable("OrderDetails");
+            DropTestTable("Customers");
+            DropTestTable("Categories");
+        }
 
+        private void DropTestTable(string tableName)
+        {
+            var sql = String.Format("DROP TABLE {0};\r\n", tableName);
             try
             {
                 _provider.ExecuteQuery(new QueryCommand(sql, _provider));
             }
-            catch(Exception x)
+            catch (Exception)
             {
                 //do nothing - this is here to catch a DROP error
             }

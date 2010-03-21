@@ -130,7 +130,6 @@
     <Compile Include="Query\InlineQuery.cs" />
     <Compile Include="Query\Insert.cs" />
     <Compile Include="Query\IQuerySurface.cs" />
-    <Compile Include="Query\ISession.cs" />
     <Compile Include="Query\ISqlQuery.cs" />
     <Compile Include="Query\Update.cs" />
     <Compile Include="Repository\IRepository.cs" />

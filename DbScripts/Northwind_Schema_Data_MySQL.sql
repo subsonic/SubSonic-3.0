@@ -157,7 +157,7 @@ CREATE TABLE `Orders` (
   `OrderID` int(10) NOT NULL auto_increment,
   `CustomerID` char(5) default NULL,
   `EmployeeID` int(10) default NULL,
-  `OrderDate` datetime default NOT NULL,
+  `OrderDate` datetime NOT NULL,
   `RequiredDate` datetime default NULL,
   `ShippedDate` datetime default NULL,
   `ShipVia` int(10) default NULL,
@@ -336,6 +336,7 @@ WHERE Orders.ShippedDate BETWEEN Beginning_Date AND Ending_Date;
 #
 # Definition for the `SalesByCategory` procedure : 
 #
+DELIMITER ;;
 
 CREATE PROCEDURE `SalesByCategory`(IN CategoryName VARCHAR(15), IN OrdYear VARCHAR(4))
     NOT DETERMINISTIC
@@ -357,7 +358,9 @@ BEGIN
            AND YEAR(O.`OrderDate`) = OrdYear
      GROUP BY P.`ProductName`
      ORDER BY P.`ProductName`;
-END;
+END;;
+
+DELIMITER ;
 
 #
 # Definition for the `Ten Most Expensive Products` procedure : 

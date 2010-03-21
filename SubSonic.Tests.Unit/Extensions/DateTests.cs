@@ -15,7 +15,7 @@ using System;
 using SubSonic.Extensions;
 using Xunit;
 
-namespace SubSonic.Tests.Extensions
+namespace SubSonic.Tests.Unit.Extensions
 {
     public class DateTests
     {

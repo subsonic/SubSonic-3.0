@@ -80,10 +80,10 @@ namespace SubSonic.Tests.SchemaTables
         }
 
         [Fact]
-        public void ToSchemaTable_Should_Create_ITable_With_13_Columns()
+        public void ToSchemaTable_Should_Create_ITable_With_14_Columns()
         {
             var table = typeof(SubSonicTest).ToSchemaTable(_provider);
-            Assert.Equal(13, table.Columns.Count);
+            Assert.Equal(14, table.Columns.Count);
             
         }
 
@@ -219,6 +219,24 @@ namespace SubSonic.Tests.SchemaTables
 		{
 			var table = typeof(TestTypeWithTableNameOverride).ToSchemaTable(_provider);
 			Assert.Equal(table.Name, "TestTableName");
+        }
+
+        [Fact]
+        public void ToSchemaTable_Should_Map_ByteArray_To_Binary_DataType()
+        {
+            var table = typeof(SubSonicTest).ToSchemaTable(_provider);
+            var col = table.GetColumnByPropertyName("BinaryAttachment");
+
+            Assert.Equal(DbType.Binary, col.DataType);
+        }
+
+        [Fact]
+        public void ToSchemaTable_Should_Map_ByteArray_To_Nullable()
+        {
+            var table = typeof(SubSonicTest).ToSchemaTable(_provider);
+            var col = table.GetColumnByPropertyName("BinaryAttachment");
+
+            Assert.True(col.IsNullable);
         }
     }
 }

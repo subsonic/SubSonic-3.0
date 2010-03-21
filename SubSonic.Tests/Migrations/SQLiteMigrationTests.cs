@@ -36,7 +36,7 @@ namespace SubSonic.Tests.Migrations
             var shouldbe =
                 @"CREATE TABLE `SubSonicTests` (
   [Key] guid NOT NULL PRIMARY KEY,
-  [Thinger] integer NOT NULL,
+  [Thinger] int NOT NULL,
   [Name] nvarchar(255) NOT NULL,
   [UserName] nvarchar(500) NOT NULL,
   [CreatedOn] datetime NOT NULL,
@@ -46,6 +46,7 @@ namespace SubSonic.Tests.Migrations
   [Long] decimal(10, 3) NULL,
   [SomeFlag] tinyint NOT NULL,
   [SomeNullableFlag] tinyint NULL,
+  [BinaryAttachment] blob NULL,
   [LongText] TEXT  NOT NULL,
   [MediumText] nvarchar(800) NOT NULL 
 );";

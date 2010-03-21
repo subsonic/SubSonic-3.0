@@ -368,7 +368,8 @@ namespace SubSonic.Query
 
             var cmd = connection.CreateCommand();
             cmd.CommandText = CommandSql;
-            cmd.CommandType = CommandType.Text;
+            cmd.CommandType = CommandType;
+            cmd.CommandTimeout = commandTimeout;
 
             if(trannie != null)
                 cmd.Transaction = trannie;

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Xunit;
 using SouthWind;
+using SubSonic.Tests.Linq.TestBases;
+using SubSonic.Linq.Structure;
 
 namespace SubSonic.Tests.BugReports {
    
@@ -13,7 +15,7 @@ namespace SubSonic.Tests.BugReports {
         /// Issue 32 - ActiveRecord - IsLoaded not set true when query is executed
         /// http://github.com/subsonic/SubSonic-3.0/issues#issue/32
         /// </summary>
-
+			
         [Fact]
         public void Github_Issue95_Booleans_Always_Set_True() {
             var p = Product.SingleOrDefault(x => x.ProductID == 1);
@@ -76,13 +78,29 @@ namespace SubSonic.Tests.BugReports {
 
         [Fact]
         public void Issue54_Looping_List_Calling_Update_Should_Work() {
-            var list = Product.Find(x => x.ProductID < 10);
-            foreach(Product p in list){
-                p.UnitPrice=100;
-                p.Update();
-            }
-        }
 
+            // Arrange
+            Exception expectedException = null;
+            var list = Product.Find(x => x.ProductID < 10);
+
+            // Act
+            try
+            {
+                foreach (Product p in list)
+                {
+                    p.UnitPrice = 100;
+                    p.Update();
+                }
+            }
+            catch (Exception ex)
+            {
+                expectedException = ex;
+            }
+
+            // Assert
+            Assert.Null(expectedException);
+
+        }
 
         [Fact]
         public void Issue55_Delete_Should_Have_Two_Constraints() {
@@ -91,7 +109,36 @@ namespace SubSonic.Tests.BugReports {
 
         }
 
+        [Fact]
+        public void Issue158_GetPaged_With_SortOrder_Should_Not_Expect_Case_Sensitive_Order()
+        {
+            var paged = Category.GetPaged("CategoryName DESC", 1, 10);
 
+            Assert.Equal("Seafood", paged[0].CategoryName);
+        }
+
+				[Fact]
+				public void Issue148_TestMode_Field_Should_Not_Be_Included_In_Query()
+				{
+					var value = from employees in Employee.All()
+											join employeeTerritories in EmployeeTerritory.All() on employees.EmployeeID equals employeeTerritories.EmployeeID
+											join territories in Territory.All() on employeeTerritories.TerritoryID equals territories.TerritoryID
+											select territories.Region;
+
+						
+					Assert.DoesNotContain("TestMode", (value as Query<Region>).QueryText);					 
+				}
+
+			  //[Fact] // TODO: This test illustrates issue 151, it should pass once that issue is fixed (updated templates may already have fixed this)
+				//public void Issue151_Update_Should_Work_After_Save()
+				//{
+				//  Category category = new Category { CategoryName = "Test Category" };
+				//  category.Save();
+				//  category.CategoryName = "New Test Category";
+				//  category.Update();
+				//  Category loadedCategory = Category.Find(cat => cat.CategoryID == category.CategoryID).First();
+				//  Assert.Equal(category.CategoryName, loadedCategory.CategoryName);
+				//}
     }
 
 }

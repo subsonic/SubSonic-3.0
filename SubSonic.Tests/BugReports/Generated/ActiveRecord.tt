@@ -1,4 +1,3 @@
-<#@ template language="C#v3.5" debug="True" hostspecific="True" #>
 <#@ include file="SQLServer.ttinclude" #>
 using System;
 using System.Collections.Generic;
@@ -35,7 +34,6 @@ namespace <#=Namespace #>
     {
     
         #region Built-in testing
-        static IList<<#=tbl.ClassName#>> TestItems;
         static TestRepository<<#=tbl.ClassName#>> _testRepo;
         
 
@@ -49,7 +47,10 @@ namespace <#=Namespace #>
         }
         public static void Setup(List<<#=tbl.ClassName#>> testlist){
             SetTestRepo();
-            _testRepo._items = testlist;
+            foreach (var item in testlist)
+            {
+                _testRepo._items.Add(item);
+            }
         }
         public static void Setup(<#=tbl.ClassName#> item) {
             SetTestRepo();
@@ -262,7 +263,11 @@ namespace <#=Namespace #>
         }
         
         public override string ToString(){
-            return this.<#=tbl.Descriptor.CleanName #>.ToString();
+            <# if (tbl.ClassName == tbl.Descriptor.CleanName){ #>
+			    return this.<#=tbl.Descriptor.CleanName+"X" #>.ToString();
+	        <# } else { #>
+                return this.<#=tbl.Descriptor.CleanName #>.ToString();
+            <# } #>
         }
 
         public override bool Equals(object obj){
@@ -274,9 +279,20 @@ namespace <#=Namespace #>
             }
         }
 
+<#      if(tbl.PK.SysType=="int"){#>
+        
+        public override int GetHashCode() {
+            return this.<#=tbl.PK.CleanName #>;
+        }
+        
+<#      }#>
         public string DescriptorValue()
         {
-            return this.<#=tbl.Descriptor.CleanName #>.ToString();
+            <# if (tbl.ClassName == tbl.Descriptor.CleanName){ #>
+			    return this.<#=tbl.Descriptor.CleanName+"X" #>.ToString();
+	        <# } else { #>
+                return this.<#=tbl.Descriptor.CleanName #>.ToString();
+            <# } #>
         }
 
         public string DescriptorColumn() {
@@ -364,7 +380,7 @@ namespace <#=Namespace #>
         public DbCommand GetUpdateCommand() {
 <#if(tbl.Columns.Any(x=>x.Name.ToLower()=="modifiedon")){#>
             if (!_dirtyColumns.Any(x => x.Name.ToLower() == "modifiedon")) {
-               this.<#=tbl.Columns.Single(x=>x.Name.ToLower()=="modifiedon").CleanName#>=DateTime.Now;
+               this.<#=tbl.Columns.Single(x=>x.Name.ToLower()=="modifiedon").CleanName#>=<#=DatabaseName#>DB.DateTimeNowTruncatedDownToSecond();
             }            
 <#}#>
             if(TestMode)
@@ -400,7 +416,7 @@ namespace <#=Namespace #>
                 this.ModifiedBy=Environment.UserName;
 <#}#>
 <#if(tbl.Columns.Any(x=>x.Name=="ModifiedOn")){#>
-            this.ModifiedOn=DateTime.Now;
+            this.ModifiedOn=<#=DatabaseName#>DB.DateTimeNowTruncatedDownToSecond();
 <#}#>
             
             if(this._dirtyColumns.Count>0)
@@ -431,24 +447,27 @@ namespace <#=Namespace #>
 
 <#if(tbl.Columns.Any(x=>x.Name=="CreatedOn")){#>
             
-            this.CreatedOn=DateTime.Now;
+            this.CreatedOn=<#=DatabaseName#>DB.DateTimeNowTruncatedDownToSecond();
 <#}#>
 <#if(tbl.Columns.Any(x=>x.Name=="CreatedBy")){#>
             if(String.IsNullOrEmpty(this.CreatedBy))
                 this.CreatedBy=Environment.UserName;
 <#}#>
 <#if(tbl.Columns.Any(x=>x.Name=="ModifiedOn")){#>
-            this.ModifiedOn=DateTime.Now;
+            this.ModifiedOn=<#=DatabaseName#>DB.DateTimeNowTruncatedDownToSecond();
 <#}#>
 <#if(tbl.Columns.Any(x=>x.Name=="ModifiedBy")){#>
             if(String.IsNullOrEmpty(this.ModifiedBy))
                 this.ModifiedBy=Environment.UserName;
 <#}#>
             
-            var newKey=_repo.Add(this,provider);
-            if(newKey!=KeyValue())
+            var key=KeyValue();
+            if(key==null){
+                var newKey=_repo.Add(this,provider);
                 this.SetKeyValue(newKey);
-            
+            }else{
+                _repo.Add(this,provider);
+            }
             SetIsNew(false);
             OnSaved();
         }

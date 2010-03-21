@@ -52,44 +52,5 @@ namespace SubSonic.Tests.Linq
             setup.CreateTestTable();
             setup.LoadTestData();
         }
-    }
-
-    // [TestFixture]
-    public class SQLiteNumberTests : NumberTests
-    {
-        public SQLiteNumberTests()
-        {
-            _db = new TestDB(new SQLitey().Connection, DataProviders.DbClientTypeName.SqlLite);
-            var setup = new Setup(_db.Provider);
-            setup.DropTestTables();
-            setup.CreateTestTable();
-            setup.LoadTestData();
-        }
-    }
-
-    // [TestFixture]
-    public class SQLiteStringTests : StringTests
-    {
-        public SQLiteStringTests()
-        {
-            _db = new TestDB(new SQLitey().Connection, DataProviders.DbClientTypeName.SqlLite);
-            var setup = new Setup(_db.Provider);
-            setup.DropTestTables();
-            setup.CreateTestTable();
-            setup.LoadTestData();
-        }
-    }
-
-    // [TestFixture]
-    public class SQLiteDateTests : DateTests
-    {
-        public SQLiteDateTests()
-        {
-            _db = new TestDB(new SQLitey().Connection, DataProviders.DbClientTypeName.SqlLite);
-            var setup = new Setup(_db.Provider);
-            setup.DropTestTables();
-            setup.CreateTestTable();
-            setup.LoadTestData();
-        }
-    }
+    }  
 }

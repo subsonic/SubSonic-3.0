@@ -16,10 +16,10 @@ using System.Data;
 using SubSonic.DataProviders;
 using SubSonic.Extensions;
 using SubSonic.Query;
-using SubSonic.Tests.TestClasses;
+using SubSonic.Tests.Unit.TestClasses;
 using Xunit;
 
-namespace SubSonic.Tests.Extensions
+namespace SubSonic.Tests.Unit.Extensions
 {
     public class DatabaseTests
     {

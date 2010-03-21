@@ -46,6 +46,7 @@ namespace SubSonic.Tests.Migrations
   `Long` decimal(10, 3),
   `SomeFlag` tinyint NOT NULL ,
   `SomeNullableFlag` tinyint,
+  `BinaryAttachment` longblob,
   `LongText` LONGTEXT  NOT NULL ,
   `MediumText` nvarchar(800) NOT NULL  
 ) 

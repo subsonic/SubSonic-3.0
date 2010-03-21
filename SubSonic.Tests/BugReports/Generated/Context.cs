@@ -21,6 +21,8 @@ namespace SouthWind
         public IDataProvider DataProvider;
         public DbQueryProvider provider;
         
+        public static IDataProvider DefaultDataProvider { get; set; }
+
         public bool TestMode
 		{
             get
@@ -30,8 +32,13 @@ namespace SouthWind
         }
 
         public NorthwindDB() 
-        { 
-            DataProvider = ProviderFactory.GetProvider("Northwind");
+        {
+            if (DefaultDataProvider == null) {
+                DataProvider = ProviderFactory.GetProvider("Northwind");
+            }
+            else {
+                DataProvider = DefaultDataProvider;
+            }
             Init();
         }
 
@@ -121,20 +128,19 @@ namespace SouthWind
             return null;
         }
 			
+        public Query<Category> Categories { get; set; }
         public Query<Customer> Customers { get; set; }
         public Query<Shipper> Shippers { get; set; }
         public Query<Supplier> Suppliers { get; set; }
+        public Query<Order> Orders { get; set; }
+        public Query<Product> Products { get; set; }
         public Query<OrderDetail> OrderDetails { get; set; }
         public Query<CustomerCustomerDemo> CustomerCustomerDemos { get; set; }
         public Query<CustomerDemographic> CustomerDemographics { get; set; }
         public Query<Region> Regions { get; set; }
         public Query<Territory> Territories { get; set; }
         public Query<EmployeeTerritory> EmployeeTerritories { get; set; }
-        public Query<Order> Orders { get; set; }
-        public Query<SubSonicTest> SubSonicTests { get; set; }
-        public Query<Product> Products { get; set; }
         public Query<Employee> Employees { get; set; }
-        public Query<Category> Categories { get; set; }
 
 			
 
@@ -163,7 +169,7 @@ namespace SouthWind
         {
             LambdaExpression lamda = column;
             SqlQuery result = new Delete<T>(this.Provider);
-            result = result.From<T>();            
+            result = result.From<T>();
             result.Constraints=lamda.ParseConstraints().ToList();
             return result;
         }
@@ -238,42 +244,51 @@ namespace SouthWind
             provider = new DbQueryProvider(this.Provider);
 
             #region ' Query Defs '
+            Categories = new Query<Category>(provider);
             Customers = new Query<Customer>(provider);
             Shippers = new Query<Shipper>(provider);
             Suppliers = new Query<Supplier>(provider);
+            Orders = new Query<Order>(provider);
+            Products = new Query<Product>(provider);
             OrderDetails = new Query<OrderDetail>(provider);
             CustomerCustomerDemos = new Query<CustomerCustomerDemo>(provider);
             CustomerDemographics = new Query<CustomerDemographic>(provider);
             Regions = new Query<Region>(provider);
             Territories = new Query<Territory>(provider);
             EmployeeTerritories = new Query<EmployeeTerritory>(provider);
-            Orders = new Query<Order>(provider);
-            SubSonicTests = new Query<SubSonicTest>(provider);
-            Products = new Query<Product>(provider);
             Employees = new Query<Employee>(provider);
-            Categories = new Query<Category>(provider);
             #endregion
 
 
             #region ' Schemas '
         	if(DataProvider.Schema.Tables.Count == 0)
 			{
+            	DataProvider.Schema.Tables.Add(new CategoriesTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new CustomersTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new ShippersTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new SuppliersTable(DataProvider));
+            	DataProvider.Schema.Tables.Add(new OrdersTable(DataProvider));
+            	DataProvider.Schema.Tables.Add(new ProductsTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new OrderDetailsTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new CustomerCustomerDemoTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new CustomerDemographicsTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new RegionTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new TerritoriesTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new EmployeeTerritoriesTable(DataProvider));
-            	DataProvider.Schema.Tables.Add(new OrdersTable(DataProvider));
-            	DataProvider.Schema.Tables.Add(new SubSonicTestsTable(DataProvider));
-            	DataProvider.Schema.Tables.Add(new ProductsTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new EmployeesTable(DataProvider));
-            	DataProvider.Schema.Tables.Add(new CategoriesTable(DataProvider));
             }
             #endregion
         }
+        
+
+        #region ' Helpers '
+            
+        internal static DateTime DateTimeNowTruncatedDownToSecond() {
+            var now = DateTime.Now;
+            return now.AddTicks(-now.Ticks % TimeSpan.TicksPerSecond);
+        }
+
+        #endregion
+
     }
 }

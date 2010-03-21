@@ -1,4 +1,5 @@
-﻿// 
+﻿using System.IO;
+// 
 //   SubSonic - http://subsonicproject.com
 // 
 //   The contents of this file are subject to the New BSD
@@ -11,15 +12,14 @@
 //   implied. See the License for the specific language governing
 //   rights and limitations under the License.
 // 
-using System;
 using SubSonic.Extensions;
 using Xunit;
 
-namespace SubSonic.Tests.Extensions
+namespace SubSonic.Tests.Unit.Extensions
 {
     public class FileTests
     {
-        private readonly string tempPath = Environment.GetEnvironmentVariable("TMP");
+		private readonly string tempPath = Path.GetTempPath();
 
         [Fact]
         public void GetFileText_Should_Read_Text_From_Existing_File()

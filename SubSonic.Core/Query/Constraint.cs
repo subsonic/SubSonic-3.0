@@ -362,6 +362,12 @@ namespace SubSonic.Query
                 case Comparison.NotIn:
                     sOut = " NOT IN ";
                     break;
+								case Comparison.StartsWith:
+										sOut = SqlComparison.LIKE;
+										break;
+								case Comparison.EndsWith:
+										sOut = SqlComparison.LIKE;
+										break;
                 default:
                     sOut = SqlComparison.EQUAL;
                     break;
