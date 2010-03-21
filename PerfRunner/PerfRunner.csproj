@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -44,10 +45,6 @@
     <ProjectReference Include="..\SubSonic.Core\SubSonic.Core.csproj">
       <Project>{53FF90B2-2D33-4EC0-91B6-A30FDF1B3374}</Project>
       <Name>SubSonic.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SubSonic.Templates\SubSonic.Templates.csproj">
-      <Project>{5EE7EDDF-10F1-43C8-AF2C-ED26B60966AC}</Project>
-      <Name>SubSonic.Templates</Name>
     </ProjectReference>
     <ProjectReference Include="..\SubSonic.Tests\SubSonic.Tests.csproj">
       <Project>{6B23B65F-2E09-4531-BDA1-A6EA08CBA843}</Project>

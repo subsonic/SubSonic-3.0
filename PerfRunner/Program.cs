@@ -13,12 +13,13 @@
 // 
 using System;
 using System.Linq;
-using Southwind;
 using SubSonic.DataProviders;
 using SubSonic.Query;
 using SubSonic.Repository;
 using SubSonic.Tests;
 using SubSonic.Tests.Linq.TestBases;
+using SouthWind;
+using System.Configuration;
 
 namespace PerfRunner
 {
@@ -26,28 +27,28 @@ namespace PerfRunner
     {
         private static readonly IDataProvider mySqlProvider = ProviderFactory.GetProvider(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
 
-        private static readonly IDataProvider sql2005Provider = ProviderFactory.GetProvider(TestConfiguration.MsSql2005TestConnectionString, DbClientTypeName.MsSql);
+        private static readonly IDataProvider sql2005Provider = ProviderFactory.GetProvider(ConfigurationManager.ConnectionStrings["Northwind"].ConnectionString, DbClientTypeName.MsSql);
 
-        private static readonly IDataProvider sql2008Provider = ProviderFactory.GetProvider(TestConfiguration.MsSql2008TestConnectionString, DbClientTypeName.MsSql);
+        private static readonly IDataProvider sql2008Provider = ProviderFactory.GetProvider(ConfigurationManager.ConnectionStrings["Northwind"].ConnectionString, DbClientTypeName.MsSql);
 
         private static void Main(string[] args)
         {
             //SubSonic.Tests.ActiveRecord.FetchTests.ActiveRecord_Should_Return_10_Products_LessOrEqual_To_10();
             //SubSonic.Tests.ActiveRecord.FetchTests.ActiveRecord_Should_Return_10_Products_Paged();
             //RunSimpleRepoSelects();
-            RunIQSelects();
+            //RunIQSelects();
             //RunSimpleQuerySelects();
             //RunAR();
-            //RunARLists();
+            RunARLists();
             Console.WriteLine("Done");
             Console.ReadLine();
         }
 
         private static void RunARLists()
         {
-            SelectActiveRecordList(mySqlProvider);
+            //SelectActiveRecordList(mySqlProvider);
             SelectActiveRecordList(sql2005Provider);
-            SelectActiveRecordList(sql2008Provider);
+            //SelectActiveRecordList(sql2008Provider);
         }
 
         private static void RunAR()
