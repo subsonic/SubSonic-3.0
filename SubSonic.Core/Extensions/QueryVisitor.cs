@@ -204,7 +204,7 @@ namespace SubSonic.Extensions
 								constraint.Comparison = Comparison.Like;
 								break;
 							case "EndsWith":
-								constraint.Comparison = Comparison.StartsWith;
+								constraint.Comparison = Comparison.EndsWith;
 								break;
 							case "StartsWith":
 								constraint.Comparison = Comparison.StartsWith;
