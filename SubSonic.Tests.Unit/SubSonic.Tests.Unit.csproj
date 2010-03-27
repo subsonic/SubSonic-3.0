@@ -111,6 +111,7 @@
     <Compile Include="Linq\SqlStrings\SQLiteSelectTestsSql.cs" />
     <Compile Include="Linq\SqlStrings\SQLiteStringTestsSql.cs" />
     <Compile Include="Linq\TestBases\LinqTestsBase.cs" />
+    <Compile Include="SchemaTables\ToSchemaTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
