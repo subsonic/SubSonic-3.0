@@ -172,17 +172,18 @@ namespace SubSonic.Extensions
         {
             string tableName = type.Name;
             tableName = tableName.MakePlural();
-
-			var typeAttributes = type.GetCustomAttributes(false);
-			var tableNameAttr = (SubSonicTableNameOverrideAttribute)typeAttributes.FirstOrDefault(x => x.ToString().Equals("SubSonic.SqlGeneration.Schema.SubSonicTableNameOverrideAttribute"));
-
-			if (tableNameAttr != null && tableNameAttr.IsSet)
-			{
-				tableName = tableNameAttr.TableName;
-			}
-
             var result = new DatabaseTable(tableName, provider);
             result.ClassName = type.Name;
+
+			var typeAttributes = type.GetCustomAttributes(typeof(IClassMappingAttribute), false);
+
+            foreach (IClassMappingAttribute attr in typeAttributes)
+            {
+                if (attr.Accept(result))
+                {
+                    attr.Apply(result);
+                }
+            }
 
             var props = type.GetProperties();
             foreach(var prop in props)
@@ -195,6 +196,7 @@ namespace SubSonic.Extensions
                     if(isIgnored)
                         break;
                 }
+
                 if(CanGenerateSchemaFor(prop.PropertyType) & !isIgnored)
                 {
                     var column = new DatabaseColumn(prop.Name, result);
@@ -207,36 +209,10 @@ namespace SubSonic.Extensions
                         //default to most common;
                         column.NumberScale = 2;
                         column.NumericPrecision = 10;
-
-                        //loop the attributes to see if there's a length
-                        foreach(var att in attributes)
-                        {
-                            if (att.ToString().Equals("SubSonic.SqlGeneration.Schema.SubSonicNumericPrecisionAttribute"))
-                            {
-                                var precision = (SubSonicNumericPrecisionAttribute)att;
-                                column.NumberScale = precision.Scale;
-                                column.NumericPrecision = precision.Precision;
-                            }
-                        }
                     }
                     else if(column.DataType == DbType.String)
                     {
                         column.MaxLength = 255;
-
-                        //loop the attributes to see if there's a length
-                        foreach(var att in attributes)
-                        {
-                            if (att.ToString().Equals("SubSonic.SqlGeneration.Schema.SubSonicStringLengthAttribute"))
-                            {
-                                var lengthAtt = (SubSonicStringLengthAttribute)att;
-                                column.MaxLength = lengthAtt.Length;
-                            }
-
-                            if (att.ToString().Equals("SubSonic.SqlGeneration.Schema.SubSonicNullStringAttribute"))
-                            {
-                                isNullable = true;
-                            }
-                        }
                     }
                     else if (column.DataType == DbType.Binary)
                     {
@@ -246,27 +222,13 @@ namespace SubSonic.Extensions
                     if(isNullable)
                         column.IsNullable = true;
 
-                    //set the length on this if it's text - specifically we want to know
-                    //if the LongString attribute is used - we'll set to nvarchar MAX or ntext depending
-
-                    foreach(var att in attributes)
+                    // Now work with attributes
+                    foreach (IPropertyMappingAttribute attr in attributes.Where(x => x is IPropertyMappingAttribute))
                     {
-                        if (att.ToString().Equals("SubSonic.SqlGeneration.Schema.SubSonicLongStringAttribute"))
-                            column.MaxLength = 8001;
-                    }
-
-                    //loop the attributes - see if a PK attribute was set
-                    foreach(var att in attributes)
-                    {
-                        if (att.ToString().Equals("SubSonic.SqlGeneration.Schema.SubSonicPrimaryKeyAttribute")) {
-                            column.IsPrimaryKey = true;
-                            column.IsNullable = false;
-                            if(column.IsNumeric)
-                                column.AutoIncrement = true;
-                            else if (column.IsString && column.MaxLength == 0)
-                                column.MaxLength = 255;
+                        if (attr.Accept(column))
+                        {
+                            attr.Apply(column);
                         }
-                        
                     }
 
                     result.Columns.Add(column);
