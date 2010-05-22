@@ -421,7 +421,7 @@ namespace SubSonic.Extensions
                     IColumn col = tbl.GetColumn(key);
                     if(col != null)
                     {
-                        if(!col.AutoIncrement && !col.IsReadOnly)
+                        if(!col.AutoIncrement && !col.IsReadOnly && !(col.DefaultSetting != null && hashed[key] == null))
                             query.Value(col.QualifiedName, hashed[key], col.DataType);
                     }
                 }

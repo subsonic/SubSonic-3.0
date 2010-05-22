@@ -139,7 +139,7 @@ namespace SubSonic.SqlGeneration.Schema
             if(column.IsPrimaryKey | !column.IsNullable)
                 sb.Append(" NOT NULL ");
 
-            if(column.IsPrimaryKey && column.IsNumeric)
+            if(column.IsPrimaryKey && column.IsNumeric && column.AutoIncrement)
                 sb.Append(" auto_increment ");
 
             if(column.DefaultSetting != null)

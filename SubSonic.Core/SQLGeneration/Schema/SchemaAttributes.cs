@@ -86,7 +86,7 @@ namespace SubSonic.SqlGeneration.Schema
     {
         public bool AutoIncrement { get; set; }
 
-        public SubSonicPrimaryKeyAttribute() {}
+        public SubSonicPrimaryKeyAttribute() : this(true) {}
 
         public SubSonicPrimaryKeyAttribute(bool autoIncrement)
         {
@@ -103,7 +103,7 @@ namespace SubSonic.SqlGeneration.Schema
             column.IsPrimaryKey = true;
             column.IsNullable = false;
             if (column.IsNumeric)
-                column.AutoIncrement = true;
+                column.AutoIncrement = AutoIncrement;
             else if (column.IsString && column.MaxLength == 0)
                 column.MaxLength = 255;
         }
@@ -151,6 +151,27 @@ namespace SubSonic.SqlGeneration.Schema
         {
             column.NumberScale = Scale;
             column.NumericPrecision = Precision;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Property)]
+    public class SubSonicDefaultSettingAttribute : Attribute, IPropertyMappingAttribute
+    {
+        public object DefaultSetting { get; set; }
+
+        public SubSonicDefaultSettingAttribute(object defaultSetting)
+        {
+            DefaultSetting = defaultSetting;
+        }
+
+        public bool Accept(IColumn column)
+        {
+            return true;
+        }
+
+        public void Apply(IColumn column)
+        {
+            column.DefaultSetting = DefaultSetting;
         }
     }
 }

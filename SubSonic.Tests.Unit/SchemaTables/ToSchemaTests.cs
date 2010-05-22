@@ -89,6 +89,20 @@ namespace SubSonic.Tests.Unit.SchemaTables
 		public TestIntBasedEnum? SomeNullableIntEnum { get; set; }
 	}
 
+    public class TestTypeWithAutoIncrementDisabled
+    {
+        [SubSonicPrimaryKey(false)]
+        public int ID { get; set; }
+    }
+
+    public class TestTypeWithDefaultSettings
+    {
+        public int ID { get; set; }
+
+        [SubSonicDefaultSetting("DefaultSetting")]
+        public string SomeValue { get; set; }
+    }
+    
     public class ToSchemaTests
     {
         private readonly IDataProvider _provider;
@@ -270,6 +284,24 @@ namespace SubSonic.Tests.Unit.SchemaTables
             var col = table.GetColumnByPropertyName("BinaryAttachment");
 
             Assert.True(col.IsNullable);
+        }
+
+        [Fact]
+        public void ToSchemaTable_Should_Allow_NonIncrementing_Id_Column()
+        {
+            var table = typeof(TestTypeWithAutoIncrementDisabled).ToSchemaTable(_provider);
+            var col = table.GetColumnByPropertyName("Id");
+
+            Assert.False(col.AutoIncrement);
+        }
+
+        [Fact]
+        public void ToSchemaTable_Should_Read_Default_Settings_From_Attribute()
+        {
+            var table = typeof(TestTypeWithDefaultSettings).ToSchemaTable(_provider);
+            var col = table.GetColumnByPropertyName("SomeValue");
+
+            Assert.Equal("DefaultSetting", col.DefaultSetting);
         }
     }
 }

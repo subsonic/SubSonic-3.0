@@ -150,7 +150,7 @@ namespace SubSonic.SqlGeneration.Schema
             if(column.IsPrimaryKey | ! column.IsNullable)
                 sb.Append(" NOT NULL");
 
-            if(column.IsPrimaryKey && column.IsNumeric)
+            if(column.IsPrimaryKey && column.IsNumeric && column.AutoIncrement)
                 sb.Append(" IDENTITY(1,1)");
             else if (column.IsPrimaryKey && column.DataType==DbType.Guid)
                 column.DefaultSetting="NEWID()";

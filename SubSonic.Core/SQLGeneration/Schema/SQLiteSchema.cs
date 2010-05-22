@@ -116,7 +116,7 @@ namespace SubSonic.SqlGeneration.Schema
             if(column.IsPrimaryKey)
             {
                 sb.Append(" NOT NULL PRIMARY KEY");
-                if(column.IsNumeric)
+                if(column.IsNumeric && column.AutoIncrement)
                     sb.Append(" AUTOINCREMENT ");
             }
             else

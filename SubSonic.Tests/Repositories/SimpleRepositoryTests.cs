@@ -19,6 +19,7 @@ using SubSonic.DataProviders;
 using SubSonic.Query;
 using SubSonic.Repository;
 using Xunit;
+using SubSonic.SqlGeneration.Schema;
 
 namespace SubSonic.Tests.Repositories
 {
@@ -63,6 +64,16 @@ namespace SubSonic.Tests.Repositories
         public String Name { get; set; }
     }
 
+    public class NonAutoIncrementingIdWithDefaultSetting
+    {
+        [SubSonicPrimaryKey(false)]
+        public int Id { get; set; }
+
+        [SubSonicDefaultSetting("NN")]
+        [SubSonicNullString()]
+        public String Name { get; set; }
+    }
+
     public abstract class SimpleRepositoryTests
     {
         private readonly IDataProvider _provider;
@@ -82,6 +93,18 @@ namespace SubSonic.Tests.Repositories
             try
             {
                 new CodingHorror(_provider, "DROP TABLE DummyForDeletes").Execute();
+            }
+            catch { }
+
+            try
+            {
+                new CodingHorror(_provider, "DROP TABLE Shwerko2s").Execute();
+            }
+            catch { }
+
+            try
+            {
+                new CodingHorror(_provider, "DROP TABLE NonAutoIncrementingIdWithDefaultSettings").Execute();
             }
             catch { }
         }
@@ -502,6 +525,29 @@ namespace SubSonic.Tests.Repositories
 
             var loadedShwerko = _repo.Single<Shwerko>(id);
             Assert.Equal(id, loadedShwerko.ID);
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Set_DefaultSetting_When_Saved()
+        {
+            var testClass = new NonAutoIncrementingIdWithDefaultSetting();
+            testClass.Id = 100;
+
+            _repo.Add(testClass);
+
+            var loadedTestClass = _repo.Single<NonAutoIncrementingIdWithDefaultSetting>(100);
+            Assert.Equal("NN", loadedTestClass.Name);
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Not_Increment_Id_When_Overridden()
+        {
+            var testClass = new NonAutoIncrementingIdWithDefaultSetting();
+            testClass.Id = 100;
+
+            _repo.Add(testClass);
+
+            Assert.NotNull(_repo.Single<NonAutoIncrementingIdWithDefaultSetting>(100));
         }
     }
 }
