@@ -11,8 +11,8 @@ namespace SubSonic.Tests.BugReports
     {
         public TestRepositoryBugs()
         {
-            OrderDetail.ResetTestRepo(); //.Setup(new List<OrderDetail>());
-            Order.ResetTestRepo(); //.Setup(new List<Order>());
+            OrderDetail.ResetTestRepo();
+            Order.ResetTestRepo();
         }
 
         [Fact]
