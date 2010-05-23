@@ -21,7 +21,7 @@ using SubSonic.DataProviders;
 using SubSonic.Linq.Structure;
 using SubSonic.Tests.TestClasses;
 
-namespace SubSonic.Tests.Batch
+namespace SubSonic.Tests.SimpleQuery
 {
 
 

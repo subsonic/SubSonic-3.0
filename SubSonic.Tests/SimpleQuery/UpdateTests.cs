@@ -19,7 +19,7 @@ using Xunit;
 using SubSonic.DataProviders;
 using SubSonic.Tests.TestClasses;
 
-namespace SubSonic.Tests.Update
+namespace SubSonic.Tests.SimpleQuery
 {
     /// <summary>
     /// Summary description for UpdateTests
