@@ -113,7 +113,6 @@ namespace SubSonic.Tests.Batch
             qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(2));
             qry.Queue(new Select(provider).From("Products").Where("ProductID").IsEqualTo(3));
 
-            int sets = 1;
             bool canRead = false;
             List<Product> result1 = null;
             List<Product> result2 = null;
@@ -162,7 +161,6 @@ namespace SubSonic.Tests.Batch
             qry.Queue(from p in pquery where p.ProductID == 2 select p);
             qry.Queue(from p in pquery where p.ProductID == 3 select p);
 
-            int sets = 1;
             bool canRead = false;
             List<Product> result1 = null;
             List<Product> result2 = null;

@@ -303,8 +303,8 @@ namespace SubSonic.Extensions
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="rdr"></param>
-
-    	public static IEnumerable<T> ToEnumerable<T>(this IDataReader rdr, List<string> ColumnNames){//mike added ColumnNames
+        /// <param name="columnNames"></param>
+    	public static IEnumerable<T> ToEnumerable<T>(this IDataReader rdr, List<string> columnNames){//mike added ColumnNames
 
             List<T> result = new List<T>();
             while(rdr.Read()){
@@ -334,7 +334,7 @@ namespace SubSonic.Extensions
                     instance = Activator.CreateInstance<T>();
 
                 //do we have a parameterless constructor?
-                Load(rdr, instance,ColumnNames);//mike added ColumnNames
+                Load(rdr, instance, columnNames);//mike added ColumnNames
                 result.Add(instance);
             }
             return result.AsEnumerable();

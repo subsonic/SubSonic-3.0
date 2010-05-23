@@ -108,7 +108,7 @@ namespace SubSonic.Tests.Linq.TestBases
 
         public Query<T> GetQuery<T>()
         {
-            return new Query<T>(_queryProvider);
+            throw new NotImplementedException();
         }
 
         public ITable FindTable(string tableName)

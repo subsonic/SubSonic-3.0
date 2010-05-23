@@ -107,17 +107,9 @@ WHERE  Row >= {5} AND Row <= {6}";
             }
             else
             {
-                if(i.SelectValues != null)
-                {
-                    string selectSql = i.SelectValues.BuildSqlStatement();
-                    sb.AppendLine(selectSql);
-                }
-                else
-                {
-                    throw new InvalidOperationException(
-                        "Need to specify Values or a Select query to insert - can't go on!");
-                }
+                throw new InvalidOperationException("Need to specify Values or a Select query to insert - can't go on!");
             }
+
             sb.AppendLine(";");
             if(query._provider.Client == DataClient.SqlClient)
                 sb.AppendLine("SELECT SCOPE_IDENTITY() as new_id");

@@ -226,9 +226,7 @@ namespace SubSonic.Linq.Structure
         ReadOnlyCollection<Expression> groupBy;
         Expression take;
         Expression skip;
-        Expression limit;
-        internal int SkipRecords;
-        internal int TakeRecords;
+
         public SelectExpression(
             TableAlias alias,
             IEnumerable<ColumnDeclaration> columns,
