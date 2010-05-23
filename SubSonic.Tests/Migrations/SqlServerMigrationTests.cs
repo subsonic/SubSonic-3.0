@@ -30,7 +30,7 @@ namespace SubSonic.Tests.Migrations
         [Fact]
         public void CreateTable_Should_Set_PK_If_Guid_To_DefaultSetting_NewID() {
             var sql = typeof(GuidAsKey).ToSchemaTable(_provider).CreateSql;
-            Assert.True(sql.Contains("CONSTRAINT DF_GuidAsKeys_ID DEFAULT (NEWID())"));
+            Assert.True(sql.Contains("CONSTRAINT [DF_GuidAsKeys_ID] DEFAULT (NEWID())"));
         }
 
         [Fact]
@@ -38,7 +38,7 @@ namespace SubSonic.Tests.Migrations
         {
             var shouldbe =
 				@"CREATE TABLE [SubSonicTests] (
-  [Key] uniqueidentifier NOT NULL CONSTRAINT DF_SubSonicTests_Key DEFAULT (NEWID()),
+  [Key] uniqueidentifier NOT NULL CONSTRAINT [DF_SubSonicTests_Key] DEFAULT (NEWID()),
   [Thinger] int NOT NULL,
   [Name] nvarchar(255) NOT NULL,
   [UserName] nvarchar(500) NOT NULL,
@@ -53,7 +53,7 @@ namespace SubSonic.Tests.Migrations
   [LongText] nvarchar(MAX) NOT NULL,
   [MediumText] nvarchar(800) NOT NULL 
 );ALTER TABLE [SubSonicTests]
-ADD CONSTRAINT PK_SubSonicTests_Key PRIMARY KEY([Key])";
+ADD CONSTRAINT [PK_SubSonicTests_Key] PRIMARY KEY([Key])";
             
             var sql = typeof (SubSonicTest).ToSchemaTable(_provider).CreateSql;
             Assert.Equal(shouldbe, sql);
@@ -72,9 +72,9 @@ ADD CONSTRAINT PK_SubSonicTests_Key PRIMARY KEY([Key])";
         public void DropColumnSql_Should_Create_Valid_Sql() {
             var shouldbe = @"IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_SubSonicTests_UserName]') AND type = 'D')
 BEGIN
-ALTER TABLE SubSonicTests DROP CONSTRAINT [DF_SubSonicTests_UserName]
+ALTER TABLE [SubSonicTests] DROP CONSTRAINT [DF_SubSonicTests_UserName]
 END
-ALTER TABLE [SubSonicTests] DROP COLUMN UserName;";
+ALTER TABLE [SubSonicTests] DROP COLUMN [UserName];";
 
             var sql = typeof (SubSonicTest).ToSchemaTable(_provider).DropColumnSql("UserName");
             Assert.Equal(shouldbe, sql);
@@ -82,8 +82,8 @@ ALTER TABLE [SubSonicTests] DROP COLUMN UserName;";
 
         [Fact]
         public void CreateColumnSql_Should_Create_Valid_Sql() {
-            var shouldbe = @"ALTER TABLE [SubSonicTests] ADD UserName nvarchar(500) NOT NULL CONSTRAINT DF_SubSonicTests_UserName DEFAULT ('');
-UPDATE SubSonicTests SET UserName='';";
+            var shouldbe = @"ALTER TABLE [SubSonicTests] ADD [UserName] nvarchar(500) NOT NULL CONSTRAINT [DF_SubSonicTests_UserName] DEFAULT ('');
+UPDATE [SubSonicTests] SET [UserName]='';";
 
             var sql = typeof (SubSonicTest).ToSchemaTable(_provider).GetColumn("UserName").CreateSql;
             Assert.Equal(shouldbe, sql);
@@ -91,11 +91,10 @@ UPDATE SubSonicTests SET UserName='';";
 
         [Fact]
         public void AlterColumnSql_Should_Create_Valid_Sql() {
-            var shouldbe = "ALTER TABLE [SubSonicTests] ALTER COLUMN UserName nvarchar(500) NOT NULL;";
+            var shouldbe = "ALTER TABLE [SubSonicTests] ALTER COLUMN [UserName] nvarchar(500) NOT NULL;";
 
             var sql = typeof(SubSonicTest).ToSchemaTable(_provider).GetColumn("UserName").AlterSql;
             Assert.Equal(shouldbe, sql);
         }
-
     }
 }

@@ -228,9 +228,7 @@ namespace SubSonic.Tests.Unit.SchemaTables
         public void ToSchemaTable_Should_Set_Double_Properly() {
             var table = typeof(TestTypeWithDouble).ToSchemaTable(_provider);
             var col=table.Columns[1];
-            string sql = col.AlterSql;
-            Assert.False(sql.Contains("float(10,2)"));
-            Assert.True(sql.Contains("ALTER COLUMN SomeDouble float"));
+            Assert.Equal("ALTER TABLE [TestTypeWithDoubles] ALTER COLUMN [SomeDouble] float NOT NULL;", col.AlterSql);
         }
 
 		[Fact]

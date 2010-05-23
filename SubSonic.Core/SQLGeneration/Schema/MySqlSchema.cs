@@ -27,6 +27,8 @@ namespace SubSonic.SqlGeneration.Schema
             CREATE_TABLE = "CREATE TABLE `{0}` ({1} \r\n) ";
             DROP_COLUMN = @"ALTER TABLE `{0}` DROP COLUMN `{1}`;";
             DROP_TABLE = @"DROP TABLE {0};";
+
+            UPDATE_DEFAULTS = @"UPDATE `{0}` SET `{1}`={2};";
         }
 
         /// <summary>

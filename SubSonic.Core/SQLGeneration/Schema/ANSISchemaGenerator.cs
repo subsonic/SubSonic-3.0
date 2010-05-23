@@ -27,12 +27,13 @@ namespace SubSonic.SqlGeneration.Schema
     /// </summary>
     public abstract class ANSISchemaGenerator : ISchemaGenerator
     {
-        protected string ADD_COLUMN = @"ALTER TABLE {0} ADD {1}{2};";
-        protected string ALTER_COLUMN = @"ALTER TABLE {0} ALTER COLUMN {1}{2};";
-        protected string CREATE_TABLE = "CREATE TABLE {0} ({1} \r\n);";
-        protected string DROP_COLUMN = @"ALTER TABLE {0} DROP COLUMN {1};";
-        protected string DROP_TABLE = @"DROP TABLE {0};";
+        protected string ADD_COLUMN;
+        protected string ALTER_COLUMN;
+        protected string CREATE_TABLE;
+        protected string DROP_COLUMN;
+        protected string DROP_TABLE;
 
+        protected string UPDATE_DEFAULTS;
 
         #region ISchemaGenerator Members
 
@@ -82,11 +83,15 @@ namespace SubSonic.SqlGeneration.Schema
             if(!column.IsNullable)
             {
                 sql.AppendLine();
+
+                var defaultValue = column.DefaultSetting;
+
                 if (column.IsString || column.IsDateTime)
-                    sql.AppendFormat("UPDATE {0} SET {1}='{2}';", tableName, column.Name, column.DefaultSetting);
-                else {
-                    sql.AppendFormat("UPDATE {0} SET {1}={2};", tableName, column.Name, column.DefaultSetting);
+                {
+                    defaultValue = String.Format("'{0}'", column.DefaultSetting);
                 }
+
+                sql.AppendFormat(UPDATE_DEFAULTS, tableName, column.Name, defaultValue);
             }
             
             return sql.ToString();

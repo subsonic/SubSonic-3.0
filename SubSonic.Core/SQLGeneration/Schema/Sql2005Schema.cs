@@ -22,11 +22,13 @@ namespace SubSonic.SqlGeneration.Schema
     {
         public Sql2005Schema()
         {
-            ADD_COLUMN = @"ALTER TABLE [{0}] ADD {1}{2};";
-            ALTER_COLUMN = @"ALTER TABLE [{0}] ALTER COLUMN {1}{2};";
+            ADD_COLUMN = @"ALTER TABLE [{0}] ADD [{1}]{2};";
+            ALTER_COLUMN = @"ALTER TABLE [{0}] ALTER COLUMN [{1}]{2};";
             CREATE_TABLE = "CREATE TABLE [{0}] ({1} \r\n);";
-            DROP_COLUMN = @"ALTER TABLE [{0}] DROP COLUMN {1};";
+            DROP_COLUMN = @"ALTER TABLE [{0}] DROP COLUMN [{1}];";
             DROP_TABLE = @"DROP TABLE {0};";
+
+            UPDATE_DEFAULTS = @"UPDATE [{0}] SET [{1}]={2};";
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace SubSonic.SqlGeneration.Schema
             sql.AppendFormat("IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[{0}]') AND type = 'D')\r\n",
                 defConstraint);
             sql.AppendLine("BEGIN");
-            sql.AppendFormat("ALTER TABLE {0} DROP CONSTRAINT [{1}]\r\n", tableName, defConstraint);
+            sql.AppendFormat("ALTER TABLE [{0}] DROP CONSTRAINT [{1}]\r\n", tableName, defConstraint);
             sql.AppendLine("END");
 
             //if this is a PK we'll need to drop that too
@@ -70,7 +72,7 @@ namespace SubSonic.SqlGeneration.Schema
 
             //add a named PK constraint so we can drop it later
             result += "ALTER TABLE " + table.QualifiedName + "\r\n";
-            result += string.Format("ADD CONSTRAINT PK_{0}_{1} PRIMARY KEY([{1}])", table.Name, table.PrimaryKey.Name);
+            result += string.Format("ADD CONSTRAINT [PK_{0}_{1}] PRIMARY KEY([{1}])", table.Name, table.PrimaryKey.Name);
 
             return result;
         }
@@ -165,9 +167,9 @@ namespace SubSonic.SqlGeneration.Schema
                     if(!column.DefaultSetting.ToString().EndsWith("()"))
                         defaultValue = string.Format("'{0}'", defaultValue);
                 }
-                
-                sb.Append(" CONSTRAINT DF_" + column.Table.Name + "_" + column.Name + " DEFAULT (" +
-                          defaultValue + ")");
+
+                sb.AppendFormat(" CONSTRAINT [DF_{0}_{1}] DEFAULT ({2})", 
+                    column.Table.Name, column.Name, defaultValue);
             }
 
             return sb.ToString();
