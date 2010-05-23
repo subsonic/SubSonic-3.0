@@ -1048,6 +1048,9 @@ namespace SubSonic.Linq.Structure
                     case TypeCode.UInt64:
                         sb.Append(((UInt64)value).ToString(CultureInfo.InvariantCulture));
                         break;
+                    case TypeCode.DateTime:
+                        sb.Append(((DateTime)value).ToString(CultureInfo.InvariantCulture));
+                        break;
                     case TypeCode.Object:
                         if (value.GetType().IsEnum)
                         {

@@ -33,16 +33,16 @@ using Xunit;
 
 			//  Assert.False(result);
 			//}
-			//[Fact]
-			//public void All_With_SubQuery()
-			//{
-			////TODO: Dates are culture specific 
-			//  var result =
-			//      _db.Customers.Where(
-			//          c => _db.Orders.Where(o => o.CustomerID == c.CustomerID).All(o => o.OrderDate > DateTime.Parse("5/1/2008")));
 
-			//  AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.All_With_SubQuery, result.GetQueryText());
-			//}
+			[Fact]
+			public void All_With_SubQuery()
+			{
+			    var result =_db.Customers.Where(
+			    c => _db.Orders.Where(o => o.CustomerID == c.CustomerID).All(o => o.OrderDate > new DateTime(2008, 5, 1)));
+
+			    AssertEqualIgnoringExtraWhitespaceAndCarriageReturn(_selectTestsSql.All_With_SubQuery, result.GetQueryText());
+			}
+
 			//[Fact]
 			//public void Any_Should_Not_Fail()
 			//{
