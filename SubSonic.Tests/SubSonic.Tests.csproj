@@ -105,6 +105,7 @@
     <Compile Include="Repositories\SimpleRepositoryTests.cs" />
     <Compile Include="SimpleQuery\DeleteTests.cs" />
     <Compile Include="SimpleQuery\InsertTests.cs" />
+    <Compile Include="SimpleQuery\QueryTests.cs" />
     <Compile Include="SimpleQuery\SelectTests.cs" />
     <Compile Include="SimpleQuery\UpdateTests.cs" />
     <Compile Include="TestClasses\Category.cs" />
