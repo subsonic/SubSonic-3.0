@@ -31,6 +31,7 @@ namespace SubSonic.Tests.SimpleQuery
         public QueryTests()
         {
             _provider = ProviderFactory.GetProvider("WestWind");
+
             _db = new TestDB(_provider);
             var setup = new Setup(_provider);
             setup.DropTestTables();
@@ -45,6 +46,24 @@ namespace SubSonic.Tests.SimpleQuery
             var result = (from x in query select x).ToList();
 
             Assert.False(result.Any(p => p.Image == null));
+        }
+
+        [Fact]
+        public void Issue106_Guid_Should_Be_Allowed_In_Query()
+        {
+            var query = new Query<Product>(_provider);
+            var someGuid = Guid.NewGuid(); // Some guid - wedo not need to retrieve a value!
+            Assert.DoesNotThrow(() => query.Where(p => p.Sku == someGuid));
+        }
+
+        [Fact]
+        public void Issue106_Guid_In_Query_Should_Retrieve_Matching_Records()
+        {
+            var query = new Query<Product>(_provider);
+            var firstSku= query.First().Sku;
+            var result = query.Where(p => p.Sku == firstSku).ToList();
+
+            Assert.Equal(firstSku, result[0].Sku);
         }
     }
 }
