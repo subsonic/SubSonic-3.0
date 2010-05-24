@@ -24,7 +24,6 @@ namespace SubSonic.Extensions
     {
         private List<Constraint> constraints;
         private Constraint current;
-        private bool expressionOpen = false;
         private bool isLeft = false;
         private SqlQuery query;
 
@@ -187,9 +186,10 @@ namespace SubSonic.Extensions
             return b;
         }
 
-				/// Converts the string method calls Contains,EndsWith and StartsWith into queries
+				/// <summary>
+                /// Converts the string method calls Contains,EndsWith and StartsWith into queries
 				/// </summary>
-				/// <param name="m">The MethodCall we are attempting to map to a query.</param>
+                /// <param name="methodCallExpression">The MethodCall we are attempting to map to a query.</param>
 				/// <returns>an expression tree.</returns>
 				protected override Expression VisitMethodCall(MethodCallExpression methodCallExpression)
 				{
@@ -204,7 +204,7 @@ namespace SubSonic.Extensions
 								constraint.Comparison = Comparison.Like;
 								break;
 							case "EndsWith":
-								constraint.Comparison = Comparison.StartsWith;
+								constraint.Comparison = Comparison.EndsWith;
 								break;
 							case "StartsWith":
 								constraint.Comparison = Comparison.StartsWith;
@@ -249,6 +249,5 @@ namespace SubSonic.Extensions
 						}
 					}
 				}
-
     }
 }

@@ -15,7 +15,6 @@ using SubSonic.DataProviders;
 using SubSonic.Query;
 using SubSonic.Tests.Linq.TestBases;
 using Xunit;
-using SubSonic.Tests.Batch;
 using SubSonic.Tests.TestClasses;
 
 namespace SubSonic.Tests.SimpleQuery

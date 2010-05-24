@@ -20,9 +20,6 @@ namespace SubSonic.Linq.Translation
     /// </summary>
     public class CountOrderByRemover : DbExpressionVisitor
     {
-        Dictionary<TableAlias, HashSet<string>> allColumnsUsed;
-
-
         public static Expression Remove(Expression expression) 
         {
             return new CountOrderByRemover().Visit(expression);

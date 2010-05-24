@@ -9,6 +9,12 @@ namespace SubSonic.Tests.BugReports
 {
     public class TestRepositoryBugs
     {
+        public TestRepositoryBugs()
+        {
+            OrderDetail.ResetTestRepo();
+            Order.ResetTestRepo();
+        }
+
         [Fact]
         public void Github_Issue138_SingleOrDefault_Should_Return_Matching_Entry_Only()
         {

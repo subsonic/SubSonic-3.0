@@ -108,7 +108,7 @@ namespace SubSonic.Tests.Linq.TestBases
 
         public Query<T> GetQuery<T>()
         {
-            return new Query<T>(_queryProvider);
+            throw new NotImplementedException();
         }
 
         public ITable FindTable(string tableName)
@@ -219,6 +219,8 @@ namespace SubSonic.Tests.Linq.TestBases
                 p.UnitPrice = 1.245M * i / 5.22M * 8.09M;
                 p.Discontinued = i % 2 == 0 ? true : false;
                 p.CategoryID = categoryCounter;
+                p.Image = p.Sku.ToByteArray();
+
                 batch.QueueForTransaction(p.ToInsertQuery(_provider));
 
                 categoryCounter++;

@@ -91,17 +91,9 @@ namespace SubSonic.SqlGeneration
             }
             else
             {
-                if(i.SelectValues != null)
-                {
-                    string selectSql = i.SelectValues.BuildSqlStatement();
-                    sb.AppendLine(selectSql);
-                }
-                else
-                {
-                    throw new InvalidOperationException(
-                        "Need to specify Values or a Select query to insert - can't go on!");
-                }
+                throw new InvalidOperationException("Need to specify Values or a Select query to insert - can't go on!");
             }
+
             sb.AppendLine(";");
 
             sb.AppendFormat("SELECT last_insert_rowid();");

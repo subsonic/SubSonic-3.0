@@ -29,6 +29,8 @@ namespace SubSonic.SqlGeneration.Schema
             //can't do this
             DROP_COLUMN = @"";
             DROP_TABLE = @"DROP TABLE {0};";
+
+            UPDATE_DEFAULTS = @"UPDATE `{0}` SET `{1}`={2};";
         }
 
         public override string GetNativeType(DbType dbType)
@@ -116,7 +118,7 @@ namespace SubSonic.SqlGeneration.Schema
             if(column.IsPrimaryKey)
             {
                 sb.Append(" NOT NULL PRIMARY KEY");
-                if(column.IsNumeric)
+                if(column.IsNumeric && column.AutoIncrement)
                     sb.Append(" AUTOINCREMENT ");
             }
             else

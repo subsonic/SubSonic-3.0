@@ -19,7 +19,7 @@ using SubSonic.DataProviders;
 using SubSonic.Tests.TestClasses;
 using SubSonic.Linq.Structure;
 
-namespace SubSonic.Tests.Update
+namespace SubSonic.Tests.SimpleQuery
 {
     /// <summary>
     /// Summary description for DeleteTests

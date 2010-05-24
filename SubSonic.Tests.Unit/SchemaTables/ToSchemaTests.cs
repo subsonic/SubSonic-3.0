@@ -16,11 +16,44 @@ using System.Data;
 using SubSonic.DataProviders;
 using SubSonic.Extensions;
 using SubSonic.SqlGeneration.Schema;
-using SubSonic.Tests.Migrations;
 using Xunit;
 
-namespace SubSonic.Tests.SchemaTables
+namespace SubSonic.Tests.Unit.SchemaTables
 {
+	public partial class SubSonicTest
+	{
+
+		public Guid Key { get; set; }
+		public int Thinger { get; set; }
+		public string Name { get; set; }
+
+		[SubSonicStringLength(500)]
+		public string UserName { get; set; }
+
+		public DateTime CreatedOn { get; set; }
+		public decimal Price { get; set; }
+		public double Discount { get; set; }
+
+		[SubSonicNumericPrecision(10, 3)]
+		public float? Lat { get; set; }
+
+		[SubSonicNumericPrecision(10, 3)]
+		public float? Long { get; set; }
+
+		public bool SomeFlag { get; set; }
+		public bool? SomeNullableFlag { get; set; }
+
+		public byte[] BinaryAttachment { get; set; }
+
+		[SubSonicLongString]
+		public string LongText { get; set; }
+
+		[SubSonicStringLength(800)]
+		public string MediumText { get; set; }
+
+		[SubSonicIgnore]
+		public int IgnoreMe { get; set; }
+	}
     
     public class IDAsKey
     {
@@ -56,6 +89,20 @@ namespace SubSonic.Tests.SchemaTables
 		public TestIntBasedEnum? SomeNullableIntEnum { get; set; }
 	}
 
+    public class TestTypeWithAutoIncrementDisabled
+    {
+        [SubSonicPrimaryKey(false)]
+        public int ID { get; set; }
+    }
+
+    public class TestTypeWithDefaultSettings
+    {
+        public int ID { get; set; }
+
+        [SubSonicDefaultSetting("DefaultSetting")]
+        public string SomeValue { get; set; }
+    }
+    
     public class ToSchemaTests
     {
         private readonly IDataProvider _provider;
@@ -181,9 +228,7 @@ namespace SubSonic.Tests.SchemaTables
         public void ToSchemaTable_Should_Set_Double_Properly() {
             var table = typeof(TestTypeWithDouble).ToSchemaTable(_provider);
             var col=table.Columns[1];
-            string sql = col.AlterSql;
-            Assert.False(sql.Contains("float(10,2)"));
-            Assert.True(sql.Contains("ALTER COLUMN SomeDouble float"));
+            Assert.Equal("ALTER TABLE [TestTypeWithDoubles] ALTER COLUMN [SomeDouble] float NOT NULL;", col.AlterSql);
         }
 
 		[Fact]
@@ -237,6 +282,24 @@ namespace SubSonic.Tests.SchemaTables
             var col = table.GetColumnByPropertyName("BinaryAttachment");
 
             Assert.True(col.IsNullable);
+        }
+
+        [Fact]
+        public void ToSchemaTable_Should_Allow_NonIncrementing_Id_Column()
+        {
+            var table = typeof(TestTypeWithAutoIncrementDisabled).ToSchemaTable(_provider);
+            var col = table.GetColumnByPropertyName("Id");
+
+            Assert.False(col.AutoIncrement);
+        }
+
+        [Fact]
+        public void ToSchemaTable_Should_Read_Default_Settings_From_Attribute()
+        {
+            var table = typeof(TestTypeWithDefaultSettings).ToSchemaTable(_provider);
+            var col = table.GetColumnByPropertyName("SomeValue");
+
+            Assert.Equal("DefaultSetting", col.DefaultSetting);
         }
     }
 }

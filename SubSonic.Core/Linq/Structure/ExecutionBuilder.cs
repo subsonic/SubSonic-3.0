@@ -276,7 +276,7 @@ namespace SubSonic.Linq.Structure
             if (scope.TryGetValue(column, out reader, out iOrdinal))
             {
                 return Expression.Condition(
-                    Expression.Call(reader, "IsDbNull", null, Expression.Constant(iOrdinal)),
+                    Expression.Call(reader, "IsDBNull", null, Expression.Constant(iOrdinal)),
                     Expression.Constant(null, outer.Type),
                     expr
                     );
@@ -312,7 +312,7 @@ namespace SubSonic.Linq.Structure
                     );
 
                 return Expression.Condition(
-                    Expression.Call(reader, "IsDbNull", null, Expression.Constant(iOrdinal)),
+                    Expression.Call(reader, "IsDBNull", null, Expression.Constant(iOrdinal)),
                     defvalue, value
                     );
             }

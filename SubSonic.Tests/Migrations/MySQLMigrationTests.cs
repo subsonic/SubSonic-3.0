@@ -78,7 +78,7 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8";
         public void CreateColumnSql_Should_Create_Valid_Sql()
         {
             var shouldbe = @"ALTER TABLE `SubSonicTests` ADD `UserName` nvarchar(500) NOT NULL  DEFAULT '';
-UPDATE SubSonicTests SET UserName='';";
+UPDATE `SubSonicTests` SET `UserName`='';";
 
             var sql = typeof(SubSonicTest).ToSchemaTable(_provider).GetColumn("UserName").CreateSql;
             Assert.Equal(shouldbe, sql);

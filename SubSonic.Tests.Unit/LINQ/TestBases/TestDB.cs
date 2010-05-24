@@ -13,7 +13,6 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 	public class TestDB : IQuerySurface
 	{
 		private IDataProvider _provider;
-		private DbQueryProvider _queryProvider;
 		public TestDB(string connection, string provider) : this(ProviderFactory.GetProvider(connection, provider)) { }
 
 		public TestDB(IDataProvider provider)
@@ -95,7 +94,7 @@ namespace SubSonic.Tests.Unit.Linq.TestBases
 
 		public Query<T> GetQuery<T>()
 		{
-			return new Query<T>(_queryProvider);
+            throw new NotImplementedException();
 		}
 
 		public ITable FindTable(string tableName)

@@ -193,7 +193,7 @@ namespace SubSonic.Repository
                     query.CommandSql += "; SELECT SCOPE_IDENTITY() as new_id";
                 }
 
-                /** add "using" keywords to dispose IDataReader rdr object after its get out of the scope **/
+                /* add "using" keywords to dispose IDataReader rdr object after its get out of the scope */
                 using (var rdr = provider.ExecuteReader(query))
                 {
                     if (rdr.Read())
@@ -210,7 +210,7 @@ namespace SubSonic.Repository
                             prop.SetValue(item, settable, null);
 
                         }
-                        catch (Exception x)
+                        catch (Exception)
                         {
                             //swallow it - I don't like this per se but this is a convenience and we
                             //don't want to throw the whole thing just because we can't auto-set the value
