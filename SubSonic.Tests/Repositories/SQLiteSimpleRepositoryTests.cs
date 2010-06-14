@@ -21,6 +21,11 @@ namespace SubSonic.Tests.Repositories
 
     public class SQLiteSimpleRepositoryTests : SimpleRepositoryTests
     {
+        protected override string[] StringNumbers
+        {
+            get { return new string[] { "1", "2", "3" }; }
+        }
+
         public SQLiteSimpleRepositoryTests() :
             base(ProviderFactory.GetProvider(new SQLitey().Connection, "System.Data.SQLite"))
         {

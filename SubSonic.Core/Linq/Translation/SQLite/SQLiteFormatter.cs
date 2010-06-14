@@ -225,9 +225,9 @@ namespace SubSonic.Linq.Translation.SQLite
                 if (m.Object.Type == typeof(string)) {
                     this.Visit(m.Object);  // no op
                 } else {
-                    sb.Append("CONVERT(ntext), ");
+                    sb.Append("CAST(");
                     this.Visit(m.Object);
-                    sb.Append(")");
+                    sb.Append(" AS TEXT)");
                 }
                 return m;
             } else if (m.Method.Name == "Equals") {
