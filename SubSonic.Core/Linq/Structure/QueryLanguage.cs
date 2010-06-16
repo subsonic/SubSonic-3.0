@@ -106,11 +106,7 @@ namespace SubSonic.Linq.Structure
         /// </summary>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public virtual string Format(Expression expression)
-        {
-            // use SqlServer formatter by default
-            return TSqlFormatter.Format(expression);
-        }
+        public abstract string Format(Expression expression);
 
         /// <summary>
         /// Determine which sub-expressions must be parameters
