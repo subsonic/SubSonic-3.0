@@ -164,10 +164,14 @@ namespace SubSonic.Extensions
                 if(query.Constraints.Count > 0)
                     current.Condition = ConstraintType.Or;
             }
-            //else if (b.NodeType == ExpressionType.NotEqual && current.ParameterValue == null)
-            //    current.Comparison = Comparison.IsNot;
-            //else if (b.NodeType == ExpressionType.Equal && current.ParameterValue == null)
-            //    current.Comparison = Comparison.Is;
+            else if (b.NodeType == ExpressionType.NotEqual && current.ParameterValue == null)
+            { 
+                current.Comparison = Comparison.IsNot; 
+            }
+            else if (b.NodeType == ExpressionType.Equal && current.ParameterValue == null)
+            {
+                current.Comparison = Comparison.Is;
+            }
 
             //query.OpenExpression();
             AddConstraint();
