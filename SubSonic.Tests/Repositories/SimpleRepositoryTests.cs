@@ -87,6 +87,7 @@ namespace SubSonic.Tests.Repositories
         public SimpleRepositoryTests(IDataProvider provider)
         {
             _provider = provider;
+            _provider.Log = Console.Out;
 
             _repo = new SimpleRepository(_provider, SimpleRepositoryOptions.RunMigrations);
             try
@@ -554,6 +555,66 @@ namespace SubSonic.Tests.Repositories
             _repo.Add(testClass);
 
             Assert.NotNull(_repo.Single<NonAutoIncrementingIdWithDefaultSetting>(100));
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Query_For_IsNull()
+        {
+            _repo.Add(CreateTestRecord(Guid.NewGuid(), s => s.NullSomeNumber = null));
+
+            var result = _repo.All<Shwerko>().Where(s => s.NullSomeNumber == null);
+
+            Assert.Equal(1, result.Count());
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Query_For_IsNotNull()
+        {
+            _repo.Add(CreateTestRecord(Guid.NewGuid(), s => s.NullSomeNumber = 1));
+
+            var result = _repo.All<Shwerko>().Where(s => s.NullSomeNumber != null);
+
+            Assert.Equal(1, result.Count());
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Select_Anonymous_Types()
+        {
+            var key = Guid.NewGuid();
+            int id = (int)_repo.Add(CreateTestRecord(key));
+
+            var result = (from s in _repo.All<Shwerko>()
+                         select new { ID = s.ID, Key = s.Key }).ToArray();
+
+            Assert.Equal(1, result.Count());
+            Assert.Equal(key, result[0].Key);
+            Assert.Equal(id, result[0].ID);
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Select_System_Types()
+        {
+            var key = Guid.NewGuid();
+            _repo.Add(CreateTestRecord(key));
+
+            var result = (from s in _repo.All<Shwerko>()
+                          select s.Key).ToArray();
+
+            Assert.Equal(1, result.Count());
+            Assert.Equal(key, result[0]);
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Select_Value_Types()
+        {
+            var key = Guid.NewGuid();
+            _repo.Add(CreateTestRecord(key, s => s.Salutation = Salutation.Ms));
+
+            var result = (from s in _repo.All<Shwerko>()
+                          select s.Salutation).ToArray();
+
+            Assert.Equal(1, result.Count());
+            Assert.Equal(Salutation.Ms, result[0]);
         }
     }
 }

@@ -257,6 +257,7 @@ namespace SubSonic.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="rdr">The IDataReader to read from.</param>
         /// <returns></returns>
+        [Obsolete("See ToEnumerable")]
         public static IEnumerable<T> ToEnumerableValueType<T>(this IDataReader rdr)
         {
             //thanks to Pascal LaCroix for the help here...
@@ -332,6 +333,12 @@ namespace SubSonic.Extensions
                     instance = (T)rdr.GetValue(0).ChangeTypeTo(type);
                     result.Add(instance);
                 }
+                else if (type.IsValueType)
+                {
+                    instance = Activator.CreateInstance<T>();
+                    LoadValueType(rdr, ref instance);
+                    result.Add(instance);
+                }
                 else
                 {
                     instance = Activator.CreateInstance<T>();
@@ -341,7 +348,8 @@ namespace SubSonic.Extensions
                     result.Add(instance);
                 }
             }
-            return result.AsEnumerable();
+
+            return result;
         }
 
         /// <summary>

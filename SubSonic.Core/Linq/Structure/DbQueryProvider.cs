@@ -242,13 +242,6 @@ namespace SubSonic.Linq.Structure
         /// <returns></returns>
         public virtual IEnumerable<T> Execute<T>(QueryCommand<T> query, object[] paramValues)
         {
-            //DbCommand cmd = this.GetCommand(query.CommandText, query.ParameterNames, paramValues);
-            //this.LogCommand(cmd);
-            //DbDataReader reader = cmd.ExecuteReader();
-            //return Project(reader, query.Projector);
-
-            
-
             QueryCommand cmd = new QueryCommand(query.CommandText, _provider);
             for (int i = 0; i < paramValues.Length; i++)
             {
@@ -260,12 +253,8 @@ namespace SubSonic.Linq.Structure
                 
                 cmd.AddParameter(query.ParameterNames[i], paramValues[i],dbType);
             }
-/*
-            var reader = _provider.ExecuteReader(cmd);
-            var result = Project(reader, query.Projector);
-            return result;
-*/
 
+            // TODO: Can we use Database.ToEnumerable here? -> See commit 654aa2f48a67ba537e34 that fixes some issues
             IEnumerable<T> result;
             Type type = typeof (T);
             //this is so hacky - the issue is that the Projector below uses Expression.Convert, which is a bottleneck
@@ -275,31 +264,15 @@ namespace SubSonic.Linq.Structure
                 var reader = _provider.ExecuteReader(cmd);
                 result = Project(reader, query.Projector);
             } 
-			else {
-
-            	using (var reader = _provider.ExecuteReader(cmd)) {
-
-            		//use our reader stuff
-            		//thanks to Pascal LaCroix for the help here...
-            		var resultType = typeof (T);
-            		if (resultType.IsValueType) {
-            			result = reader.ToEnumerableValueType<T>();
-
-            		}
-            		else {
-            			if (query.ColumnNames.Count != 0) {//mike check to see if we have ColumnNames
-							result = reader.ToEnumerable<T>(query.ColumnNames);
-						}
-            			else {
-            				result = reader.ToEnumerable<T>(null);
-            			}
-            		}
-
+			else 
+            {
+            	using (var reader = _provider.ExecuteReader(cmd)) 
+                {
+                    result = reader.ToEnumerable<T>(query.ColumnNames);
             	}
             }
+
         	return result;
-
-
         }
 
         /// <summary>
