@@ -315,27 +315,31 @@ namespace SubSonic.Extensions
                     //this is an anon type and it has read-only fields that are set
                     //in a constructor. So - read the fields and build it
                     //http://stackoverflow.com/questions/478013/how-do-i-create-and-access-a-new-instance-of-an-anonymous-class-passed-as-a-param
-                    var properties = TypeDescriptor.GetProperties(instance);
+                    var properties = type.GetProperties();
                     int objIdx = 0;
-                    object[] objArray = new object[properties.Count];
+                    object[] objArray = new object[properties.Length];
 
-                    foreach(PropertyDescriptor info in properties)
-                        objArray[objIdx++] = rdr[info.Name];
+                    foreach (var prop in properties)
+                    {
+                        objArray[objIdx++] = rdr[prop.Name];
+                    }
 
-                    result.Add((T)Activator.CreateInstance(instance.GetType(), objArray));
+                    result.Add((T)Activator.CreateInstance(type, objArray));
                 }
                     //TODO: there has to be a better way to work with the type system
-                else if(IsCoreSystemType(type))
+                else if (IsCoreSystemType(type))
                 {
                     instance = (T)rdr.GetValue(0).ChangeTypeTo(type);
                     result.Add(instance);
                 }
                 else
+                {
                     instance = Activator.CreateInstance<T>();
 
-                //do we have a parameterless constructor?
-                Load(rdr, instance, columnNames);//mike added ColumnNames
-                result.Add(instance);
+                    //do we have a parameterless constructor?
+                    Load(rdr, instance, columnNames);//mike added ColumnNames
+                    result.Add(instance);
+                }
             }
             return result.AsEnumerable();
         }

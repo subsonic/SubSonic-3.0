@@ -12,12 +12,14 @@
 //   rights and limitations under the License.
 // 
 using System;
+using System.Linq;
 using System.Data;
 using SubSonic.DataProviders;
 using SubSonic.Extensions;
 using SubSonic.Query;
 using SubSonic.Tests.Unit.TestClasses;
 using Xunit;
+using System.Collections.Generic;
 
 namespace SubSonic.Tests.Unit.Extensions
 {
@@ -133,7 +135,100 @@ namespace SubSonic.Tests.Unit.Extensions
             Assert.Equal(p.ProductID, del.Constraints[0].ParameterValue);
         }
 
+        [Fact]
+        public void ToEnumerable_Should_Create_Anonymous_Types_From_DataReader()
+        {
+            var items = new[] {
+                new { Test1 = 1, Test2="1", Test3=new DateTime(2001, 1, 11) },
+                new { Test1 = 1, Test2="1", Test3=new DateTime(2001, 1, 11) },
+                new { Test1 = 1, Test2="1", Test3=new DateTime(2001, 1, 11) }
+            };
 
+            var reader = CreateDataReaderFrom(items);
+
+            var enumerable = CreateEnumerable(reader, null, items);
+            Assert.Equal(items, enumerable.ToArray());
+        }
+
+        [Fact]
+        public void ToEnumerable_Should_Create_Anonymous_Types_From_DataReader_With_Empty_Columns()
+        {
+            var items = new[] {
+                new { Test1 = 1, Test2="1", Test3=new DateTime(2001, 1, 11) },
+                new { Test1 = 1, Test2="1", Test3=new DateTime(2001, 1, 11) },
+                new { Test1 = 1, Test2="1", Test3=new DateTime(2001, 1, 11) }
+            };
+
+            var reader = CreateDataReaderFrom(items);
+
+            var enumerable = CreateEnumerable(reader, new List<String>(), items);
+            Assert.Equal(items, enumerable.ToArray());
+        }
+
+        [Fact]
+        public void ToEnumerable_Should_Work_With_Core_System_Types_Int()
+        {
+            var items = new[] { 1, 2, 3 };
+
+            var reader = CreateDataReaderFromScalar(items);
+            var enumerable = CreateEnumerable(reader, new List<String>(), items);
+
+            Assert.Equal(items, enumerable.ToArray());
+        }
+
+        [Fact]
+        public void ToEnumerable_Should_Work_With_Core_System_Types_String()
+        {
+            var items = new[] { "1", "2", "3" };
+
+            var reader = CreateDataReaderFromScalar(items);
+            var enumerable = CreateEnumerable(reader, new List<String>(), items);
+
+            Assert.Equal(items, enumerable.ToArray());
+        }
+
+        private static IEnumerable<T> CreateEnumerable<T>(IDataReader reader, List<string> columns, IEnumerable<T> itemsOftype)
+        {
+            return reader.ToEnumerable<T>(columns);
+        }
+
+        private static IDataReader CreateDataReaderFrom<T>(IEnumerable<T> items)
+        {
+            var props = typeof(T).GetProperties();
+            DataTable dt = new DataTable();
+            dt.Columns.AddRange(props.Select(p => new DataColumn(p.Name, p.PropertyType)).ToArray());
+
+            foreach (var item in items)
+            {
+                var row = dt.NewRow();
+
+                foreach (var prop in props)
+                {
+                    row[prop.Name] = prop.GetValue(item, null);
+                }
+
+                dt.Rows.Add(row);
+            }
+
+            return dt.CreateDataReader();
+        }
+
+        private static IDataReader CreateDataReaderFromScalar<T>(IEnumerable<T> items)
+        {
+            var props = typeof(T).GetProperties();
+            DataTable dt = new DataTable();
+            dt.Columns.Add(new DataColumn("scalar", typeof(T)));
+
+            foreach (var item in items)
+            {
+                var row = dt.NewRow();
+                row[0] = item;
+                dt.Rows.Add(row);
+            }
+
+            return dt.CreateDataReader();
+        }
+        
         #region Nested type: TestObject
 
         private class TestObject
