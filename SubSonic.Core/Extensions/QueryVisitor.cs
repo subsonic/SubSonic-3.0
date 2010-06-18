@@ -42,7 +42,7 @@ namespace SubSonic.Extensions
 
         protected override Expression Visit(Expression exp)
         {
-            if(exp != null)
+            if (exp != null)
                 return base.Visit(exp);
 
             return exp;
@@ -50,7 +50,7 @@ namespace SubSonic.Extensions
 
         protected override Expression VisitConstant(ConstantExpression c)
         {
-            if(!isLeft)
+            if (!isLeft)
                 current.ParameterValue = c.Value;
             else
             {
@@ -63,10 +63,10 @@ namespace SubSonic.Extensions
 
         private static Expression Evaluate(Expression e)
         {
-            if(e.NodeType == ExpressionType.Constant)
+            if (e.NodeType == ExpressionType.Constant)
                 return e;
             Type type = e.Type;
-            if(type.IsValueType)
+            if (type.IsValueType)
                 e = Expression.Convert(e, typeof(object));
             Expression<Func<object>> lambda = Expression.Lambda<Func<object>>(e);
             Func<object> fn = lambda.Compile();
@@ -75,7 +75,7 @@ namespace SubSonic.Extensions
 
         protected override Expression VisitMemberAccess(MemberExpression m)
         {
-            if(isLeft)
+            if (isLeft)
             {
                 current.ColumnName = m.Member.Name;
                 current.ParameterName = m.Member.Name;
@@ -99,7 +99,7 @@ namespace SubSonic.Extensions
                 //this is a "!" not operator, which is akin to saying "member.name == false"
                 //so we'll switch it up
                 var member = u.Operand as MemberExpression;
-                if(member != null)
+                if (member != null)
                 {
                     current.ParameterName = member.Member.Name;
                     current.ColumnName += member.Member.Name;
@@ -119,8 +119,8 @@ namespace SubSonic.Extensions
         private void AddConstraint()
         {
             if (!query.Constraints.Any(x => x.ParameterName == current.ParameterName && x.ParameterValue == current.ParameterValue))
-            { 
-                query.Constraints.Add(current); 
+            {
+                query.Constraints.Add(current);
             }
         }
 
@@ -130,35 +130,35 @@ namespace SubSonic.Extensions
 
             current = new Constraint();
 
-            if(b.NodeType == ExpressionType.AndAlso)
+            if (b.NodeType == ExpressionType.AndAlso)
             {
-                if(query.Constraints.Count > 0)
+                if (query.Constraints.Count > 0)
                     current.Condition = ConstraintType.And;
             }
-            else if(b.NodeType == ExpressionType.OrElse || b.NodeType == ExpressionType.Or)
+            else if (b.NodeType == ExpressionType.OrElse || b.NodeType == ExpressionType.Or)
             {
-                if(query.Constraints.Count > 0)
+                if (query.Constraints.Count > 0)
                     current.Condition = ConstraintType.Or;
             }
-            else if(b.NodeType == ExpressionType.AndAlso) {}
-            else if(b.NodeType == ExpressionType.Or || b.NodeType == ExpressionType.OrElse)
+            else if (b.NodeType == ExpressionType.AndAlso) { }
+            else if (b.NodeType == ExpressionType.Or || b.NodeType == ExpressionType.OrElse)
             {
-                if(query.Constraints.Count > 0)
+                if (query.Constraints.Count > 0)
                     current.Condition = ConstraintType.Or;
             }
-            else if(b.NodeType == ExpressionType.NotEqual)
+            else if (b.NodeType == ExpressionType.NotEqual)
                 current.Comparison = Comparison.NotEquals;
-            else if(b.NodeType == ExpressionType.Equal)
+            else if (b.NodeType == ExpressionType.Equal)
                 current.Comparison = Comparison.Equals;
-            else if(b.NodeType == ExpressionType.GreaterThan)
+            else if (b.NodeType == ExpressionType.GreaterThan)
                 current.Comparison = Comparison.GreaterThan;
-            else if(b.NodeType == ExpressionType.GreaterThanOrEqual)
+            else if (b.NodeType == ExpressionType.GreaterThanOrEqual)
                 current.Comparison = Comparison.GreaterOrEquals;
-            else if(b.NodeType == ExpressionType.LessThan)
+            else if (b.NodeType == ExpressionType.LessThan)
                 current.Comparison = Comparison.LessThan;
-            else if(b.NodeType == ExpressionType.Not)
+            else if (b.NodeType == ExpressionType.Not)
                 Visit(b);
-            else if(b.NodeType == ExpressionType.LessThanOrEqual)
+            else if (b.NodeType == ExpressionType.LessThanOrEqual)
                 current.Comparison = Comparison.LessOrEquals;
 
             isLeft = true;
@@ -167,19 +167,19 @@ namespace SubSonic.Extensions
             Expression right = Visit(b.Right);
             Expression conversion = Visit(b.Conversion);
 
-            if(b.NodeType == ExpressionType.AndAlso)
+            if (b.NodeType == ExpressionType.AndAlso)
             {
-                if(query.Constraints.Count > 0)
+                if (query.Constraints.Count > 0)
                     current.Condition = ConstraintType.And;
             }
-            else if(b.NodeType == ExpressionType.OrElse || b.NodeType == ExpressionType.Or)
+            else if (b.NodeType == ExpressionType.OrElse || b.NodeType == ExpressionType.Or)
             {
-                if(query.Constraints.Count > 0)
+                if (query.Constraints.Count > 0)
                     current.Condition = ConstraintType.Or;
             }
             else if (b.NodeType == ExpressionType.NotEqual && current.ParameterValue == null)
-            { 
-                current.Comparison = Comparison.IsNot; 
+            {
+                current.Comparison = Comparison.IsNot;
             }
             else if (b.NodeType == ExpressionType.Equal && current.ParameterValue == null)
             {
@@ -196,116 +196,116 @@ namespace SubSonic.Extensions
 
             if (left != b.Left || right != b.Right || conversion != b.Conversion)
             {
-                if(b.NodeType == ExpressionType.Coalesce && b.Conversion != null)
+                if (b.NodeType == ExpressionType.Coalesce && b.Conversion != null)
                     return Expression.Coalesce(left, right, conversion as LambdaExpression);
                 return Expression.MakeBinary(b.NodeType, left, right, b.IsLiftedToNull, b.Method);
             }
             return b;
         }
 
-				/// <summary>
-                /// Converts the string method calls Contains,EndsWith and StartsWith into queries
-				/// </summary>
-                /// <param name="methodCallExpression">The MethodCall we are attempting to map to a query.</param>
-				/// <returns>an expression tree.</returns>
-				protected override Expression VisitMethodCall(MethodCallExpression methodCallExpression)
-				{
-                    // TODO: Here we only support member expressions -> Extend to solve http://github.com/subsonic/SubSonic-3.0/issues#issue/59
-					Expression result = methodCallExpression;
-					var obj = methodCallExpression.Object as MemberExpression;
-					if (obj != null)
-					{
-						var constraint = new Constraint();
-						switch (methodCallExpression.Method.Name)
-						{
-							case "Contains":
-								constraint.Comparison = Comparison.Like;
-								break;
-							case "EndsWith":
-								constraint.Comparison = Comparison.EndsWith;
-								break;
-							case "StartsWith":
-								constraint.Comparison = Comparison.StartsWith;
-								break;
-							default:
-								return base.VisitMethodCall(methodCallExpression);
-						}
-						// Set the starting / ending wildcards on the parameter value... not the best place to do this, but I'm 
-						// attempting to constrain the scope of the change.
-						constraint.ConstructionFragment = obj.Member.Name;
-						// Set the current constraint... Visit will be using it, I don't know what it would do with multiple args....
-						current = constraint;
-						foreach (var arg in methodCallExpression.Arguments)
-						{
-							isLeft = false;
-							Visit(arg);
-						}
-						isLeft = true;
-						// After Visit, the current constraint will have some parameters, so set the wildcards on the parameter.
-						SetConstraintWildcards(constraint);
-					}
-                    else
-                    {
-                        switch (methodCallExpression.Method.Name)
-                        {
-                            case "Contains":
-                            case "Any":
-                                BuildCollectionConstraint(methodCallExpression);
-                                break;
-                            default:
-                                throw new InvalidOperationException(
-                                    String.Format("Method {0} is not supported in linq statement!", 
-                                    methodCallExpression.Method.Name));
-                        }
-                    }
-
-					AddConstraint();
-					return methodCallExpression;
-				}
-
-                private void BuildCollectionConstraint(MethodCallExpression methodCallExpression)
+        /// <summary>
+        /// Converts the string method calls Contains,EndsWith and StartsWith into queries
+        /// </summary>
+        /// <param name="methodCallExpression">The MethodCall we are attempting to map to a query.</param>
+        /// <returns>an expression tree.</returns>
+        protected override Expression VisitMethodCall(MethodCallExpression methodCallExpression)
+        {
+            // TODO: Here we only support member expressions -> Extend to solve http://github.com/subsonic/SubSonic-3.0/issues#issue/59
+            Expression result = methodCallExpression;
+            var obj = methodCallExpression.Object as MemberExpression;
+            if (obj != null)
+            {
+                var constraint = new Constraint();
+                switch (methodCallExpression.Method.Name)
                 {
-                    if (methodCallExpression.Arguments.Count == 2)
-                    {
-                        isLeft = true;
-                        Visit(methodCallExpression.Arguments[1]);
+                    case "Contains":
+                        constraint.Comparison = Comparison.Like;
+                        break;
+                    case "EndsWith":
+                        constraint.Comparison = Comparison.EndsWith;
+                        break;
+                    case "StartsWith":
+                        constraint.Comparison = Comparison.StartsWith;
+                        break;
+                    default:
+                        return base.VisitMethodCall(methodCallExpression);
+                }
+                // Set the starting / ending wildcards on the parameter value... not the best place to do this, but I'm 
+                // attempting to constrain the scope of the change.
+                constraint.ConstructionFragment = obj.Member.Name;
+                // Set the current constraint... Visit will be using it, I don't know what it would do with multiple args....
+                current = constraint;
+                foreach (var arg in methodCallExpression.Arguments)
+                {
+                    isLeft = false;
+                    Visit(arg);
+                }
+                isLeft = true;
+                // After Visit, the current constraint will have some parameters, so set the wildcards on the parameter.
+                SetConstraintWildcards(constraint);
+            }
+            else
+            {
+                switch (methodCallExpression.Method.Name)
+                {
+                    case "Contains":
+                    case "Any":
+                        BuildCollectionConstraint(methodCallExpression);
+                        break;
+                    default:
+                        throw new InvalidOperationException(
+                            String.Format("Method {0} is not supported in linq statement!",
+                            methodCallExpression.Method.Name));
+                }
+            }
 
-                        isLeft = false;
+            AddConstraint();
+            return methodCallExpression;
+        }
 
-                        var c = Visit(methodCallExpression.Arguments[0]) as ConstantExpression;
+        private void BuildCollectionConstraint(MethodCallExpression methodCallExpression)
+        {
+            if (methodCallExpression.Arguments.Count == 2)
+            {
+                isLeft = true;
+                Visit(methodCallExpression.Arguments[1]);
 
-                        if (c != null)
-                        {
-                            // Constants
-                            current.InValues = c.Value as IEnumerable;
-                        }
-                        else
-                        {
-                            // something parsed to parameter values
-                            current.InValues = current.ParameterValue as IEnumerable;
-                        }
+                isLeft = false;
 
-                        current.Comparison = isNot ? Comparison.NotIn : Comparison.In;
-                    }
+                var c = Visit(methodCallExpression.Arguments[0]) as ConstantExpression;
+
+                if (c != null)
+                {
+                    // Constants
+                    current.InValues = c.Value as IEnumerable;
+                }
+                else
+                {
+                    // something parsed to parameter values
+                    current.InValues = current.ParameterValue as IEnumerable;
                 }
 
-				protected void SetConstraintWildcards(Constraint constraint)
-				{
-					if (constraint.ParameterValue is string)
-					{
-						switch (constraint.Comparison)
-						{
-							case Comparison.StartsWith:
-								constraint.ParameterValue = constraint.ParameterValue + "%";
-								break;
-							case Comparison.EndsWith:
-								constraint.ParameterValue = "%" + constraint.ParameterValue;
-								break;
-							case Comparison.Like:
-								constraint.ParameterValue = "%" + constraint.ParameterValue + "%";
-								break;
-						}
-					}
-				}
+                current.Comparison = isNot ? Comparison.NotIn : Comparison.In;
+            }
+        }
+
+        protected void SetConstraintWildcards(Constraint constraint)
+        {
+            if (constraint.ParameterValue is string)
+            {
+                switch (constraint.Comparison)
+                {
+                    case Comparison.StartsWith:
+                        constraint.ParameterValue = constraint.ParameterValue + "%";
+                        break;
+                    case Comparison.EndsWith:
+                        constraint.ParameterValue = "%" + constraint.ParameterValue;
+                        break;
+                    case Comparison.Like:
+                        constraint.ParameterValue = "%" + constraint.ParameterValue + "%";
+                        break;
+                }
+            }
+        }
     }
 }
