@@ -17,6 +17,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using SubSonic.Linq.Structure;
 using SubSonic.Query;
+using System.Collections;
 
 namespace SubSonic.Extensions
 {
@@ -24,7 +25,10 @@ namespace SubSonic.Extensions
     {
         private List<Constraint> constraints;
         private Constraint current;
-        private bool isLeft = false;
+
+        private bool isLeft;
+        private bool isNot; // TODO: This is a quick fix - see VisitUnary
+
         private SqlQuery query;
 
         public IList<Constraint> GetConstraints(Expression ex)
@@ -88,6 +92,8 @@ namespace SubSonic.Extensions
 
         protected override Expression VisitUnary(UnaryExpression u)
         {
+            isNot = true;   // TODO: This is quick fix - Unary handling has to be reworked!
+
             if (u.NodeType == ExpressionType.Not)
             {
                 //this is a "!" not operator, which is akin to saying "member.name == false"
@@ -102,13 +108,20 @@ namespace SubSonic.Extensions
                     AddConstraint();
                 }
             }
-            return base.VisitUnary(u);
+
+            var unaryResult = base.VisitUnary(u);
+
+            isNot = false;
+
+            return unaryResult;
         }
 
         private void AddConstraint()
         {
-            if(!query.Constraints.Any(x => x.ParameterName == current.ParameterName && x.ParameterValue == current.ParameterValue))
-                query.Constraints.Add(current);
+            if (!query.Constraints.Any(x => x.ParameterName == current.ParameterName && x.ParameterValue == current.ParameterValue))
+            { 
+                query.Constraints.Add(current); 
+            }
         }
 
         protected override Expression VisitBinary(BinaryExpression b)
@@ -197,6 +210,7 @@ namespace SubSonic.Extensions
 				/// <returns>an expression tree.</returns>
 				protected override Expression VisitMethodCall(MethodCallExpression methodCallExpression)
 				{
+                    // TODO: Here we only support member expressions -> Extend to solve http://github.com/subsonic/SubSonic-3.0/issues#issue/59
 					Expression result = methodCallExpression;
 					var obj = methodCallExpression.Object as MemberExpression;
 					if (obj != null)
@@ -230,10 +244,50 @@ namespace SubSonic.Extensions
 						// After Visit, the current constraint will have some parameters, so set the wildcards on the parameter.
 						SetConstraintWildcards(constraint);
 					}
+                    else
+                    {
+                        switch (methodCallExpression.Method.Name)
+                        {
+                            case "Contains":
+                            case "Any":
+                                BuildCollectionConstraint(methodCallExpression);
+                                break;
+                            default:
+                                throw new InvalidOperationException(
+                                    String.Format("Method {0} is not supported in linq statement!", 
+                                    methodCallExpression.Method.Name));
+                        }
+                    }
 
 					AddConstraint();
 					return methodCallExpression;
 				}
+
+                private void BuildCollectionConstraint(MethodCallExpression methodCallExpression)
+                {
+                    if (methodCallExpression.Arguments.Count == 2)
+                    {
+                        isLeft = true;
+                        Visit(methodCallExpression.Arguments[1]);
+
+                        isLeft = false;
+
+                        var c = Visit(methodCallExpression.Arguments[0]) as ConstantExpression;
+
+                        if (c != null)
+                        {
+                            // Constants
+                            current.InValues = c.Value as IEnumerable;
+                        }
+                        else
+                        {
+                            // something parsed to parameter values
+                            current.InValues = current.ParameterValue as IEnumerable;
+                        }
+
+                        current.Comparison = isNot ? Comparison.NotIn : Comparison.In;
+                    }
+                }
 
 				protected void SetConstraintWildcards(Constraint constraint)
 				{
