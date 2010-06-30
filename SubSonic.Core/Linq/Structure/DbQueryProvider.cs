@@ -46,21 +46,8 @@ namespace SubSonic.Linq.Structure
         {
             _provider = provider;
 
-            QueryLanguage lang;
-            switch (_provider.Client)
-            {
-                case DataClient.MySqlClient:
-                    lang = new MySqlLanguage(_provider);
-                    break;
-                case  DataClient.SQLite:
-                    lang = new SqliteLanguage(_provider);
-                    break;
-                default:
-                    lang = new TSqlLanguage(_provider);
-                    break;
-            }
+            QueryLanguage lang = QueryLanguageFactory.Create(_provider);
 
-            //connection = _provider.CreateConnection();
             policy = new QueryPolicy(new ImplicitMapping(lang));
 
             mapping = policy.Mapping;
