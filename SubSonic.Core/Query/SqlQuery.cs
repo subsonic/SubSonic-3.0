@@ -67,7 +67,7 @@ namespace SubSonic.Query
         {
             string provider = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
             string cString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
-            _provider = new DbDataProvider(cString, provider);
+            _provider = ProviderFactory.GetProvider(cString, provider);
         }
 
 
