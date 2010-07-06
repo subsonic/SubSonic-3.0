@@ -23,22 +23,14 @@ using SubSonic.SqlGeneration.Schema;
 
 namespace SubSonic.DataProviders
 {
-    public enum DataClient
-    {
-        SqlClient,
-        //SqlCEClient,
-        MySqlClient,
-        //OleDbClient,
-        OracleClient,
-        SQLite
-    }
+ 
 
     public interface IDataProvider
     {
         //execution
         string DbDataProviderName { get; }
         string Name { get; }
-        DataClient Client { get; set; }
+        string ClientName { get; set; }
         TextWriter Log { get; set; }
 
         /// <summary>
@@ -66,6 +58,7 @@ namespace SubSonic.DataProviders
         string QualifyTableName(ITable tbl);
         string QualifyColumnName(IColumn column);
         string QualifySPName(IStoredProcedure sp);
+        string InsertionIdentityFetchString {get;}
         //connection bits
         DbConnection InitializeSharedConnection(string connectionString);
         DbConnection InitializeSharedConnection();

@@ -4,23 +4,42 @@ using System.Linq;
 using System.Text;
 using SubSonic.DataProviders;
 
+using LinFu.IoC;
+
 namespace SubSonic.SqlGeneration.Schema
 {
     public static class SchemaGeneratorFactory
     {
-        public static ISchemaGenerator Create(DataClient client)
+        private static ServiceContainer _container = new ServiceContainer();
+        private static bool containerIsLoaded = false;
+        private static ServiceContainer Container
         {
-            switch (client)
+            get
             {
-                case DataClient.SqlClient:
-                    return new Sql2005Schema();
-                case DataClient.MySqlClient:
-                    return new MySqlSchema();
-                case DataClient.SQLite:
-                    return new SQLiteSchema();
-                default:
-                    throw new ArgumentOutOfRangeException(client.ToString(), "There is no generator for this client");
+                lock (_container)
+                {
+                    if (!containerIsLoaded)
+                    {
+                        _container.LoadFrom(AppDomain.CurrentDomain.BaseDirectory, "*.dll");
+                        containerIsLoaded = true;
+                    }
+                    return _container;
+                }
             }
+        }
+        public static ISchemaGenerator Create(string clientName)
+        {
+            
+            ISchemaGenerator returnValue;
+            try
+            {
+                returnValue = Container.GetService<ISchemaGenerator>(clientName);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentOutOfRangeException(clientName.ToString(), "There is no generator for this client");
+            }
+            return returnValue;
         }
     }
 }

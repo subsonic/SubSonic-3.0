@@ -23,32 +23,48 @@ using SubSonic.Query;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration.Schema;
 
+using LinFu.IoC;
+
 namespace SubSonic.DataProviders
 {
-    public class DbClientTypeName
-    {
-        public const string MsSql = "System.Data.SqlClient";
-        public const string MsSqlCe = "System.Data.SqlServerCe.3.5";
-        public const string MySql = "MySql.Data.MySqlClient";
-        //public const string OleDb = "System.Data.OleDb";
-        public const string Oracle = "System.Data.OracleClient";
-        public const string SqlLite = "System.Data.SQLite";
-    }
+    
 
-    public class DbDataProvider : IDataProvider
+    public abstract class DbDataProvider : IDataProvider
     {
         [ThreadStatic]
         private static DbConnection __sharedConnection;
 
-        internal DbDataProvider(string connectionString, string providerName)
-        {
-            ConnectionString = connectionString;
-            DbDataProviderName = String.IsNullOrEmpty(providerName) ? DbClientTypeName.MsSql : providerName;
-            Schema = new DatabaseSchema();
-            DecideClient(DbDataProviderName);
+        protected const string DEFAULT_DB_CLIENT_TYPE_NAME = "System.Data.SqlClient";
 
-            Factory = DbProviderFactories.GetFactory(DbDataProviderName);
+        public abstract string InsertionIdentityFetchString { get; }
+
+        private static ServiceContainer _container = new ServiceContainer();
+        private static bool containerIsLoaded = false;
+        private static ServiceContainer Container
+        {
+            get
+            {
+                lock (_container)
+                {
+                    if (!containerIsLoaded)
+                    {
+                        _container.LoadFrom(AppDomain.CurrentDomain.BaseDirectory, "*.dll");
+                        containerIsLoaded = true;
+                    }
+                    return _container;
+                }
+            }
         }
+
+        public static IDataProvider GetInstance(string connectionString, string providerName)
+        {
+            if (String.IsNullOrEmpty(providerName))
+                providerName = DEFAULT_DB_CLIENT_TYPE_NAME;
+            IDataProvider provider = Container.GetService<IDataProvider>(providerName, connectionString, providerName);
+            return provider;
+        }
+
+        
 
         /// <summary>
         /// Gets a value indicating whether [current connection string is default].
@@ -76,20 +92,20 @@ namespace SubSonic.DataProviders
         {
             get
             {
-                return SchemaGeneratorFactory.Create(Client);
+                return SchemaGeneratorFactory.Create(ClientName);
             }
         }
 
         public TextWriter Log { get; set; }
 
-        public string ConnectionString { get; private set; }
+        public string ConnectionString { get; protected set; }
 
-        public DataClient Client { get; set; }
+        public string ClientName { get; set; }
         public IDatabaseSchema Schema { get; set; }
 
-        public string DbDataProviderName { get; private set; }
+        public string DbDataProviderName { get; protected set; }
 
-        public DbProviderFactory Factory { get; private set; }
+        public DbProviderFactory Factory { get; protected set; }
 
         public DbDataReader ExecuteReader(QueryCommand qry)
         {
@@ -345,44 +361,12 @@ namespace SubSonic.DataProviders
             return FindOrCreateTable(typeof(T));
         }
 
-        public string QualifyTableName(ITable tbl)
-        {
-            string qualifiedTable;
 
-            switch(Client)
-            {
-                case DataClient.MySqlClient:
-                case DataClient.SQLite:
-                    qualifiedTable = String.Format("`{0}`", tbl.Name);
-                    break;
-                default:
-                    string qualifiedFormat = String.IsNullOrEmpty(tbl.SchemaName) ? "[{1}]" : "[{0}].[{1}]";
-                    qualifiedTable = String.Format(qualifiedFormat, tbl.SchemaName, tbl.Name);
-                    break;
-            }
+        public abstract string QualifyTableName(ITable tbl);
 
-            return qualifiedTable;
-        }
 
-        public string QualifyColumnName(IColumn column)
-        {
-            string qualifiedFormat;
-
-            switch(Client)
-            {
-                case DataClient.SQLite:
-                    qualifiedFormat = "`{2}`";
-                    break;
-                case DataClient.MySqlClient:
-                    qualifiedFormat = String.IsNullOrEmpty(column.SchemaName) ? "`{2}`" : "`{0}`.`{1}`.`{2}`";
-                    break;
-                default:
-                    qualifiedFormat = String.IsNullOrEmpty(column.SchemaName) ? "[{1}].[{2}]" : "[{0}].[{1}].[{2}]";
-                    break;
-            }
-
-            return String.Format(qualifiedFormat, column.Table.SchemaName, column.Table.Name, column.Name);
-        }
+        public abstract string QualifyColumnName(IColumn column);
+       
 
         public string QualifySPName(IStoredProcedure sp)
         {
@@ -423,20 +407,6 @@ namespace SubSonic.DataProviders
 
         #endregion
 
-
-        private void DecideClient(string dbProviderTypeName)
-        {
-            if(dbProviderTypeName.Matches(DbClientTypeName.MsSql))
-                Client = DataClient.SqlClient;
-            else if (dbProviderTypeName.Matches(DbClientTypeName.MySql))
-                Client = DataClient.MySqlClient;
-            else if (dbProviderTypeName.Matches(DbClientTypeName.Oracle))
-                Client = DataClient.OracleClient;
-            else if (dbProviderTypeName.Matches(DbClientTypeName.SqlLite))
-                Client = DataClient.SQLite;
-            else
-                Client = DataClient.SqlClient;
-        }
 
         /// <summary>
         /// Adds the params.

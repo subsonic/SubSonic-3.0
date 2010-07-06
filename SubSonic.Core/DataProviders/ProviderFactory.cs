@@ -67,7 +67,7 @@ namespace SubSonic.DataProviders
         {
             //TODO: This is throwing errors and not working
 
-            IDataProvider result = new DbDataProvider(connectionString, providerName);
+            IDataProvider result = DbDataProvider.GetInstance(connectionString, providerName);
 
             if(result == null)
                 throw new InvalidOperationException("There is no SubSonic provider for the provider you're using");

@@ -21,12 +21,12 @@ namespace SubSonic.Tests.Unit.Linq
     // these are unit tests and I like underscores
     // suck it Osherove :)
 
-		public class Sql2008SelectTests : SelectTests
+    public class Sql2008SelectTests : SelectTests
     {
         public Sql2008SelectTests()
         {
-           _db = new TestDB(TestConfiguration.MsSql2008TestConnectionString, DbClientTypeName.MsSql);
-					 _selectTestsSql = new Sql2008SelectTestsSql();
+            _db = new TestDB(TestConfiguration.MsSql2008TestConnectionString, DbClientTypeName.MsSql);
+            _selectTestsSql = new Sql2008SelectTestsSql();
         }
     }
 
@@ -35,7 +35,7 @@ namespace SubSonic.Tests.Unit.Linq
         public Sql2008NumberTests()
         {
             _db = new TestDB(TestConfiguration.MsSql2008TestConnectionString, DbClientTypeName.MsSql);
-						_numberTestsSql = new Sql2008NumberTestsSql();
+            _numberTestsSql = new Sql2008NumberTestsSql();
         }
     }
 
@@ -44,7 +44,7 @@ namespace SubSonic.Tests.Unit.Linq
         public Sql2008StringTests()
         {
             _db = new TestDB(TestConfiguration.MsSql2008TestConnectionString, DbClientTypeName.MsSql);
-						_stringTestsSql = new Sql2008StringTestsSql();
+            _stringTestsSql = new Sql2008StringTestsSql();
         }
     }
 
@@ -53,7 +53,7 @@ namespace SubSonic.Tests.Unit.Linq
         public Sql2008DateTests()
         {
             _db = new TestDB(TestConfiguration.MsSql2008TestConnectionString, DbClientTypeName.MsSql);
-						_dateTestsSql = new Sql2008DateTestsSql();
+            _dateTestsSql = new Sql2008DateTestsSql();
         }
     }
 }

@@ -15,12 +15,15 @@ using System;
 using System.Text;
 using SubSonic.DataProviders;
 using SubSonic.Query;
+using LinFu.IoC.Configuration;
 
 namespace SubSonic.SqlGeneration
 {
     /// <summary>
     /// 
     /// </summary>
+    /// 
+    [Implements(typeof(ISqlGenerator), ServiceName = "System.Data.SqlClient")]
     public class Sql2005Generator : ANSISqlGenerator
     {
         private const string PAGING_SQL =
@@ -111,8 +114,7 @@ WHERE  Row >= {5} AND Row <= {6}";
             }
 
             sb.AppendLine(";");
-            if(query._provider.Client == DataClient.SqlClient)
-                sb.AppendLine("SELECT SCOPE_IDENTITY() as new_id");
+            sb.AppendLine("SELECT SCOPE_IDENTITY() as new_id");
             return sb.ToString();
         }
     }

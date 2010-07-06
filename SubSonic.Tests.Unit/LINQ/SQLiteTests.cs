@@ -14,6 +14,7 @@
 
 using SubSonic.Tests.Unit.Linq.TestBases;
 using SubSonic.Tests.Unit.Linq.SqlStrings;
+using SubSonic.Tests;
 namespace SubSonic.Tests.Unit.Linq
 {
     // ReSharper disable InconsistentNaming
@@ -25,7 +26,7 @@ namespace SubSonic.Tests.Unit.Linq
 		public SQLiteSelectTests()
 		{
 			_selectTestsSql = new SQLiteSelectTestsSql();
-			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DataProviders.DbClientTypeName.SqlLite);
+			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DbClientTypeName.SqlLite);
 		}
 	}
 
@@ -34,7 +35,7 @@ namespace SubSonic.Tests.Unit.Linq
 		public SQLiteNumberTests()
 		{
 			_numberTestsSql = new SQLiteNumberTestsSql();
-			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DataProviders.DbClientTypeName.SqlLite);
+			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DbClientTypeName.SqlLite);
 		}
 	}
 
@@ -43,7 +44,7 @@ namespace SubSonic.Tests.Unit.Linq
 		public SQLiteStringTests()
 		{
 			_stringTestsSql = new SQLiteStringTestsSql();
-			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DataProviders.DbClientTypeName.SqlLite);
+			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DbClientTypeName.SqlLite);
 		}
 	}
 
@@ -52,7 +53,7 @@ namespace SubSonic.Tests.Unit.Linq
 		public SQLiteDateTests()
 		{
 			_dateTestsSql = new SQLiteDateTestsSql();
-			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DataProviders.DbClientTypeName.SqlLite);
+			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DbClientTypeName.SqlLite);
 		}
 	}
 }

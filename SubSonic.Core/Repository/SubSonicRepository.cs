@@ -187,11 +187,8 @@ namespace SubSonic.Repository
             object result = null;
             if(query != null)
             {
-                if (provider.Client == DataClient.SqlClient)
-                {
-                    //add in SCOPE_INDENTITY so we can pull back the ID
-                    query.CommandSql += "; SELECT SCOPE_IDENTITY() as new_id";
-                }
+                
+                    query.CommandSql += provider.InsertionIdentityFetchString;  
 
                 /* add "using" keywords to dispose IDataReader rdr object after its get out of the scope */
                 using (var rdr = provider.ExecuteReader(query))

@@ -46,7 +46,7 @@ namespace SubSonic.Tests.Linq
     {
         public SQLiteSelectTests()
         {
-            _db = new TestDB(new SQLitey().Connection, DataProviders.DbClientTypeName.SqlLite);
+            _db = new TestDB(new SQLitey().Connection, DbClientTypeName.SqlLite);
             var setup = new Setup(_db.Provider);
             setup.DropTestTables();
             setup.CreateTestTable();

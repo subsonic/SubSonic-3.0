@@ -106,6 +106,7 @@
     <Compile Include="BugReports\QueryCommandBugs.cs" />
     <Compile Include="BugReports\TestRepositoryBugs.cs" />
     <Compile Include="BugReports\Update.cs" />
+    <Compile Include="DbClientTypeName.cs" />
     <Compile Include="Repositories\MySQLSimpleRepositoryTests.cs" />
     <Compile Include="Repositories\SQLiteSimpleRepositoryTests.cs" />
     <Compile Include="Repositories\SqlServerSimpleRepositoryTests.cs" />

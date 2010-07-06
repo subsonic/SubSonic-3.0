@@ -15,9 +15,11 @@ using System.Data;
 using System.Text;
 using SubSonic.Extensions;
 using SubSonic.Schema;
+using LinFu.IoC.Configuration;
 
 namespace SubSonic.SqlGeneration.Schema
 {
+    [Implements(typeof(ISchemaGenerator), ServiceName = "MySql.Data.MySqlClient")]
     public class MySqlSchema : ANSISchemaGenerator
     {
         public MySqlSchema()
@@ -38,7 +40,7 @@ namespace SubSonic.SqlGeneration.Schema
         /// <returns></returns>
         public override string GetNativeType(DbType dbType)
         {
-            switch(dbType)
+            switch (dbType)
             {
                 case DbType.Object:
                 case DbType.AnsiString:
@@ -93,7 +95,7 @@ namespace SubSonic.SqlGeneration.Schema
         {
             StringBuilder createSql = new StringBuilder();
 
-            foreach(IColumn col in table.Columns)
+            foreach (IColumn col in table.Columns)
                 createSql.AppendFormat("\r\n  `{0}`{1},", col.Name, GenerateColumnAttributes(col));
             string columnSql = createSql.ToString();
             return columnSql.Chop(",");
@@ -120,31 +122,31 @@ namespace SubSonic.SqlGeneration.Schema
         public override string GenerateColumnAttributes(IColumn column)
         {
             StringBuilder sb = new StringBuilder();
-            if(column.DataType == DbType.Guid)
+            if (column.DataType == DbType.Guid)
                 column.MaxLength = 16;
 
-            if(column.DataType == DbType.String && column.MaxLength > 8000)
+            if (column.DataType == DbType.String && column.MaxLength > 8000)
                 sb.Append(" LONGTEXT ");
             else
             {
                 sb.Append(" " + GetNativeType(column.DataType));
 
-                if(column.MaxLength > 0)
+                if (column.MaxLength > 0)
                     sb.Append("(" + column.MaxLength + ")");
 
-                if(column.DataType == DbType.Double || column.DataType == DbType.Decimal)
+                if (column.DataType == DbType.Double || column.DataType == DbType.Decimal)
                     sb.Append("(" + column.NumericPrecision + ", " + column.NumberScale + ")");
             }
-            if(column.IsPrimaryKey)
+            if (column.IsPrimaryKey)
                 sb.Append(" PRIMARY KEY ");
 
-            if(column.IsPrimaryKey | !column.IsNullable)
+            if (column.IsPrimaryKey | !column.IsNullable)
                 sb.Append(" NOT NULL ");
 
-            if(column.IsPrimaryKey && column.IsNumeric && column.AutoIncrement)
+            if (column.IsPrimaryKey && column.IsNumeric && column.AutoIncrement)
                 sb.Append(" auto_increment ");
 
-            if(column.DefaultSetting != null)
+            if (column.DefaultSetting != null)
                 sb.Append(" DEFAULT '" + column.DefaultSetting + "'");
 
             return sb.ToString();
@@ -157,7 +159,7 @@ namespace SubSonic.SqlGeneration.Schema
         /// <returns></returns>
         public override DbType GetDbType(string mySqlType)
         {
-            switch(mySqlType.ToLowerInvariant())
+            switch (mySqlType.ToLowerInvariant())
             {
                 case "longtext":
                 case "nchar":

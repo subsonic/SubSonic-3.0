@@ -36,7 +36,7 @@ namespace SubSonic.Tests.Linq
     {
         public MySQLSelectTests()
         {
-            _db = new TestDB(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
+            _db = new TestDB(TestConfiguration.MySqlTestConnectionString, "MySql.Data.MySqlClient");
             var setup = new Setup(_db.Provider);
             setup.DropTestTables();
             setup.CreateTestTable();

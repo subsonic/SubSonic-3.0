@@ -1,12 +1,15 @@
 ﻿using System.Linq.Expressions;
 using SubSonic.DataProviders;
 using SubSonic.Linq.Structure;
+using LinFu.IoC.Configuration;
 
 namespace SubSonic.Linq.Translation.SQLite
 {
     /// <summary>
     /// TSQL specific QueryLanguage
     /// </summary>
+    /// 
+    [Implements(typeof(QueryLanguage), ServiceName = "System.Data.SQLite")]
     public class SqliteLanguage : QueryLanguage
     {
         public SqliteLanguage(IDataProvider provider)

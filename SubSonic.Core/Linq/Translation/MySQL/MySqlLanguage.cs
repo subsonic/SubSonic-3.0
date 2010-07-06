@@ -1,14 +1,18 @@
 ﻿using System.Linq.Expressions;
 using SubSonic.DataProviders;
 using SubSonic.Linq.Structure;
+using LinFu.IoC.Configuration;
 
 namespace SubSonic.Linq.Translation.MySql
 {
     /// <summary>
     /// TSQL specific QueryLanguage
     /// </summary>
+    /// 
+    [Implements(typeof(QueryLanguage), ServiceName = "MySql.Data.MySqlClient")]
     public class MySqlLanguage : QueryLanguage
     {
+        
         public MySqlLanguage(IDataProvider provider) : base(provider)
         {
         }

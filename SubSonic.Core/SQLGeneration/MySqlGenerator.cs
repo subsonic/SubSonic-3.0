@@ -17,12 +17,15 @@ using System.Text;
 using SubSonic.Extensions;
 using SubSonic.Query;
 using SubSonic.Schema;
+using LinFu.IoC.Configuration;
 
 namespace SubSonic.SqlGeneration
 {
     /// <summary>
     /// 
     /// </summary>
+    /// 
+    [Implements(typeof(ISqlGenerator), ServiceName="MySql.Data.MySqlClient")]
     public class MySqlGenerator : ANSISqlGenerator
     {
         private const string PAGING_SQL =
@@ -200,24 +203,7 @@ namespace SubSonic.SqlGeneration
             return sql;
         }
 
-        // Removed: This is a duplicate of ANSISqlGenerator functionality with additional (but unneeded) spacing!
-        /*
-        protected override string GenerateAggregateSelect(Aggregate aggregate)
-        {
-            bool hasAlias = !String.IsNullOrEmpty(aggregate.Alias);
-
-            if(aggregate.AggregateType == AggregateFunction.GroupBy && hasAlias)
-                return String.Format("`{0}` AS `{1}`", aggregate.ColumnName, aggregate.Alias);
-            if(aggregate.AggregateType == AggregateFunction.GroupBy)
-                return string.Format("`{0}`", aggregate.ColumnName);
-            if(hasAlias)
-            {
-                return String.Format("{0}(`{1}`) AS `{2}`", Aggregate.GetFunctionType(aggregate).ToUpper(),
-                    aggregate.ColumnName, aggregate.Alias);
-            }
-
-            return String.Format("{0}(`{1}`)", Aggregate.GetFunctionType(aggregate).ToUpper(), aggregate.ColumnName);
-        }*/
+        
 
         public override string GenerateGroupBy()
         {

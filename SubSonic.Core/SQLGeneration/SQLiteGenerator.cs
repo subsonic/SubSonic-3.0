@@ -14,9 +14,11 @@
 using System;
 using System.Text;
 using SubSonic.Query;
+using LinFu.IoC.Configuration;
 
 namespace SubSonic.SqlGeneration
 {
+    [Implements(typeof(ISqlGenerator), ServiceName = "System.Data.SQLite")]
     public class SQLiteGenerator : ANSISqlGenerator
     {
         private const string PAGING_SQL =

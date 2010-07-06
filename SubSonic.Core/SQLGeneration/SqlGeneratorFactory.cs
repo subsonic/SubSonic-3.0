@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SubSonic.DataProviders;
-using SubSonic.Linq.Translation.MySql;
-using SubSonic.Linq.Translation.SQLite;
 
 using LinFu.IoC;
 
-namespace SubSonic.Linq.Structure
+using SubSonic.DataProviders;
+using SubSonic.Query;
+
+
+namespace SubSonic.SqlGeneration
 {
-    public static class QueryLanguageFactory
+    public class SqlGeneratorFactory
     {
         private static ServiceContainer _container = new ServiceContainer();
         private static bool containerIsLoaded = false;
@@ -29,19 +30,21 @@ namespace SubSonic.Linq.Structure
                 }
             }
         }
-        public static QueryLanguage Create(IDataProvider provider)
+
+        public static ISqlGenerator GetInstance(string providerName, SqlQuery query )
         {
-            QueryLanguage returnValue;
+            
+            ISqlGenerator returnValue;
             try
             {
-                returnValue = Container.GetService<QueryLanguage>(provider.ClientName, provider);
+                returnValue = Container.GetService<ISqlGenerator>(providerName, query);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                returnValue = new TSqlLanguage(provider);
-                
+                returnValue = new Sql2005Generator(query);
             }
-            return returnValue;
+            return returnValue;   
         }
+        
     }
 }

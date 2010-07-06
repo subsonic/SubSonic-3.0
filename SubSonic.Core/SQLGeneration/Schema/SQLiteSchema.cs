@@ -15,9 +15,11 @@ using System;
 using System.Data;
 using System.Text;
 using SubSonic.Schema;
+using LinFu.IoC.Configuration;
 
 namespace SubSonic.SqlGeneration.Schema
 {
+    [Implements(typeof(ISchemaGenerator), ServiceName = "System.Data.SQLite")]
     public class SQLiteSchema : ANSISchemaGenerator
     {
         public SQLiteSchema()

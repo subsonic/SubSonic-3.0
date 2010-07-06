@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbClientTypeName.cs" />
     <Compile Include="Linq\SqlStrings\IDateTestsSql.cs" />
     <Compile Include="Linq\SqlStrings\INumberTestsSql.cs" />
     <Compile Include="Linq\SqlStrings\ISelectTestsSql.cs" />

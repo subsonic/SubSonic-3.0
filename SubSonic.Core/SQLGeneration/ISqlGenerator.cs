@@ -25,7 +25,7 @@ namespace SubSonic.SqlGeneration
         /// <summary>
         /// SqlFragment. Field values may change depending on the inheriting Generator.
         /// </summary>
-        SqlFragment sqlFragment { get; }
+        ISqlFragment sqlFragment { get; }
 
         /// <summary>
         /// Generates the command line.

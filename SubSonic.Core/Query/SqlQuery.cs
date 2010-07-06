@@ -452,15 +452,9 @@ namespace SubSonic.Query
 
         internal ISqlGenerator GetGenerator()
         {
-            switch(_provider.Client)
-            {
-                case DataClient.MySqlClient:
-                    return new MySqlGenerator(this);
-                case DataClient.SQLite:
-                    return new SQLiteGenerator(this);
-                default:
-                    return new Sql2005Generator(this);
-            }
+
+            return SqlGeneratorFactory.GetInstance(_provider.ClientName, this);
+
         }
 
         #endregion
