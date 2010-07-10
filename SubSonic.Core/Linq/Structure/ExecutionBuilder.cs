@@ -306,7 +306,7 @@ namespace SubSonic.Linq.Structure
                 Expression value = Expression.Convert(
                     Expression.Call(typeof (Convert), "ChangeType", null,
                                     Expression.Call(reader, "GetValue", null, Expression.Constant(iOrdinal)),
-                                    Expression.Constant(TypeHelper.GetNonNullableType(column.Type))
+                                    Expression.Constant(TypeHelper.GetNonNullableType(column.Type), typeof(Type))
                         ),
                     column.Type
                     );
