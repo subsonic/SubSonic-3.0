@@ -106,6 +106,31 @@ namespace SubSonic.Tests.SimpleQuery
         }
 
         [Fact]
+        public void Batch_Should_Execute_Batched_SQL_With_Replaced_Command_Parameters_For_In_Operator()
+        {
+            BatchQuery qry = new BatchQuery(provider);
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").In(new int[] { 1, 2, 3 }));
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").In(new int[] { 1, 2, 3 }));
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").In(new int[] { 1, 2, 3 }));
+
+            int sets = 1;
+            bool canRead = false;
+            using (IDataReader rdr = qry.ExecuteReader())
+            {
+                canRead = true;
+                if (rdr.NextResult())
+                    sets = 2;
+
+                if (rdr.NextResult())
+                    sets = 3;
+
+                canRead = rdr.NextResult();
+            }
+            Assert.Equal(3, sets);
+            Assert.False(canRead);
+        }
+
+        [Fact]
         public void Batch_Should_Execute_Reader_And_Return_Typed_Lists()
         {
             BatchQuery qry = new BatchQuery(provider);
