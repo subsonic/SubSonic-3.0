@@ -20,6 +20,7 @@ using Xunit;
 using SubSonic.DataProviders;
 using SubSonic.Linq.Structure;
 using SubSonic.Tests.TestClasses;
+using System;
 
 namespace SubSonic.Tests.SimpleQuery
 {
@@ -128,6 +129,24 @@ namespace SubSonic.Tests.SimpleQuery
             }
             Assert.Equal(3, sets);
             Assert.False(canRead);
+        }
+
+        [Fact]
+        public void Batch_Query_Should_Allow_Single_Quotes_In_Query()
+        {
+            var containsNames = new[] { "Products's One and Only", "Products's Second" };
+
+            Query<Product> products = new Query<Product>(provider);
+
+            var query = from product in products
+                        where containsNames.Contains(product.ProductName)
+                        select product;
+
+            var result = query.ToList();
+
+            BatchQuery batch = new BatchQuery(provider);
+            batch.Queue(query);
+            Assert.DoesNotThrow(() => batch.Execute());
         }
 
         [Fact]
