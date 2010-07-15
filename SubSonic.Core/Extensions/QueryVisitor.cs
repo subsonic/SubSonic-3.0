@@ -286,7 +286,24 @@ namespace SubSonic.Extensions
                 }
 
                 current.Comparison = isNot ? Comparison.NotIn : Comparison.In;
+
+                if (current.InValues == null || !current.InValues.GetEnumerator().MoveNext())
+                {
+                    current = BuildAlwaysFalseConstraint();
+                }
             }
+        }
+
+        private Constraint BuildAlwaysFalseConstraint()
+        {
+            var falseConstraint = new Constraint();
+
+            falseConstraint.ConstructionFragment = "1";
+            falseConstraint.ParameterValue = 0;
+            falseConstraint.ColumnName = String.Empty;
+            falseConstraint.Comparison = Comparison.Equals;
+
+            return falseConstraint;
         }
 
         protected void SetConstraintWildcards(Constraint constraint)
