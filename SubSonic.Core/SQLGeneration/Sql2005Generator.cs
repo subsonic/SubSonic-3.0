@@ -16,6 +16,7 @@ using System.Text;
 using SubSonic.DataProviders;
 using SubSonic.Query;
 using LinFu.IoC.Configuration;
+using SubSonic.DatabaseSupport;
 
 namespace SubSonic.SqlGeneration
 {

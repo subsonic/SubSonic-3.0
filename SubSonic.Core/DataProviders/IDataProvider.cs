@@ -20,6 +20,7 @@ using System.Reflection;
 using SubSonic.Query;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration.Schema;
+using SubSonic.DatabaseSupport.Schema;
 
 namespace SubSonic.DataProviders
 {

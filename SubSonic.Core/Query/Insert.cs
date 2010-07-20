@@ -21,6 +21,7 @@ using SubSonic.DataProviders;
 using SubSonic.Query;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration;
+using SubSonic.DatabaseSupport;
 
 namespace SubSonic.Query
 {

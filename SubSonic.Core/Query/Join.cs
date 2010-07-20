@@ -14,6 +14,7 @@
 using System;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration;
+using SubSonic.DatabaseSupport;
 
 namespace SubSonic.Query
 {

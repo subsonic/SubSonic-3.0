@@ -22,8 +22,10 @@ using SubSonic.Extensions;
 using SubSonic.Query;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration.Schema;
+using SubSonic.DatabaseSupport;
 
 using LinFu.IoC;
+using SubSonic.DatabaseSupport.Schema;
 
 namespace SubSonic.DataProviders
 {
@@ -38,29 +40,13 @@ namespace SubSonic.DataProviders
 
         public abstract string InsertionIdentityFetchString { get; }
 
-        private static ServiceContainer _container = new ServiceContainer();
-        private static bool containerIsLoaded = false;
-        private static ServiceContainer Container
-        {
-            get
-            {
-                lock (_container)
-                {
-                    if (!containerIsLoaded)
-                    {
-                        _container.LoadFrom(AppDomain.CurrentDomain.BaseDirectory, "*.dll");
-                        containerIsLoaded = true;
-                    }
-                    return _container;
-                }
-            }
-        }
+        
 
         public static IDataProvider GetInstance(string connectionString, string providerName)
         {
             if (String.IsNullOrEmpty(providerName))
                 providerName = DEFAULT_DB_CLIENT_TYPE_NAME;
-            IDataProvider provider = Container.GetService<IDataProvider>(providerName, connectionString, providerName);
+            IDataProvider provider = IOCFactory.Container.GetService<IDataProvider>(providerName, connectionString, providerName);
             return provider;
         }
 

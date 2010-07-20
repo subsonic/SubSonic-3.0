@@ -21,6 +21,7 @@ using SubSonic.Extensions;
 using SubSonic.Query;
 using SubSonic.Schema;
 using Constraint = SubSonic.Query.Constraint;
+using SubSonic.DatabaseSupport;
 
 namespace SubSonic.SqlGeneration
 {
