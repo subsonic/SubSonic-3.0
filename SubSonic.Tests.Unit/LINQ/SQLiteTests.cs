@@ -21,39 +21,39 @@ namespace SubSonic.Tests.Unit.Linq
     // these are unit tests and I like underscores
     // suck it Osherove :)
 
-	public class SQLiteSelectTests : SelectTests
-	{
-		public SQLiteSelectTests()
-		{
-			_selectTestsSql = new SQLiteSelectTestsSql();
-			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DbClientTypeName.SqlLite);
-		}
-	}
+    public class SQLiteSelectTests : SelectTests
+    {
+        public SQLiteSelectTests()
+        {
+            _selectTestsSql = new SQLiteSelectTestsSql();
+            _db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DbClientTypeName.SqlLite);
+        }
+    }
 
-	public class SQLiteNumberTests : NumberTests
-	{
-		public SQLiteNumberTests()
-		{
-			_numberTestsSql = new SQLiteNumberTestsSql();
-			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DbClientTypeName.SqlLite);
-		}
-	}
+    public class SQLiteNumberTests : NumberTests
+    {
+        public SQLiteNumberTests()
+        {
+            _numberTestsSql = new SQLiteNumberTestsSql();
+            _db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DbClientTypeName.SqlLite);
+        }
+    }
 
-	public class SQLiteStringTests : StringTests
-	{
-		public SQLiteStringTests()
-		{
-			_stringTestsSql = new SQLiteStringTestsSql();
-			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DbClientTypeName.SqlLite);
-		}
-	}
+    public class SQLiteStringTests : StringTests
+    {
+        public SQLiteStringTests()
+        {
+            _stringTestsSql = new SQLiteStringTestsSql();
+            _db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DbClientTypeName.SqlLite);
+        }
+    }
 
-	public class SQLiteDateTests : DateTests
-	{
-		public SQLiteDateTests()
-		{
-			_dateTestsSql = new SQLiteDateTestsSql();
-			_db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DbClientTypeName.SqlLite);
-		}
-	}
+    public class SQLiteDateTests : DateTests
+    {
+        public SQLiteDateTests()
+        {
+            _dateTestsSql = new SQLiteDateTestsSql();
+            _db = new TestDB(TestConfiguration.SQLiteTestsConnectionString, DbClientTypeName.SqlLite);
+        }
+    }
 }
