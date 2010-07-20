@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SubSonic.DataProviders;
-using SubSonic.Linq.Translation.MySql;
-using SubSonic.Linq.Translation.SQLite;
+
 
 using LinFu.IoC;
 

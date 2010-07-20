@@ -6,7 +6,7 @@ using SubSonic.DataProviders;
 
 using LinFu.IoC;
 
-namespace SubSonic.DatabaseSupport.Schema
+namespace SubSonic.DataProviders.Schema
 {
     public class SchemaGeneratorFactory : IOCFactory
     {

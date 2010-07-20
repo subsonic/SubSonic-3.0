@@ -71,10 +71,10 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseSupport\IOCFactory.cs" />
-    <Compile Include="DataProviders\Providers\MySQLProvider.cs" />
-    <Compile Include="DataProviders\Providers\SqlServerProvider.cs" />
-    <Compile Include="DataProviders\Providers\SqLiteProvider.cs" />
+    <Compile Include="DataProviders\IOCFactory.cs" />
+    <Compile Include="DataProviders\MySQL\MySQLProvider.cs" />
+    <Compile Include="DataProviders\SqlServer\SqlServerProvider.cs" />
+    <Compile Include="DataProviders\SQLite\SqLiteProvider.cs" />
     <Compile Include="Linq\Structure\QueryLanguageFactory.cs" />
     <Compile Include="Linq\Translation\CountOrderByRemover.cs" />
     <Compile Include="Repository\SimpleRepositoryOptions.cs" />
@@ -105,8 +105,8 @@
     <Compile Include="Linq\Structure\DbQueryProvider.cs" />
     <Compile Include="Linq\Structure\ExecutionBuilder.cs" />
     <Compile Include="Linq\Structure\ImplicitMapping.cs" />
-    <Compile Include="Linq\Translation\MySQL\MySqlFormatter.cs" />
-    <Compile Include="Linq\Translation\MySQL\MySqlLanguage.cs" />
+    <Compile Include="DataProviders\MySQL\MySqlFormatter.cs" />
+    <Compile Include="DataProviders\MySQL\MySqlLanguage.cs" />
     <Compile Include="Linq\Structure\QueryCommand.cs" />
     <Compile Include="Linq\Structure\QueryLanguage.cs" />
     <Compile Include="Linq\Structure\QueryMapping.cs" />
@@ -131,8 +131,8 @@
     <Compile Include="Linq\Translation\SelectGatherer.cs" />
     <Compile Include="Linq\Translation\SingletonProjectionRewriter.cs" />
     <Compile Include="Linq\Translation\SkipRewriter.cs" />
-    <Compile Include="Linq\Translation\SQLite\SQLiteFormatter.cs" />
-    <Compile Include="Linq\Translation\SQLite\SQLiteLanguage.cs" />
+    <Compile Include="DataProviders\SQLite\SQLiteFormatter.cs" />
+    <Compile Include="DataProviders\SQLite\SQLiteLanguage.cs" />
     <Compile Include="Linq\Translation\SubqueryRemover.cs" />
     <Compile Include="Linq\Translation\UnusedColumnRemover.cs" />
     <Compile Include="Linq\Structure\TSqlFormatter.cs" />
@@ -166,21 +166,21 @@
     <Compile Include="Repository\SubSonicRepository.cs" />
     <Compile Include="Repository\TestRepository.cs" />
     <Compile Include="Schema\Migrator.cs" />
-    <Compile Include="DatabaseSupport\ISqlFragment.cs" />
-    <Compile Include="SQLGeneration\MySqlSqlFragment.cs" />
+    <Compile Include="DataProviders\ISqlFragment.cs" />
+    <Compile Include="DataProviders\MySQL\MySqlSqlFragment.cs" />
     <Compile Include="SQLGeneration\Schema\ANSISchemaGenerator.cs" />
     <Compile Include="Schema\DatabaseSchema.cs" />
     <Compile Include="Schema\IDatabaseSchema.cs" />
     <Compile Include="Schema\IView.cs" />
-    <Compile Include="SQLGeneration\MySqlGenerator.cs" />
-    <Compile Include="DatabaseSupport\Schema\SchemaGeneratorFactory.cs" />
-    <Compile Include="SQLGeneration\Schema\SQLiteSchema.cs" />
-    <Compile Include="DatabaseSupport\Schema\ISchemaGenerator.cs" />
+    <Compile Include="DataProviders\MySQL\MySqlGenerator.cs" />
+    <Compile Include="DataProviders\Schema\SchemaGeneratorFactory.cs" />
+    <Compile Include="DataProviders\SQLite\SQLiteSchema.cs" />
+    <Compile Include="DataProviders\Schema\ISchemaGenerator.cs" />
     <Compile Include="SQLGeneration\Schema\SchemaAttributes.cs" />
-    <Compile Include="SQLGeneration\Schema\MySqlSchema.cs" />
-    <Compile Include="SQLGeneration\Schema\Sql2005Schema.cs" />
-    <Compile Include="SQLGeneration\Sql2005Generator.cs" />
-    <Compile Include="DatabaseSupport\ISqlGenerator.cs" />
+    <Compile Include="DataProviders\MySQL\MySqlSchema.cs" />
+    <Compile Include="DataProviders\SqlServer\Sql2005Schema.cs" />
+    <Compile Include="DataProviders\SqlServer\Sql2005Generator.cs" />
+    <Compile Include="DataProviders\ISqlGenerator.cs" />
     <Compile Include="Query\Join.cs" />
     <Compile Include="Query\QueryCommand.cs" />
     <Compile Include="Query\Select.cs" />
@@ -197,9 +197,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SQLGeneration\SqlFragment.cs" />
-    <Compile Include="DatabaseSupport\SqlFragmentFactory.cs" />
-    <Compile Include="DatabaseSupport\SqlGeneratorFactory.cs" />
-    <Compile Include="SQLGeneration\SQLiteGenerator.cs" />
+    <Compile Include="DataProviders\SqlFragmentFactory.cs" />
+    <Compile Include="DataProviders\SqlGeneratorFactory.cs" />
+    <Compile Include="DataProviders\SQLite\SQLiteGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="LICENSE.txt" />

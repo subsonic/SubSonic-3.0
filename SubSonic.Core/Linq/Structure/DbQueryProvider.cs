@@ -11,8 +11,6 @@ using System.IO;
 using SubSonic.DataProviders;
 using SubSonic.Extensions;
 using SubSonic.Linq.Translation;
-using SubSonic.Linq.Translation.MySql;
-using SubSonic.Linq.Translation.SQLite;
 using SubSonic.Query;
 
 namespace SubSonic.Linq.Structure

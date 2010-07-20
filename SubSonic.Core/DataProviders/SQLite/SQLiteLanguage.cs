@@ -2,18 +2,19 @@
 using SubSonic.DataProviders;
 using SubSonic.Linq.Structure;
 using LinFu.IoC.Configuration;
+using SubSonic.Linq.Translation;
 
-namespace SubSonic.Linq.Translation.MySql
+namespace SubSonic.DataProviders.SQLite
 {
     /// <summary>
     /// TSQL specific QueryLanguage
     /// </summary>
     /// 
-    [Implements(typeof(QueryLanguage), ServiceName = "MySql.Data.MySqlClient")]
-    public class MySqlLanguage : QueryLanguage
+    [Implements(typeof(QueryLanguage), ServiceName = "System.Data.SQLite")]
+    public class SqliteLanguage : QueryLanguage
     {
-        
-        public MySqlLanguage(IDataProvider provider) : base(provider)
+        public SqliteLanguage(IDataProvider provider)
+            : base(provider)
         {
         }
 
@@ -66,7 +67,7 @@ namespace SubSonic.Linq.Translation.MySql
 
         public override string Format(Expression expression)
         {
-            return MySqlFormatter.FormatExpression(expression);
+            return SqliteFormatter.FormatExpression(expression);
         }
 
         private bool isPaged(Expression exp)

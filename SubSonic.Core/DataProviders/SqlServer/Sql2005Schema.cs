@@ -16,9 +16,10 @@ using System.Text;
 using SubSonic.Schema;
 using System;
 using LinFu.IoC.Configuration;
-using SubSonic.DatabaseSupport.Schema;
+using SubSonic.DataProviders.Schema;
+using SubSonic.SqlGeneration.Schema;
 
-namespace SubSonic.SqlGeneration.Schema
+namespace SubSonic.DataProvider.SqlServer
 {
     [Implements(typeof(ISchemaGenerator), ServiceName = "System.Data.SqlClient")]
     public class Sql2005Schema : ANSISchemaGenerator

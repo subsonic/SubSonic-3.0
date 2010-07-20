@@ -11,37 +11,35 @@
 //   implied. See the License for the specific language governing
 //   rights and limitations under the License.
 // 
+using System;
 using System.Data;
 using System.Text;
-using SubSonic.Extensions;
 using SubSonic.Schema;
 using LinFu.IoC.Configuration;
-using SubSonic.DatabaseSupport.Schema;
+using SubSonic.DataProviders.Schema;
+using SubSonic.SqlGeneration.Schema;
 
-namespace SubSonic.SqlGeneration.Schema
+namespace SubSonic.DataProviders.SQLite
 {
-    [Implements(typeof(ISchemaGenerator), ServiceName = "MySql.Data.MySqlClient")]
-    public class MySqlSchema : ANSISchemaGenerator
+    [Implements(typeof(ISchemaGenerator), ServiceName = "System.Data.SQLite")]
+    public class SQLiteSchema : ANSISchemaGenerator
     {
-        public MySqlSchema()
+        public SQLiteSchema()
         {
             ADD_COLUMN = @"ALTER TABLE `{0}` ADD `{1}`{2};";
-            ALTER_COLUMN = @"ALTER TABLE `{0}` MODIFY `{1}`{2};";
-            CREATE_TABLE = "CREATE TABLE `{0}` ({1} \r\n) ";
-            DROP_COLUMN = @"ALTER TABLE `{0}` DROP COLUMN `{1}`;";
+            //can't do this
+            ALTER_COLUMN = @"";
+            CREATE_TABLE = "CREATE TABLE `{0}` ({1} \r\n);";
+            //can't do this
+            DROP_COLUMN = @"";
             DROP_TABLE = @"DROP TABLE {0};";
 
             UPDATE_DEFAULTS = @"UPDATE `{0}` SET `{1}`={2};";
         }
 
-        /// <summary>
-        /// Gets the type of the native.
-        /// </summary>
-        /// <param name="dbType">Type of the db.</param>
-        /// <returns></returns>
         public override string GetNativeType(DbType dbType)
         {
-            switch (dbType)
+            switch(dbType)
             {
                 case DbType.Object:
                 case DbType.AnsiString:
@@ -54,7 +52,7 @@ namespace SubSonic.SqlGeneration.Schema
                 case DbType.SByte:
                 case DbType.Binary:
                 case DbType.Byte:
-                    return "longblob";
+                    return "blob";
                 case DbType.Currency:
                     return "money";
                 case DbType.Time:
@@ -66,14 +64,16 @@ namespace SubSonic.SqlGeneration.Schema
                 case DbType.Double:
                     return "float";
                 case DbType.Guid:
-                    return "binary";
+                    return "guid";
                 case DbType.UInt32:
-                case DbType.UInt16:
-                case DbType.Int16:
                 case DbType.Int32:
+                    return "int";
+                case DbType.Int16:
+                case DbType.UInt16:
+                    return "tinyint";
                 case DbType.UInt64:
                 case DbType.Int64:
-                    return "int";
+                    return "integer";
                 case DbType.Single:
                     return "real";
                 case DbType.VarNumeric:
@@ -85,34 +85,20 @@ namespace SubSonic.SqlGeneration.Schema
             }
         }
 
-        /// <summary>
-        /// Generates the columns.
-        /// </summary>
-        /// <param name="table">Table containing the columns.</param>
-        /// <returns>
-        /// SQL fragment representing the supplied columns.
-        /// </returns>
-        public override string GenerateColumns(ITable table)
+        public override string BuildDropColumnStatement(string tableName, string columnName)
         {
-            StringBuilder createSql = new StringBuilder();
-
-            foreach (IColumn col in table.Columns)
-                createSql.AppendFormat("\r\n  `{0}`{1},", col.Name, GenerateColumnAttributes(col));
-            string columnSql = createSql.ToString();
-            return columnSql.Chop(",");
+            //what a pain
+            //http://grass.osgeo.org/wiki/Sqlite_Drop_Column
+            Console.WriteLine("Can't drop a column from SQLite - you have to do this manually: http://grass.osgeo.org/wiki/Sqlite_Drop_Column");
+            return "";
         }
 
-        /// <summary>
-        /// Builds a CREATE TABLE statement.
-        /// </summary>
-        /// <param name="table"></param>
-        /// <returns></returns>
-        public override string BuildCreateTableStatement(ITable table)
+        public override string BuildAlterColumnStatement(IColumn column)
         {
-            string result = base.BuildCreateTableStatement(table);
-
-            result += "\r\nENGINE=InnoDB DEFAULT CHARSET=utf8";
-            return result;
+            //SQLite doesn't support altering columns. There is no typing either, or length considerations
+            //so - unless we're adding/dropping, fuggedaboutit
+            //http://stackoverflow.com/questions/623044/how-to-alter-sqlite-column-iphone
+            return "";
         }
 
         /// <summary>
@@ -123,32 +109,37 @@ namespace SubSonic.SqlGeneration.Schema
         public override string GenerateColumnAttributes(IColumn column)
         {
             StringBuilder sb = new StringBuilder();
-            if (column.DataType == DbType.Guid)
-                column.MaxLength = 16;
-
             if (column.DataType == DbType.String && column.MaxLength > 8000)
-                sb.Append(" LONGTEXT ");
+                sb.Append(" TEXT ");
+            else if (column.IsPrimaryKey && column.DataType == DbType.Int32
+                || column.IsPrimaryKey && column.DataType == DbType.Int16
+                || column.IsPrimaryKey && column.DataType == DbType.Int64
+                )
+                sb.Append(" integer ");
             else
-            {
                 sb.Append(" " + GetNativeType(column.DataType));
 
-                if (column.MaxLength > 0)
-                    sb.Append("(" + column.MaxLength + ")");
+            if (column.IsString && column.MaxLength < 8000)
+                sb.Append("(" + column.MaxLength + ")");
+            else if (column.DataType == DbType.Double || column.DataType == DbType.Decimal)
+                sb.Append("(" + column.NumericPrecision + ", " + column.NumberScale + ")");
 
-                if (column.DataType == DbType.Double || column.DataType == DbType.Decimal)
-                    sb.Append("(" + column.NumericPrecision + ", " + column.NumberScale + ")");
+            if(column.IsPrimaryKey)
+            {
+                sb.Append(" NOT NULL PRIMARY KEY");
+                if(column.IsNumeric && column.AutoIncrement)
+                    sb.Append(" AUTOINCREMENT ");
             }
-            if (column.IsPrimaryKey)
-                sb.Append(" PRIMARY KEY ");
+            else
+            {
+                if(!column.IsNullable)
+                    sb.Append(" NOT NULL");
+                else
+                    sb.Append(" NULL");
 
-            if (column.IsPrimaryKey | !column.IsNullable)
-                sb.Append(" NOT NULL ");
-
-            if (column.IsPrimaryKey && column.IsNumeric && column.AutoIncrement)
-                sb.Append(" auto_increment ");
-
-            if (column.DefaultSetting != null)
-                sb.Append(" DEFAULT '" + column.DefaultSetting + "'");
+                if(column.DefaultSetting != null)
+                    sb.Append(" DEFAULT '" + column.DefaultSetting + "'");
+            }
 
             return sb.ToString();
         }
@@ -156,11 +147,11 @@ namespace SubSonic.SqlGeneration.Schema
         /// <summary>
         /// Gets the type of the db.
         /// </summary>
-        /// <param name="mySqlType">Type of my SQL.</param>
+        /// <param name="sqlType">Type of the SQL.</param>
         /// <returns></returns>
-        public override DbType GetDbType(string mySqlType)
+        public override DbType GetDbType(string sqlType)
         {
-            switch (mySqlType.ToLowerInvariant())
+            switch (sqlType.ToLowerInvariant())
             {
                 case "longtext":
                 case "nchar":
@@ -180,12 +171,11 @@ namespace SubSonic.SqlGeneration.Schema
                 case "double":
                 case "real":
                     return DbType.Decimal;
-                case "bigint":
-                    return DbType.Int64;
                 case "int":
                 case "int32":
-                case "integer":
                     return DbType.Int32;
+                case "integer":
+                    return DbType.Int64;
                 case "int16":
                 case "smallint":
                     return DbType.Int16;
@@ -209,7 +199,7 @@ namespace SubSonic.SqlGeneration.Schema
                 case "timestamp":
                     return DbType.DateTime;
                 case "uniqueidentifier":
-                    return DbType.Binary;
+                    return DbType.Guid;
                 case "uint16":
                     return DbType.UInt16;
                 case "uint32":
@@ -218,5 +208,18 @@ namespace SubSonic.SqlGeneration.Schema
                     return DbType.String;
             }
         }
+
+
+        public override void SetColumnDefaults(IColumn column) {
+            if (column.IsNumeric)
+                column.DefaultSetting = 0;
+            else if (column.IsDateTime)
+                column.DefaultSetting = "1900-01-01";
+            else if (column.IsString)
+                column.DefaultSetting = "";
+            else if (column.DataType == DbType.Boolean)
+                column.DefaultSetting = false;
+        }
+    
     }
 }

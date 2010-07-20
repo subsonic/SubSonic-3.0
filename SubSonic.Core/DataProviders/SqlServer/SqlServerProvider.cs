@@ -6,7 +6,7 @@ using SubSonic.Schema;
 using System.Data.Common;
 using LinFu.IoC.Configuration;
 
-namespace SubSonic.DataProviders.Providers
+namespace SubSonic.DataProviders.SqlServer
 {
     [Implements(typeof(IDataProvider), ServiceName = "System.Data.SqlClient")]
     class SqlServerProvider : DbDataProvider

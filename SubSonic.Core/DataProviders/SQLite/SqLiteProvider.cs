@@ -8,15 +8,15 @@ using System.Data.Common;
 using LinFu.IoC;
 using LinFu.IoC.Configuration;
 
-namespace SubSonic.DataProviders.Providers
+namespace SubSonic.DataProviders.SQLite
 {
     [Implements(typeof(IDataProvider),ServiceName="System.Data.SQLite")]
-    class SqLiteProvider: DbDataProvider, IDataProvider
+    class SQLiteProvider: DbDataProvider, IDataProvider
     {
         private string _InsertionIdentityFetchString = "";
         public override string InsertionIdentityFetchString { get { return _InsertionIdentityFetchString; } }
 
-        public SqLiteProvider(string connectionString, string providerName)
+        public SQLiteProvider(string connectionString, string providerName)
         {
             DbDataProviderName = String.IsNullOrEmpty(providerName) ? DEFAULT_DB_CLIENT_TYPE_NAME : providerName;
             Schema = new DatabaseSchema();

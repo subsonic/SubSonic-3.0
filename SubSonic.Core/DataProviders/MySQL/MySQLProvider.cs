@@ -7,7 +7,7 @@ using System.Data.Common;
 using LinFu.IoC.Configuration;
 
 
-namespace SubSonic.DataProviders.Providers
+namespace SubSonic.DataProviders.MySQL
 {
     [Implements(typeof(IDataProvider), ServiceName = "MySql.Data.MySqlClient")]
     class MySQLProvider:DbDataProvider

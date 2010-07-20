@@ -8,75 +8,13 @@ using SubSonic.Linq.Structure;
 
 #endregion
 
-namespace SubSonic.Linq.Translation.MySql
+namespace SubSonic.DataProviders.SQLite
 {
     /// <summary>
     /// Formats a query expression into TSQL language syntax
     /// </summary>
-    public class MySqlFormatter : TSqlFormatter
+    public class SqliteFormatter : TSqlFormatter
     {
-
-
-        protected override Expression VisitMemberAccess(MemberExpression m) {
-            if (m.Member.DeclaringType == typeof(string)) {
-                switch (m.Member.Name) {
-                    case "Length":
-                        sb.Append("CHAR_LENGTH(");
-                        this.Visit(m.Expression);
-                        sb.Append(")");
-                        return m;
-                }
-            } else if (m.Member.DeclaringType == typeof(DateTime) || m.Member.DeclaringType == typeof(DateTimeOffset)) {
-                switch (m.Member.Name) {
-                    case "Day":
-                        sb.Append("DAY(");
-                        this.Visit(m.Expression);
-                        sb.Append(")");
-                        return m;
-                    case "Month":
-                        sb.Append("MONTH(");
-                        this.Visit(m.Expression);
-                        sb.Append(")");
-                        return m;
-                    case "Year":
-                        sb.Append("YEAR(");
-                        this.Visit(m.Expression);
-                        sb.Append(")");
-                        return m;
-                    case "Hour":
-                        sb.Append("HOUR( ");
-                        this.Visit(m.Expression);
-                        sb.Append(")");
-                        return m;
-                    case "Minute":
-                        sb.Append("MINUTE( ");
-                        this.Visit(m.Expression);
-                        sb.Append(")");
-                        return m;
-                    case "Second":
-                        sb.Append("SECOND( ");
-                        this.Visit(m.Expression);
-                        sb.Append(")");
-                        return m;
-                    case "Millisecond":
-                        sb.Append("MICROSECOND( ");
-                        this.Visit(m.Expression);
-                        sb.Append(")");
-                        return m;
-                    case "DayOfWeek":
-                        sb.Append("(DAYOFWEEK(");
-                        this.Visit(m.Expression);
-                        sb.Append(") - 1)");
-                        return m;
-                    case "DayOfYear":
-                        sb.Append("(DAYOFYEAR( ");
-                        this.Visit(m.Expression);
-                        sb.Append(") - 1)");
-                        return m;
-                }
-            }
-            throw new NotSupportedException(string.Format("The member '{0}' is not supported", m.Member.Name));
-        }
 
         protected override Expression VisitMethodCall(MethodCallExpression m) {
             if (m.Method.DeclaringType == typeof(string)) {
@@ -84,23 +22,23 @@ namespace SubSonic.Linq.Translation.MySql
                     case "StartsWith":
                         sb.Append("(");
                         this.Visit(m.Object);
-                        sb.Append(" LIKE CONCAT(");
+                        sb.Append(" LIKE ");
                         this.Visit(m.Arguments[0]);
-                        sb.Append(",'%'))");
+                        sb.Append(" || '%')");
                         return m;
                     case "EndsWith":
                         sb.Append("(");
                         this.Visit(m.Object);
-                        sb.Append(" LIKE CONCAT('%',");
+                        sb.Append(" LIKE '%' || ");
                         this.Visit(m.Arguments[0]);
-                        sb.Append("))");
+                        sb.Append(")");
                         return m;
                     case "Contains":
                         sb.Append("(");
                         this.Visit(m.Object);
-                        sb.Append(" LIKE CONCAT('%',");
+                        sb.Append(" LIKE '%' || ");
                         this.Visit(m.Arguments[0]);
-                        sb.Append(",'%'))");
+                        sb.Append(" || '%')");
                         return m;
                     case "Concat":
                         IList<Expression> args = m.Arguments;
@@ -139,7 +77,7 @@ namespace SubSonic.Linq.Translation.MySql
                         sb.Append(")");
                         return m;
                     case "Substring":
-                        sb.Append("SUBSTRING(");
+                        sb.Append("SUBSTR(");
                         this.Visit(m.Object);
                         sb.Append(", ");
                         this.Visit(m.Arguments[0]);
@@ -165,10 +103,10 @@ namespace SubSonic.Linq.Translation.MySql
                         sb.Append(", '')");
                         return m;
                     case "IndexOf":
-                        sb.Append("(LOCATE(");
-                        this.Visit(m.Arguments[0]);
-                        sb.Append(", ");
+                        sb.Append("(CHARINDEX(");
                         this.Visit(m.Object);
+                        sb.Append(", ");
+                        this.Visit(m.Arguments[0]);
                         if (m.Arguments.Count == 2 && m.Arguments[1].Type == typeof(int)) {
                             sb.Append(", ");
                             this.Visit(m.Arguments[1]);
@@ -222,23 +160,14 @@ namespace SubSonic.Linq.Translation.MySql
                         sb.Append(")");
                         return m;
                     case "Round":
-                        //if (m.Arguments.Count == 1) {
                             sb.Append("ROUND(");
                             this.Visit(m.Arguments[0]);
-                            sb.Append(", 0)");
+                            sb.Append(")");
                             return m;
-                        //} else if (m.Arguments.Count == 2 && m.Arguments[1].Type == typeof(int)) {
-                            //sb.Append("ROUND(");
-                            //this.Visit(m.Arguments[0]);
-                            //sb.Append(", ");
-                            //this.Visit(m.Arguments[1]);
-                            //sb.Append(")");
-                            //return m;
-                        //}
                     case "Truncate":
                         sb.Append("ROUND(");
                         this.Visit(m.Arguments[0]);
-                        sb.Append(", 0)");
+                        sb.Append(")");
                         return m;
                 }
             } else if (m.Method.DeclaringType == typeof(Math)) {
@@ -262,7 +191,7 @@ namespace SubSonic.Linq.Translation.MySql
                         sb.Append(")");
                         return m;
                     case "Atan2":
-                        sb.Append("ATAN2(");
+                        sb.Append("ATN2(");
                         this.Visit(m.Arguments[0]);
                         sb.Append(", ");
                         this.Visit(m.Arguments[1]);
@@ -281,24 +210,14 @@ namespace SubSonic.Linq.Translation.MySql
                         sb.Append(")");
                         return m;
                     case "Round":
-                        //if (m.Arguments.Count == 1) {
                             sb.Append("ROUND(");
                             this.Visit(m.Arguments[0]);
-                            sb.Append(", 0)");
+                            sb.Append(")");
                             return m;
-                        //} else if (m.Arguments.Count == 2 && m.Arguments[1].Type == typeof(int)) {
-                            //sb.Append("ROUND(");
-                            //this.Visit(m.Arguments[0]);
-                            //sb.Append(", ");
-                            //this.Visit(m.Arguments[1]);
-                            //sb.Append(")");
-                            //return m;
-                        //}
-                        //break;
                     case "Truncate":
                         sb.Append("ROUND(");
                         this.Visit(m.Arguments[0]);
-                        sb.Append(", 0)");
+                        sb.Append(")");
                         return m;
                 }
             }
@@ -306,9 +225,9 @@ namespace SubSonic.Linq.Translation.MySql
                 if (m.Object.Type == typeof(string)) {
                     this.Visit(m.Object);  // no op
                 } else {
-                    sb.Append("CONVERT( ");
+                    sb.Append("CAST(");
                     this.Visit(m.Object);
-                    sb.Append(", CHAR(200))");
+                    sb.Append(" AS TEXT)");
                 }
                 return m;
             } else if (m.Method.Name == "Equals") {
@@ -332,6 +251,66 @@ namespace SubSonic.Linq.Translation.MySql
             throw new NotSupportedException(string.Format("The method '{0}' is not supported", m.Method.Name));
         }
 
+        protected override Expression VisitMemberAccess(MemberExpression m) {
+            if (m.Member.DeclaringType == typeof(string)) {
+                switch (m.Member.Name) {
+                    case "Length":
+                        sb.Append("LENGTH(");
+                        this.Visit(m.Expression);
+                        sb.Append(")");
+                        return m;
+                }
+            } else if (m.Member.DeclaringType == typeof(DateTime) || m.Member.DeclaringType == typeof(DateTimeOffset)) {
+                switch (m.Member.Name) {
+                    case "Day":
+                        sb.Append("CAST(strftime('%d',");
+                        this.Visit(m.Expression);
+                        sb.Append(") AS INTEGER)");
+                        return m;
+                    case "Month":
+                        sb.Append("CAST(strftime('%m',");
+                        this.Visit(m.Expression);
+                        sb.Append(") AS INTEGER)");
+                        return m;
+                    case "Year":
+                        sb.Append("CAST(strftime('%Y',");
+                        this.Visit(m.Expression);
+                        sb.Append(") AS INTEGER)");
+                        return m;
+                    case "Hour":
+                        sb.Append("CAST(strftime('%H',");
+                        this.Visit(m.Expression);
+                        sb.Append(") AS INTEGER)");
+                        return m;
+                    case "Minute":
+                        sb.Append("CAST(strftime('%M',");
+                        this.Visit(m.Expression);
+                        sb.Append(") AS INTEGER)");
+                        return m;
+                    case "Second":
+                        sb.Append("CAST(strftime('%S',");
+                        this.Visit(m.Expression);
+                        sb.Append(") AS INTEGER)");
+                        return m;
+                    case "Millisecond":
+                        sb.Append("CAST(strftime('%f',");
+                        this.Visit(m.Expression);
+                        sb.Append(") AS INTEGER)");
+                        return m;
+                    case "DayOfWeek":
+                        sb.Append("CAST(strftime('%w',");
+                        this.Visit(m.Expression);
+                        sb.Append(") AS INTEGER)");
+                        return m;
+                    case "DayOfYear":
+                        sb.Append("CAST(DATE( ");
+                        this.Visit(m.Expression);
+                        sb.Append(",'MM/DD/YYYY') AS INTEGER)");
+                        return m;
+                }
+            }
+            throw new NotSupportedException(string.Format("The member '{0}' is not supported", m.Member.Name));
+        }
         
         protected override Expression VisitSelect(SelectExpression select)
         {
@@ -434,7 +413,7 @@ namespace SubSonic.Linq.Translation.MySql
 
         public static string FormatExpression(Expression expression)
         {
-            MySqlFormatter formatter = new MySqlFormatter();
+            SqliteFormatter formatter = new SqliteFormatter();
             formatter.Visit(expression);
             return formatter.sb.ToString();
         }

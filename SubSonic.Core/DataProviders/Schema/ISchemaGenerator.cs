@@ -15,7 +15,7 @@ using System.Data;
 using SubSonic.DataProviders;
 using SubSonic.Schema;
 
-namespace SubSonic.DatabaseSupport.Schema
+namespace SubSonic.DataProviders.Schema
 {
     public interface ISchemaGenerator
     {

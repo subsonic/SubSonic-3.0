@@ -22,10 +22,10 @@ using SubSonic.Extensions;
 using SubSonic.Query;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration.Schema;
-using SubSonic.DatabaseSupport;
+using SubSonic.DataProviders;
 
 using LinFu.IoC;
-using SubSonic.DatabaseSupport.Schema;
+using SubSonic.DataProviders.Schema;
 
 namespace SubSonic.DataProviders
 {

@@ -8,9 +8,10 @@ using LinFu.IoC;
 using SubSonic.DataProviders;
 using SubSonic.Query;
 using SubSonic.SqlGeneration;
+using SubSonic.DataProviders.SqlServer;
 
 
-namespace SubSonic.DatabaseSupport
+namespace SubSonic.DataProviders
 {
     public class SqlGeneratorFactory:IOCFactory
     {

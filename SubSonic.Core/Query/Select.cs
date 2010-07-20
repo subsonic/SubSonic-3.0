@@ -16,7 +16,7 @@ using System.Text;
 using SubSonic.DataProviders;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration;
-using SubSonic.DatabaseSupport;
+using SubSonic.DataProviders;
 
 namespace SubSonic.Query
 {

@@ -6,7 +6,7 @@ using System.Text;
 using LinFu.IoC;
 
 
-namespace SubSonic.DatabaseSupport
+namespace SubSonic.DataProviders
 {
     public class IOCFactory
     {

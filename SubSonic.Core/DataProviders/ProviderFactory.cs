@@ -43,26 +43,6 @@ namespace SubSonic.DataProviders
             return LoadProvider(connectionString, providerName);
         }
 
-        //TODO: Why do we need this? How can we have a schema if we don't know the connection?
-
-        //public static IDataProvider GetProvider(string connectionStringName, string providerName, IDatabaseSchema schema)
-        //{
-        //    IDataProvider _provider = GetProvider(connectionStringName,providerName);
-
-        //    if (!_dataProviders.ContainsKey(connectionStringName))
-        //    {
-        //        _provider = LoadProvider(connectionStringName);
-        //        _provider.Schema = schema;
-
-        //        _dataProviders.Add(connectionStringName, _provider);
-        //    }
-        //    else
-        //    {
-        //        _provider = _dataProviders[connectionStringName];
-        //    }
-        //    return _provider;
-        //}
-
         private static IDataProvider LoadProvider(string connectionString, string providerName)
         {
             //TODO: This is throwing errors and not working

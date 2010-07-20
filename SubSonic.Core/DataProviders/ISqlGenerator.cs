@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using SubSonic.Query;
 using SubSonic.Schema;
 
-namespace SubSonic.DatabaseSupport
+namespace SubSonic.DataProviders
 {
     /// <summary>
     /// 

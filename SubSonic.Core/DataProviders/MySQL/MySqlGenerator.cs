@@ -18,9 +18,10 @@ using SubSonic.Extensions;
 using SubSonic.Query;
 using SubSonic.Schema;
 using LinFu.IoC.Configuration;
-using SubSonic.DatabaseSupport;
+using SubSonic.DataProviders;
+using SubSonic.SqlGeneration;
 
-namespace SubSonic.SqlGeneration
+namespace SubSonic.DataProvider.MySQL
 {
     /// <summary>
     /// 
