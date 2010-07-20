@@ -20,6 +20,7 @@ using Xunit;
 using SubSonic.DataProviders;
 using SubSonic.Linq.Structure;
 using SubSonic.Tests.TestClasses;
+using System;
 
 namespace SubSonic.Tests.SimpleQuery
 {
@@ -103,6 +104,49 @@ namespace SubSonic.Tests.SimpleQuery
             }
             Assert.Equal(3, sets);
             Assert.False(canRead);
+        }
+
+        [Fact]
+        public void Batch_Should_Execute_Batched_SQL_With_Replaced_Command_Parameters_For_In_Operator()
+        {
+            BatchQuery qry = new BatchQuery(provider);
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").In(new int[] { 1, 2, 3 }));
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").In(new int[] { 1, 2, 3 }));
+            qry.Queue(new Select(provider).From("Products").Where("ProductID").In(new int[] { 1, 2, 3 }));
+
+            int sets = 1;
+            bool canRead = false;
+            using (IDataReader rdr = qry.ExecuteReader())
+            {
+                canRead = true;
+                if (rdr.NextResult())
+                    sets = 2;
+
+                if (rdr.NextResult())
+                    sets = 3;
+
+                canRead = rdr.NextResult();
+            }
+            Assert.Equal(3, sets);
+            Assert.False(canRead);
+        }
+
+        [Fact]
+        public void Batch_Query_Should_Allow_Single_Quotes_In_Query()
+        {
+            var containsNames = new[] { "Products's One and Only", "Products's Second" };
+
+            Query<Product> products = new Query<Product>(provider);
+
+            var query = from product in products
+                        where containsNames.Contains(product.ProductName)
+                        select product;
+
+            var result = query.ToList();
+
+            BatchQuery batch = new BatchQuery(provider);
+            batch.Queue(query);
+            Assert.DoesNotThrow(() => batch.Execute());
         }
 
         [Fact]

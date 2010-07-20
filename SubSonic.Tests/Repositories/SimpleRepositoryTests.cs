@@ -687,6 +687,16 @@ namespace SubSonic.Tests.Repositories
             Assert.Equal("Common", result[0].SelectedName);
         }
 
+        [Fact]
+        public void Simple_Repo_Should_Support_SingleQuote_In_Queries()
+        {
+            GivenShwerkosWithNames("Common's", "Some more common's", "Single's quote in the middle");
+
+            var count = _repo.All<Shwerko>().Where(s => s.Name.Contains("'")).Count();
+
+            Assert.Equal(3, count);
+        }
+
         private void GivenShwerkoAndShwerko2WithName(string name)
         {
             var shwerko = CreateTestRecord<Shwerko>(Guid.NewGuid(), s => s.Name = name);
