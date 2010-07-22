@@ -115,6 +115,11 @@ namespace SubSonic.SqlGeneration.Schema
             else
                 sb.Append(" " + GetNativeType(column.DataType));
 
+            if (column.IsString && column.MaxLength < 8000)
+                sb.Append("(" + column.MaxLength + ")");
+            else if (column.DataType == DbType.Double || column.DataType == DbType.Decimal)
+                sb.Append("(" + column.NumericPrecision + ", " + column.NumberScale + ")");
+
             if(column.IsPrimaryKey)
             {
                 sb.Append(" NOT NULL PRIMARY KEY");
@@ -123,11 +128,6 @@ namespace SubSonic.SqlGeneration.Schema
             }
             else
             {
-                if(column.IsString && column.MaxLength < 8000)
-                    sb.Append("(" + column.MaxLength + ")");
-                else if(column.DataType == DbType.Double || column.DataType == DbType.Decimal)
-                    sb.Append("(" + column.NumericPrecision + ", " + column.NumberScale + ")");
-
                 if(!column.IsNullable)
                     sb.Append(" NOT NULL");
                 else

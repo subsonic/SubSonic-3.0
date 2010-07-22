@@ -76,17 +76,7 @@ namespace SubSonic.DataProviders
         {
             get
             {
-                switch(Client)
-                {
-                    case DataClient.SqlClient:
-                        return new Sql2005Schema();
-                    case DataClient.MySqlClient:
-                        return new MySqlSchema();
-                    case DataClient.SQLite:
-                        return new SQLiteSchema();
-                    default:
-                        throw new ArgumentOutOfRangeException(Client.ToString(), "There is no generator for this client");
-                }
+                return SchemaGeneratorFactory.Create(Client);
             }
         }
 

@@ -23,7 +23,17 @@ using SubSonic.SqlGeneration.Schema;
 
 namespace SubSonic.Tests.Repositories
 {
-    public class Shwerko
+    public interface IShwerko
+    {
+        Guid Key { get; set; }
+        string Name { get; set; }
+        DateTime ElDate { get; set; }
+        decimal SomeNumber { get; set; }
+        decimal? NullSomeNumber { get; set; }
+        int Underscored_Column { get; set; }
+    }
+
+    public class Shwerko : IShwerko
     {
         public int ID { get; set; }
         public Guid Key { get; set; }
@@ -40,8 +50,10 @@ namespace SubSonic.Tests.Repositories
         public byte[] Binary { get; set; }
     }
 
-    public class Shwerko2 {
+    public class Shwerko2 : IShwerko
+    {
         public Guid ID { get; set; }
+        public Guid Key { get; set; }
         public string Name { get; set; }
         public DateTime ElDate { get; set; }
         public decimal SomeNumber { get; set; }
@@ -74,16 +86,34 @@ namespace SubSonic.Tests.Repositories
         public String Name { get; set; }
     }
 
+    public class ProjectionJoinResult
+    {
+        public string SelectedName { get; set; }
+        public Guid Key { get; set; }
+        public int ID { get; set; }
+    }
+
     public abstract class SimpleRepositoryTests
     {
         private readonly IDataProvider _provider;
         private readonly IRepository _repo;
 
+        protected virtual string[] StringNumbers
+        {
+            get { return new string[] { "1.00", "2.00", "3.00" }; }
+        }
+
         public SimpleRepositoryTests(IDataProvider provider)
         {
             _provider = provider;
-
+            _provider.Log = Console.Out;
             _repo = new SimpleRepository(_provider, SimpleRepositoryOptions.RunMigrations);
+
+            CleanTables();            
+        }
+
+        private void CleanTables()
+        {
             try
             {
                 var qry = new CodingHorror(_provider, "DROP TABLE Shwerkos").Execute();
@@ -116,10 +146,18 @@ namespace SubSonic.Tests.Repositories
 
         private Shwerko CreateTestRecord(Guid key, Action<Shwerko> withValuesApplied)
         {
-            var id = key;
+            return CreateTestRecord<Shwerko>(key, withValuesApplied);
+        }
 
-            var item = new Shwerko();
-            item.Key = id;
+        private T CreateTestRecord<T>(Guid key) where T : IShwerko, new()
+        {
+            return CreateTestRecord<T>(key, x => { });
+        }
+
+        private T CreateTestRecord<T>(Guid key, Action<T> withValuesApplied) where T : IShwerko, new()
+        {
+            var item = new T();
+            item.Key = key;
             item.Name = "Charlie";
             item.ElDate = DateTime.Now;
             item.SomeNumber = 1;
@@ -322,19 +360,11 @@ namespace SubSonic.Tests.Repositories
 
         [Fact]
         public void SimpleRepo_Should_Set_The_Guid_PK_On_Add() {
-            var item = new Shwerko2();
-            var id = Guid.NewGuid();
-            item.ID = id;
-            item.Name = "Charlie";
-            item.ElDate = DateTime.Now;
-            item.SomeNumber = 1;
-            item.NullSomeNumber = 12.3M;
-            item.Underscored_Column = 1;
+            var id  = Guid.NewGuid();
+            var item = CreateTestRecord<Shwerko2>(Guid.NewGuid(), s => s.ID = id);
             _repo.Add<Shwerko2>(item);
             Assert.Equal(item.ID, id);
-            //Assert.True(shwerko.ID > 0);
         }
-
 
         [Fact]
         public void SimpleRepo_Should_Set_The_PK_On_Add() {
@@ -449,17 +479,18 @@ namespace SubSonic.Tests.Repositories
 		}
 
 
-		//[Fact] // TODO: This test illustrates issue 183, it should pass once that issue is fixed
-		//public void Issue183_ToString_Should_Generate_Valid_Sql()
-		//{
-		//  // Arrange
-		//  _repo.Add<Shwerko>(CreateTestRecord(Guid.NewGuid()));
-		//  string[] numbers = new string[] { "1", "2", "3" };
-		//  // Act
-		//  IQueryable<Shwerko> shwerkos = _repo.All<Shwerko>().Where(p => numbers.Contains(p.SomeNumber.ToString()));
-		//  // Assert
-		//  Assert.NotEqual(0, shwerkos.Count());
-		//}
+		[Fact]
+		public void Issue183_ToString_Should_Generate_Valid_Sql()
+		{
+		    // Arrange
+		    _repo.Add<Shwerko>(CreateTestRecord(Guid.NewGuid()));
+
+		    // Act
+            IQueryable<Shwerko> shwerkos = _repo.All<Shwerko>().Where(p => StringNumbers.Contains(p.SomeNumber.ToString()));
+
+            // Assert
+		    Assert.NotEqual(0, shwerkos.Count());
+		}
 
         [Fact]
         public void Simple_Repo_Should_Load_Enums()
@@ -548,6 +579,131 @@ namespace SubSonic.Tests.Repositories
             _repo.Add(testClass);
 
             Assert.NotNull(_repo.Single<NonAutoIncrementingIdWithDefaultSetting>(100));
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Query_For_IsNull()
+        {
+            _repo.Add(CreateTestRecord(Guid.NewGuid(), s => s.NullSomeNumber = null));
+
+            var result = _repo.All<Shwerko>().Where(s => s.NullSomeNumber == null);
+
+            Assert.Equal(1, result.Count());
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Query_For_IsNotNull()
+        {
+            _repo.Add(CreateTestRecord(Guid.NewGuid(), s => s.NullSomeNumber = 1));
+
+            var result = _repo.All<Shwerko>().Where(s => s.NullSomeNumber != null);
+
+            Assert.Equal(1, result.Count());
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Select_Anonymous_Types()
+        {
+            var key = Guid.NewGuid();
+            int id = (int)_repo.Add(CreateTestRecord(key));
+
+            var result = (from s in _repo.All<Shwerko>()
+                         select new { ID = s.ID, Key = s.Key }).ToArray();
+
+            Assert.Equal(1, result.Count());
+            Assert.Equal(key, result[0].Key);
+            Assert.Equal(id, result[0].ID);
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Select_System_Types()
+        {
+            var key = Guid.NewGuid();
+            _repo.Add(CreateTestRecord(key));
+
+            var result = (from s in _repo.All<Shwerko>()
+                          select s.Key).ToArray();
+
+            Assert.Equal(1, result.Count());
+            Assert.Equal(key, result[0]);
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Select_Value_Types()
+        {
+            var key = Guid.NewGuid();
+            _repo.Add(CreateTestRecord(key, s => s.Salutation = Salutation.Ms));
+
+            var result = (from s in _repo.All<Shwerko>()
+                          select s.Salutation).ToArray();
+
+            Assert.Equal(1, result.Count());
+            Assert.Equal(Salutation.Ms, result[0]);
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Support_Joins()
+        {
+            GivenShwerkoAndShwerko2WithName("Common");
+
+            var result = (from x in _repo.All<Shwerko>()
+                          join y in _repo.All<Shwerko2>() on x.Name equals y.Name
+                          orderby x.ElDate descending
+                          select y).ToList();
+
+            Assert.Equal(1, result.Count);
+            Assert.Equal("Common", result[0].Name);
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Support_Projection_Joins_With_Anon_Types()
+        {
+            GivenShwerkoAndShwerko2WithName("Common");
+
+            var result = (from x in _repo.All<Shwerko>()
+                         join y in _repo.All<Shwerko2>() on x.Name equals y.Name
+                         select new { SomeName = x.Name, Key = y.Key, ID = y.ID }).ToList();
+
+            Assert.Equal(1, result.Count);
+            Assert.Equal("Common", result[0].SomeName);
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Support_Projection_Joins()
+        {
+            GivenShwerkoAndShwerko2WithName("Common");
+
+            var result = (from x in _repo.All<Shwerko>()
+                          join y in _repo.All<Shwerko2>() on x.Name equals y.Name
+                          select new ProjectionJoinResult
+                              {
+                                  SelectedName = y.Name,
+                                  Key = y.Key,
+                                  ID = x.ID
+                              }
+                          ).ToList();
+
+            Assert.Equal(1, result.Count);
+            Assert.Equal("Common", result[0].SelectedName);
+        }
+
+        [Fact]
+        public void Simple_Repo_Should_Support_SingleQuote_In_Queries()
+        {
+            GivenShwerkosWithNames("Common's", "Some more common's", "Single's quote in the middle");
+
+            var count = _repo.All<Shwerko>().Where(s => s.Name.Contains("'")).Count();
+
+            Assert.Equal(3, count);
+        }
+
+        private void GivenShwerkoAndShwerko2WithName(string name)
+        {
+            var shwerko = CreateTestRecord<Shwerko>(Guid.NewGuid(), s => s.Name = name);
+            _repo.Add(shwerko);
+
+            var shwerko2 = CreateTestRecord<Shwerko2>(Guid.NewGuid(), s => s.Name = name);
+            _repo.Add(shwerko2);
         }
     }
 }

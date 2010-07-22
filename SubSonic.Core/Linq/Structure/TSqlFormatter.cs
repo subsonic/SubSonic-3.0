@@ -1021,7 +1021,7 @@ namespace SubSonic.Linq.Structure
                         break;
                     case TypeCode.String:
                         sb.Append("'");
-                        sb.Append(value);
+                        sb.Append(EscapeString((string)value));
                         sb.Append("'");
                         break;
                     case TypeCode.Decimal:
@@ -1066,6 +1066,11 @@ namespace SubSonic.Linq.Structure
                         break;
                 }
             }
+        }
+
+        protected virtual string EscapeString(string value)
+        {
+            return value.Replace("'", "''");
         }
 
         protected string GetAliasName(TableAlias alias)

@@ -63,7 +63,7 @@ namespace SubSonic.DataProviders
         //    return _provider;
         //}
 
-        internal static IDataProvider LoadProvider(string connectionString, string providerName)
+        private static IDataProvider LoadProvider(string connectionString, string providerName)
         {
             //TODO: This is throwing errors and not working
 

@@ -18,6 +18,7 @@ using Xunit;
 using SubSonic.DataProviders;
 using SubSonic.Tests.TestClasses;
 using SubSonic.Linq.Structure;
+using System;
 
 namespace SubSonic.Tests.SimpleQuery
 {
@@ -70,5 +71,78 @@ namespace SubSonic.Tests.SimpleQuery
         }
 
 
+        [Fact]
+        public void Delete_Many_Records_With_SimpleQuery_Should_Support_Not_Any()
+        {
+            var doNotDelete = new int[] { 1, 2, 3 };
+
+            var deleteCmd = _db.Delete<Product>(x => !doNotDelete.Any(e => x.ProductID == e)).GetCommand();
+
+            Assert.Equal(@"DELETE FROM [Products]
+ WHERE [Products].[ProductID] NOT IN (@0In1,@0In2,@0In3)", deleteCmd.CommandSql);
+        }
+
+        [Fact]
+        public void Delete_Many_Records_With_SimpleQuery_Should_Support_Any()
+        {
+            var doNotDelete = new int[] { 1, 2, 3 };
+
+            var deleteCmd = _db.Delete<Product>(x => doNotDelete.Any(e => x.ProductID == e)).GetCommand();
+
+            Assert.Equal(@"DELETE FROM [Products]
+ WHERE [Products].[ProductID] IN (@0In1,@0In2,@0In3)", deleteCmd.CommandSql);
+        }
+
+        [Fact]
+        public void Delete_Many_Records_With_SimpleQuery_Should_Support_Contains()
+        {
+            var doNotDelete = new int[] { 1, 2, 3 };
+
+            var deleteCmd = _db.Delete<Product>(x => doNotDelete.Contains(x.ProductID)).GetCommand();
+
+            Assert.Equal(@"DELETE FROM [Products]
+ WHERE [Products].[ProductID] IN (@0In1,@0In2,@0In3)", deleteCmd.CommandSql);
+        }
+
+        [Fact]
+        public void Delete_Many_Records_With_SimpleQuery_Should_Support_Not_Contains()
+        {
+            var doNotDelete = new int[] { 1, 2, 3 };
+
+            var deleteCmd = _db.Delete<Product>(x => !doNotDelete.Contains(x.ProductID)).GetCommand();
+
+            Assert.Equal(@"DELETE FROM [Products]
+ WHERE [Products].[ProductID] NOT IN (@0In1,@0In2,@0In3)", deleteCmd.CommandSql);
+        }
+
+        [Fact]
+        public void Delete_Many_Records_With_SimpleQuery_Should_Support_Not_Contains_In_Empty_Enumerable()
+        {
+            var doNotDelete = new int[] { };
+
+            var deleteCmd = _db.Delete<Product>(x => !doNotDelete.Contains(x.ProductID)).GetCommand();
+
+            Assert.Equal(1, deleteCmd.Parameters.Count);
+            Assert.Equal(0, deleteCmd.Parameters[0].ParameterValue);
+            Assert.Equal("@0", deleteCmd.Parameters[0].ParameterName);
+
+            Assert.Equal(@"DELETE FROM [Products]
+ WHERE 1 = @0", deleteCmd.CommandSql);
+        }
+
+        [Fact]
+        public void Delete_Many_Records_With_SimpleQuery_Should_Support_Contains_In_Empty_Enumerable()
+        {
+            var doNotDelete = new int[] { };
+
+            var deleteCmd = _db.Delete<Product>(x => doNotDelete.Contains(x.ProductID)).GetCommand();
+
+            Assert.Equal(1, deleteCmd.Parameters.Count);
+            Assert.Equal(0, deleteCmd.Parameters[0].ParameterValue);
+            Assert.Equal("@0", deleteCmd.Parameters[0].ParameterName);
+
+            Assert.Equal(@"DELETE FROM [Products]
+ WHERE 1 = @0", deleteCmd.CommandSql);
+        }
     }
 }

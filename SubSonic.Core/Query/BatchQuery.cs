@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using SubSonic.DataProviders;
 using SubSonic.Linq.Structure;
 
@@ -31,7 +32,6 @@ namespace SubSonic.Query
 
         private readonly IDataProvider _provider;
         private readonly List<ISqlQuery> _queries;
-        private readonly StringBuilder sb;
 
         public int QueryCount
         {
@@ -41,19 +41,12 @@ namespace SubSonic.Query
             }
         }
 
-        public BatchQuery(IDataProvider provider)
-        {
-            _queries = new List<ISqlQuery>();
-            _linqProvider = new DbQueryProvider(provider);
-            sb = new StringBuilder();
-            _provider = provider;
-            _fixedCommands = new List<QueryCommand>();
-        }
+        public BatchQuery(IDataProvider dbProvider) : this(dbProvider, new DbQueryProvider(dbProvider))
+        {}
 
         public BatchQuery(IDataProvider dbProvider, DbQueryProvider queryProvider)
         {
             _queries = new List<ISqlQuery>();
-            sb = new StringBuilder();
             _linqProvider = queryProvider;
             _provider = dbProvider;
             _fixedCommands = new List<QueryCommand>();
@@ -71,6 +64,9 @@ namespace SubSonic.Query
         public string BuildSqlStatement()
         {
             ResetCommands();
+
+            var sb = new StringBuilder();
+
             foreach (QueryCommand cmd in _fixedCommands)
             {
                 string sql = cmd.CommandSql;
@@ -78,6 +74,7 @@ namespace SubSonic.Query
                     sql += ";\r\n";
                 sb.Append(sql);
             }
+
             return sb.ToString();
         }
 
@@ -216,7 +213,7 @@ namespace SubSonic.Query
                     string oldParamName = p.ParameterName;
                     p.ParameterName = _provider.ParameterPrefix + indexer;
 
-                    commandText = System.Text.RegularExpressions.Regex.Replace(commandText, oldParamName + @"(\s|$)", _provider.ParameterPrefix + "p" + indexer + "$1");
+                    commandText = System.Text.RegularExpressions.Regex.Replace(commandText, oldParamName + @"\b", _provider.ParameterPrefix + "p" + indexer);
                     indexer++;
                 }
                 cmd.CommandSql = commandText.Replace(_provider.ParameterPrefix + "p", _provider.ParameterPrefix);

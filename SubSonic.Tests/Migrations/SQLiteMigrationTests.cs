@@ -16,6 +16,8 @@ using SubSonic.DataProviders;
 using SubSonic.Extensions;
 using SubSonic.Schema;
 using Xunit;
+using SubSonic.SqlGeneration.Schema;
+using System;
 
 namespace SubSonic.Tests.Migrations
 {
@@ -89,6 +91,25 @@ UPDATE `SubSonicTests` SET `UserName`='';";
 
             var sql = typeof(SubSonicTest).ToSchemaTable(_provider).GetColumn("UserName").AlterSql;
             Assert.Equal(shouldbe, sql);
+        }
+
+        [Fact]
+        public void StringLength_Attribute_Should_Be_Applied_To_Primary_Key_Columns()
+        {
+            var shouldBe = @"CREATE TABLE `SubSonicTestWithAttributes` (
+  [Id] nvarchar(11) NOT NULL PRIMARY KEY 
+);";
+
+            var sql = typeof(SubSonicTestWithAttributes).ToSchemaTable(_provider).CreateSql;
+
+            Assert.Equal(shouldBe, sql);
+        }
+
+        private class SubSonicTestWithAttributes
+        {
+            [SubSonicStringLength(11)]
+            [SubSonicPrimaryKey]
+            public string Id { get; set; }
         }
     }
 }
