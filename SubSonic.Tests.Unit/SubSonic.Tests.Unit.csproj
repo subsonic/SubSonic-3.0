@@ -124,6 +124,8 @@
   <ItemGroup>
     <None Include="App.config" />
     <Compile Include="DataProviders\ProviderFactoryTests.cs" />
+    <Compile Include="Extensions\Converters.cs" />
+    <Compile Include="Extensions\InflectorTests.cs" />
     <Compile Include="Linq\SqlStrings\MySqlDateTestsSql.cs" />
     <Compile Include="Linq\SqlStrings\MySqlNumberTestsSql.cs" />
     <Compile Include="Linq\SqlStrings\MySqlSelectTestsSql.cs" />

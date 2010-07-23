@@ -212,14 +212,19 @@ namespace SubSonic.Extensions
                     else if(currentField.FieldType == typeof(Guid))
                     {
 						currentField.SetValue(item, rdr.GetGuid(i));
-					}
-					else if (Objects.IsNullableEnum(currentField.FieldType))
-					{
-						var nullEnumObjectValue = Enum.ToObject(Nullable.GetUnderlyingType(currentField.FieldType), rdr.GetValue(i));
-						currentField.SetValue(item, nullEnumObjectValue);
-					}
-                    else
-                        currentField.SetValue(item, rdr.GetValue(i).ChangeTypeTo(valueType));
+					} else if (Objects.IsNullableEnum(currentField.FieldType)) {
+                        var nullEnumObjectValue = Enum.ToObject(Nullable.GetUnderlyingType(currentField.FieldType), rdr.GetValue(i));
+                        currentField.SetValue(item, nullEnumObjectValue);
+                    } else {
+                        var val = rdr.GetValue(i);
+                        var valType = val.GetType();
+                        //try to assign it
+                        if (currentField.FieldType.IsAssignableFrom(valueType)) {
+                            currentField.SetValue(item, val);
+                        } else {
+                            currentField.SetValue(item, val.ChangeTypeTo(currentField.FieldType));
+                        }
+                    }
                 }
             }
 

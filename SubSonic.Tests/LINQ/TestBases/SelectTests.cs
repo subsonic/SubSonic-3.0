@@ -46,7 +46,10 @@ namespace SubSonic.Tests.Linq
         public void Contains_With_Subquery()
         {
             var result =
-                _db.Customers.Where(c => _db.Orders.Select(o => o.CustomerID).Contains(c.CustomerID));
+                _db.Customers
+                .Where(c => _db.Orders
+                    .Select(o => o.CustomerID)
+                    .Contains(c.CustomerID));
 
             Assert.Equal(5, result.Count());
         }
