@@ -21,15 +21,17 @@ using SubSonic.Query;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration.Schema;
 using SubSonic.DataProviders.Schema;
+using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProviders
 {
  
-
+    [InheritedExport]
     public interface IDataProvider
     {
+
         //execution
-        string DbDataProviderName { get; }
+        string DbDataProviderName { set;  get; }
         string Name { get; }
         string ClientName { get; set; }
         TextWriter Log { get; set; }
@@ -42,7 +44,7 @@ namespace SubSonic.DataProviders
         ISchemaGenerator SchemaGenerator { get; }
         string ParameterPrefix { get; }
         DbConnection CurrentSharedConnection { get; }
-        string ConnectionString { get; }
+        string ConnectionString { set; get; }
         DbProviderFactory Factory { get; }
         ITable GetTableFromDB(string tableName);
         DbDataReader ExecuteReader(QueryCommand cmd);

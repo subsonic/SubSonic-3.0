@@ -58,7 +58,13 @@
     <Reference Include="LinFu.Core">
       <HintPath>..\lib\LinFu.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition">
+      <HintPath>..\lib\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -72,7 +78,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataProviders\IOCFactory.cs" />
+    <Compile Include="DataProviders\IQueryLanguage.cs" />
     <Compile Include="DataProviders\MySQL\MySQLProvider.cs" />
+    <Compile Include="DataProviders\ServiceLocators\MefServiceLocator.cs" />
     <Compile Include="DataProviders\SqlServer\SqlServerProvider.cs" />
     <Compile Include="DataProviders\SQLite\SqLiteProvider.cs" />
     <Compile Include="Linq\Structure\QueryLanguageFactory.cs" />

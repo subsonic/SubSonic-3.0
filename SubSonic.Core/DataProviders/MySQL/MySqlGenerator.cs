@@ -20,6 +20,7 @@ using SubSonic.Schema;
 using LinFu.IoC.Configuration;
 using SubSonic.DataProviders;
 using SubSonic.SqlGeneration;
+using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProvider.MySQL
 {
@@ -27,7 +28,7 @@ namespace SubSonic.DataProvider.MySQL
     /// 
     /// </summary>
     /// 
-    [Implements(typeof(ISqlGenerator), ServiceName="MySql.Data.MySqlClient")]
+    
     public class MySqlGenerator : ANSISqlGenerator
     {
         private const string PAGING_SQL =
@@ -39,8 +40,10 @@ namespace SubSonic.DataProvider.MySQL
         /// Initializes a new instance of the <see cref="MySqlGenerator"/> class.
         /// </summary>
         /// <param name="query">The query.</param>
-        public MySqlGenerator(SqlQuery query)
-            : base(query) {}
+        public MySqlGenerator()
+            : base() {
+                ClientName = "MySql.Data.MySqlClient";
+        }
 
         /// <summary>
         /// Gets the type of the native.

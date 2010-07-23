@@ -5,15 +5,21 @@ using System.Text;
 using SubSonic.Schema;
 using System.Data.Common;
 using LinFu.IoC.Configuration;
+using System.ComponentModel.Composition;
 
 
 namespace SubSonic.DataProviders.MySQL
 {
-    [Implements(typeof(IDataProvider), ServiceName = "MySql.Data.MySqlClient")]
     class MySQLProvider:DbDataProvider
     {
         private string _InsertionIdentityFetchString = "";
         public override string InsertionIdentityFetchString { get { return _InsertionIdentityFetchString; } }
+
+        public MySQLProvider()
+        {
+            Schema = new DatabaseSchema();
+            ClientName = "MySql.Data.MySqlClient";
+        }
 
         public MySQLProvider(string connectionString, string providerName)
         {

@@ -5,6 +5,7 @@ using System.Text;
 using SubSonic.SqlGeneration;
 
 using LinFu.IoC;
+using Microsoft.Practices.ServiceLocation;
 
 namespace SubSonic.DataProviders
 {
@@ -16,7 +17,7 @@ namespace SubSonic.DataProviders
             ISqlFragment returnValue;
             try
             {
-                returnValue = Container.GetService<ISqlFragment>(providerName);
+                returnValue = IOCFactory.GetContainer().GetAllInstances<ISqlFragment>().Where(f => f.ClientName == providerName).Single(); // Container.GetService<ISqlFragment>(providerName);
             }
             catch (Exception ex)
             {

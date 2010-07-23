@@ -5,14 +5,24 @@ using System.Text;
 using SubSonic.Schema;
 using System.Data.Common;
 using LinFu.IoC.Configuration;
+using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProviders.SqlServer
 {
-    [Implements(typeof(IDataProvider), ServiceName = "System.Data.SqlClient")]
-    class SqlServerProvider : DbDataProvider
+    //[Implements(typeof(IDataProvider), ServiceName = "System.Data.SqlClient")]
+    
+    class SqlServerProvider : DbDataProvider, IDataProvider
     {
         private string _InsertionIdentityFetchString = "; SELECT SCOPE_IDENTITY() as new_id";
         public override string InsertionIdentityFetchString { get { return _InsertionIdentityFetchString; } }
+
+        
+
+        public SqlServerProvider()
+        {
+            Schema = new DatabaseSchema();
+            ClientName = "System.Data.SqlClient";
+        }
 
         public SqlServerProvider(string connectionString, string providerName)
         {

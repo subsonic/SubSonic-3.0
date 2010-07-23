@@ -18,10 +18,11 @@ using SubSonic.Schema;
 using LinFu.IoC.Configuration;
 using SubSonic.DataProviders.Schema;
 using SubSonic.SqlGeneration.Schema;
+using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProviders.MySQL
 {
-    [Implements(typeof(ISchemaGenerator), ServiceName = "MySql.Data.MySqlClient")]
+    
     public class MySqlSchema : ANSISchemaGenerator
     {
         public MySqlSchema()
@@ -33,6 +34,8 @@ namespace SubSonic.DataProviders.MySQL
             DROP_TABLE = @"DROP TABLE {0};";
 
             UPDATE_DEFAULTS = @"UPDATE `{0}` SET `{1}`={2};";
+
+            ClientName = "MySql.Data.MySqlClient";
         }
 
         /// <summary>

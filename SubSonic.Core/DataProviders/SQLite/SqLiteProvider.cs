@@ -7,14 +7,21 @@ using System.Data.Common;
 
 using LinFu.IoC;
 using LinFu.IoC.Configuration;
+using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProviders.SQLite
 {
-    [Implements(typeof(IDataProvider),ServiceName="System.Data.SQLite")]
+    
     class SQLiteProvider: DbDataProvider, IDataProvider
     {
         private string _InsertionIdentityFetchString = "";
         public override string InsertionIdentityFetchString { get { return _InsertionIdentityFetchString; } }
+
+        public SQLiteProvider()
+        {
+            Schema = new DatabaseSchema();
+            ClientName = "System.Data.SQLite";
+        }
 
         public SQLiteProvider(string connectionString, string providerName)
         {

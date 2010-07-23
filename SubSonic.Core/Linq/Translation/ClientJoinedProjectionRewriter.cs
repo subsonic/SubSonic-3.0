@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using SubSonic.Linq.Structure;
+using SubSonic.DataProviders;
 
 namespace SubSonic.Linq.Translation
 {
@@ -20,16 +21,16 @@ namespace SubSonic.Linq.Translation
     /// </summary>
     public class ClientJoinedProjectionRewriter : DbExpressionVisitor
     {
-        QueryLanguage language;
+        IQueryLanguage language;
         bool isTopLevel = true;
         SelectExpression currentSelect;
 
-        private ClientJoinedProjectionRewriter(QueryLanguage language)
+        private ClientJoinedProjectionRewriter(IQueryLanguage language)
         {
             this.language = language;
         }
 
-        public static Expression Rewrite(QueryLanguage language, Expression expression)
+        public static Expression Rewrite(IQueryLanguage language, Expression expression)
         {
             return new ClientJoinedProjectionRewriter(language).Visit(expression);
         }

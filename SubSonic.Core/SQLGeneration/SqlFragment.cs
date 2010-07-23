@@ -12,6 +12,8 @@ namespace SubSonic.SqlGeneration
     /// </summary>
     public class SqlFragment : ISqlFragment
     {
+        public string ClientName{get;set;}
+
         private string _and = " AND ";
         public string AND { get { return _and; } set { _and = value; } }
 

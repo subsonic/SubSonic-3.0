@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using SubSonic.Schema;
+using SubSonic.DataProviders;
 
 namespace SubSonic.Linq.Structure
 {
@@ -20,7 +21,7 @@ namespace SubSonic.Linq.Structure
     /// </summary>
     public class ImplicitMapping : QueryMapping
     {
-        public ImplicitMapping(QueryLanguage language)
+        public ImplicitMapping(IQueryLanguage language)
             : base(language)
         {
         }

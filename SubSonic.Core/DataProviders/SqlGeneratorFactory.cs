@@ -9,6 +9,7 @@ using SubSonic.DataProviders;
 using SubSonic.Query;
 using SubSonic.SqlGeneration;
 using SubSonic.DataProviders.SqlServer;
+using Microsoft.Practices.ServiceLocation;
 
 
 namespace SubSonic.DataProviders
@@ -22,11 +23,14 @@ namespace SubSonic.DataProviders
             ISqlGenerator returnValue;
             try
             {
-                returnValue = Container.GetService<ISqlGenerator>(providerName, query);
+                returnValue = IOCFactory.GetContainer().GetAllInstances<ISqlGenerator>().Where(g => g.ClientName == providerName).Single();
+                returnValue.Query = query;
+                //Container.GetService<ISqlGenerator>(providerName, query);
             }
             catch(Exception ex)
             {
-                returnValue = new Sql2005Generator(query);
+                returnValue = new Sql2005Generator();
+                returnValue.Query = query;
             }
             return returnValue;   
         }

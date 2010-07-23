@@ -5,10 +5,11 @@ using System.Text;
 using LinFu.IoC.Configuration;
 using SubSonic.DataProviders;
 using SubSonic.SqlGeneration;
+using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProviders.MySQL
 {
-    [Implements(typeof(ISqlFragment), ServiceName="MySql.Data.MySqlClient")]
+    
     class MySqlSqlFragment : SqlFragment
     {
         public MySqlSqlFragment()

@@ -22,8 +22,13 @@ namespace SubSonic.Linq.Structure
     /// </summary>
     public class TSqlLanguage : QueryLanguage
     {
-        public TSqlLanguage(IDataProvider provider) : base(provider) {}
 
+        public TSqlLanguage()
+            : base()
+        {
+        }
+
+       
         private SqlCommandBuilder cb = new SqlCommandBuilder();
 
         public override string Quote(string name)

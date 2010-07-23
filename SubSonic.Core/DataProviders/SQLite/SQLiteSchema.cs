@@ -18,10 +18,11 @@ using SubSonic.Schema;
 using LinFu.IoC.Configuration;
 using SubSonic.DataProviders.Schema;
 using SubSonic.SqlGeneration.Schema;
+using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProviders.SQLite
 {
-    [Implements(typeof(ISchemaGenerator), ServiceName = "System.Data.SQLite")]
+    
     public class SQLiteSchema : ANSISchemaGenerator
     {
         public SQLiteSchema()
@@ -35,6 +36,8 @@ namespace SubSonic.DataProviders.SQLite
             DROP_TABLE = @"DROP TABLE {0};";
 
             UPDATE_DEFAULTS = @"UPDATE `{0}` SET `{1}`={2};";
+
+            ClientName = "System.Data.SQLite";
         }
 
         public override string GetNativeType(DbType dbType)

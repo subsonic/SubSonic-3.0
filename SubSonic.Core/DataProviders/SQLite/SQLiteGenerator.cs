@@ -17,10 +17,11 @@ using SubSonic.Query;
 using LinFu.IoC.Configuration;
 using SubSonic.DataProviders;
 using SubSonic.SqlGeneration;
+using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProviders.SQLite
 {
-    [Implements(typeof(ISqlGenerator), ServiceName = "System.Data.SQLite")]
+    
     public class SQLiteGenerator : ANSISqlGenerator
     {
         private const string PAGING_SQL =
@@ -32,8 +33,10 @@ namespace SubSonic.DataProviders.SQLite
         /// Initializes a new instance of the <see cref="MySqlGenerator"/> class.
         /// </summary>
         /// <param name="query">The query.</param>
-        public SQLiteGenerator(SqlQuery query)
-            : base(query) {}
+        public SQLiteGenerator()
+            : base() {
+                ClientName = "System.Data.SQLite";
+        }
 
         /// <summary>
         /// Builds the paged select statement.

@@ -22,7 +22,7 @@ namespace SubSonic.Linq.Structure
     {
         private readonly IDataProvider _provider;
         private readonly DbConnection connection;
-        private readonly QueryLanguage language;
+        private readonly IQueryLanguage language;
         private readonly QueryMapping mapping;
         private readonly QueryPolicy policy;
 
@@ -44,7 +44,7 @@ namespace SubSonic.Linq.Structure
         {
             _provider = provider;
 
-            QueryLanguage lang = QueryLanguageFactory.Create(_provider);
+            IQueryLanguage lang = QueryLanguageFactory.Create(_provider);
 
             policy = new QueryPolicy(new ImplicitMapping(lang));
 
@@ -68,7 +68,7 @@ namespace SubSonic.Linq.Structure
             get { return mapping; }
         }
 
-        public QueryLanguage Language
+        public IQueryLanguage Language
         {
             get { return language; }
         }

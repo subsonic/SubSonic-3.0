@@ -19,16 +19,23 @@ namespace SubSonic.Linq.Structure
     /// <summary>
     /// Defines the language rules for the query provider
     /// </summary>
-    public abstract class QueryLanguage
+    public abstract class QueryLanguage : IQueryLanguage
     {
 
         IDataProvider _provider;
-        public QueryLanguage(IDataProvider provider) {
-            _provider = provider;
+        public QueryLanguage() {
+            
         }
+
+        public string ClientName { get; set; }
+
         public IDataProvider DataProvider {
             get {
                 return _provider;
+            }
+            set
+            {
+                _provider = value;
             }
         }
         

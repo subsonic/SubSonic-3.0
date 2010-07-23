@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using SubSonic.Linq.Translation;
+using SubSonic.DataProviders;
 
 namespace SubSonic.Linq.Structure
 {
@@ -20,9 +21,9 @@ namespace SubSonic.Linq.Structure
     /// </summary>
     public abstract class QueryMapping
     {
-        QueryLanguage language;
+        IQueryLanguage language;
 
-        protected QueryMapping(QueryLanguage language)
+        protected QueryMapping(IQueryLanguage language)
         {
             this.language = language;
         }
@@ -30,7 +31,7 @@ namespace SubSonic.Linq.Structure
         /// <summary>
         /// The language related to the mapping
         /// </summary>
-        public QueryLanguage Language
+        public IQueryLanguage Language
         {
             get { return this.language; }
         }

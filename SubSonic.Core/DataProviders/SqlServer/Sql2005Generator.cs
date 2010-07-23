@@ -18,6 +18,7 @@ using SubSonic.Query;
 using LinFu.IoC.Configuration;
 using SubSonic.DataProviders;
 using SubSonic.SqlGeneration;
+using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProviders.SqlServer
 {
@@ -25,7 +26,7 @@ namespace SubSonic.DataProviders.SqlServer
     /// 
     /// </summary>
     /// 
-    [Implements(typeof(ISqlGenerator), ServiceName = "System.Data.SqlClient")]
+    
     public class Sql2005Generator : ANSISqlGenerator
     {
         private const string PAGING_SQL =
@@ -44,8 +45,10 @@ WHERE  Row >= {5} AND Row <= {6}";
         /// Initializes a new instance of the <see cref="Sql2005Generator"/> class.
         /// </summary>
         /// <param name="query">The query.</param>
-        public Sql2005Generator(SqlQuery query)
-            : base(query) {}
+        public Sql2005Generator()
+            : base() {
+                ClientName = "System.Data.SqlClient";
+        }
 
         /// <summary>
         /// Builds the paged select statement.

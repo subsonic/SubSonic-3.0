@@ -14,14 +14,21 @@
 using System.Collections.Generic;
 using SubSonic.Query;
 using SubSonic.Schema;
+using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProviders
 {
     /// <summary>
     /// 
     /// </summary>
+    /// 
+    [InheritedExport]
     public interface ISqlGenerator
     {
+        string ClientName { get; set; }
+
+        SqlQuery Query { get; set; }
+
         /// <summary>
         /// SqlFragment. Field values may change depending on the inheriting Generator.
         /// </summary>

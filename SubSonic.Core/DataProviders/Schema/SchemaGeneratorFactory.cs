@@ -5,6 +5,7 @@ using System.Text;
 using SubSonic.DataProviders;
 
 using LinFu.IoC;
+using Microsoft.Practices.ServiceLocation;
 
 namespace SubSonic.DataProviders.Schema
 {
@@ -17,7 +18,7 @@ namespace SubSonic.DataProviders.Schema
             ISchemaGenerator returnValue;
             try
             {
-                returnValue = Container.GetService<ISchemaGenerator>(clientName);
+                returnValue = IOCFactory.GetContainer().GetAllInstances<ISchemaGenerator>().Where(b => b.ClientName == clientName).Single();
             }
             catch (Exception ex)
             {

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProviders
 {
+    [InheritedExport]
     public interface ISqlFragment
     {
         string AND { get; }
@@ -44,5 +46,7 @@ namespace SubSonic.DataProviders
         string UNEQUAL_JOIN { get; }
         string UPDATE { get; }
         string WHERE { get; }
+
+        string ClientName { get; set; }
     }
 }

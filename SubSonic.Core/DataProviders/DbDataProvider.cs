@@ -27,6 +27,9 @@ using SubSonic.DataProviders;
 using LinFu.IoC;
 using SubSonic.DataProviders.Schema;
 
+using Microsoft.Practices.ServiceLocation;
+using LinFu.IoC.Interfaces;
+
 namespace SubSonic.DataProviders
 {
     
@@ -40,13 +43,38 @@ namespace SubSonic.DataProviders
 
         public abstract string InsertionIdentityFetchString { get; }
 
-        
+        private string _connectionString;
+        public string ConnectionString
+        {
+            get { return _connectionString; }
+            set
+            {
+                _connectionString = value;
+
+            }
+        }
+
+        private string _dbDataProviderName;
+        public string DbDataProviderName
+        {
+            get { return _dbDataProviderName; }
+            set
+            {
+                _dbDataProviderName = value;
+
+                Factory = DbProviderFactories.GetFactory(DbDataProviderName);
+            }
+        }
 
         public static IDataProvider GetInstance(string connectionString, string providerName)
         {
             if (String.IsNullOrEmpty(providerName))
                 providerName = DEFAULT_DB_CLIENT_TYPE_NAME;
-            IDataProvider provider = IOCFactory.Container.GetService<IDataProvider>(providerName, connectionString, providerName);
+
+            
+            IDataProvider provider = IOCFactory.GetContainer().GetAllInstances<IDataProvider>().Where(p => p.ClientName == providerName).Single();
+            provider.ConnectionString = connectionString;
+            provider.DbDataProviderName = providerName;
             return provider;
         }
 
@@ -84,12 +112,9 @@ namespace SubSonic.DataProviders
 
         public TextWriter Log { get; set; }
 
-        public string ConnectionString { get; protected set; }
 
         public string ClientName { get; set; }
         public IDatabaseSchema Schema { get; set; }
-
-        public string DbDataProviderName { get; protected set; }
 
         public DbProviderFactory Factory { get; protected set; }
 

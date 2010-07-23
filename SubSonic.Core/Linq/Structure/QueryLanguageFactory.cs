@@ -11,33 +11,19 @@ namespace SubSonic.Linq.Structure
 {
     public static class QueryLanguageFactory
     {
-        private static ServiceContainer _container = new ServiceContainer();
-        private static bool containerIsLoaded = false;
-        private static ServiceContainer Container
+        public static IQueryLanguage Create(IDataProvider provider)
         {
-            get
-            {
-                lock (_container)
-                {
-                    if (!containerIsLoaded)
-                    {
-                        _container.LoadFrom(AppDomain.CurrentDomain.BaseDirectory, "*.dll");
-                        containerIsLoaded = true;
-                    }
-                    return _container;
-                }
-            }
-        }
-        public static QueryLanguage Create(IDataProvider provider)
-        {
-            QueryLanguage returnValue;
+            IQueryLanguage returnValue;
             try
             {
-                returnValue = Container.GetService<QueryLanguage>(provider.ClientName, provider);
+                returnValue = IOCFactory.GetContainer().GetAllInstances<IQueryLanguage>().Where(q => q.ClientName == provider.ClientName).Single();
+                returnValue.DataProvider = provider;
             }
             catch (Exception ex)
             {
-                returnValue = new TSqlLanguage(provider);
+                returnValue = new TSqlLanguage();
+                returnValue.ClientName = provider.ClientName;
+                returnValue.DataProvider = provider;
                 
             }
             return returnValue;

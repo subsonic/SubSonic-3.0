@@ -14,9 +14,11 @@
 using System.Data;
 using SubSonic.DataProviders;
 using SubSonic.Schema;
+using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProviders.Schema
 {
+    [InheritedExport]
     public interface ISchemaGenerator
     {
         /// <summary>
@@ -80,5 +82,7 @@ namespace SubSonic.DataProviders.Schema
         ITable GetTableFromDB(IDataProvider provider, string tableName);
         string[] GetTableList(IDataProvider provider);
         DbType GetDbType(string sqlType);
+
+        string ClientName { get; set; }
     }
 }

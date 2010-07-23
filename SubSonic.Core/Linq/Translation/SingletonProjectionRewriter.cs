@@ -5,6 +5,7 @@
 
 using System.Linq.Expressions;
 using SubSonic.Linq.Structure;
+using SubSonic.DataProviders;
 
 namespace SubSonic.Linq.Translation
 {
@@ -13,16 +14,16 @@ namespace SubSonic.Linq.Translation
     /// </summary>
     public class SingletonProjectionRewriter : DbExpressionVisitor
     {
-        private readonly QueryLanguage language;
+        private readonly IQueryLanguage language;
         private SelectExpression currentSelect;
         private bool isTopLevel = true;
 
-        private SingletonProjectionRewriter(QueryLanguage language)
+        private SingletonProjectionRewriter(IQueryLanguage language)
         {
             this.language = language;
         }
 
-        public static Expression Rewrite(QueryLanguage language, Expression expression)
+        public static Expression Rewrite(IQueryLanguage language, Expression expression)
         {
             return new SingletonProjectionRewriter(language).Visit(expression);
         }

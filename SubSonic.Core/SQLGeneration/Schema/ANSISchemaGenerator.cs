@@ -36,6 +36,8 @@ namespace SubSonic.SqlGeneration.Schema
 
         protected string UPDATE_DEFAULTS;
 
+        public string ClientName { get; set; }
+
         #region ISchemaGenerator Members
 
         /// <summary>
@@ -210,6 +212,8 @@ namespace SubSonic.SqlGeneration.Schema
         }
 
         public abstract DbType GetDbType(string sqlType);
+
+        
 
         #endregion
 

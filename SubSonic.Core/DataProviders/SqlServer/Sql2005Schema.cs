@@ -18,10 +18,11 @@ using System;
 using LinFu.IoC.Configuration;
 using SubSonic.DataProviders.Schema;
 using SubSonic.SqlGeneration.Schema;
+using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProvider.SqlServer
 {
-    [Implements(typeof(ISchemaGenerator), ServiceName = "System.Data.SqlClient")]
+    
     public class Sql2005Schema : ANSISchemaGenerator
     {
         public Sql2005Schema()
@@ -33,6 +34,8 @@ namespace SubSonic.DataProvider.SqlServer
             DROP_TABLE = @"DROP TABLE {0};";
 
             UPDATE_DEFAULTS = @"UPDATE [{0}] SET [{1}]={2};";
+
+            ClientName = "System.Data.SqlClient";
         }
 
         /// <summary>

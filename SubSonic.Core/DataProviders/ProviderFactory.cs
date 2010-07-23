@@ -45,7 +45,7 @@ namespace SubSonic.DataProviders
 
         private static IDataProvider LoadProvider(string connectionString, string providerName)
         {
-            //TODO: This is throwing errors and not working
+            
 
             IDataProvider result = DbDataProvider.GetInstance(connectionString, providerName);
 
