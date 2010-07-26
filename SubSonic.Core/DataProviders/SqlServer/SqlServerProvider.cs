@@ -4,36 +4,19 @@ using System.Linq;
 using System.Text;
 using SubSonic.Schema;
 using System.Data.Common;
-using LinFu.IoC.Configuration;
 using System.ComponentModel.Composition;
+using SubSonic.DataProviders.Schema;
+using SubSonic.Linq.Structure;
 
 namespace SubSonic.DataProviders.SqlServer
 {
-    //[Implements(typeof(IDataProvider), ServiceName = "System.Data.SqlClient")]
-    
-    class SqlServerProvider : DbDataProvider, IDataProvider
+    public class SqlServerProvider : DbDataProvider, IDataProvider
     {
-        private string _InsertionIdentityFetchString = "; SELECT SCOPE_IDENTITY() as new_id";
-        public override string InsertionIdentityFetchString { get { return _InsertionIdentityFetchString; } }
+        private string _insertionIdentityFetchString = "; SELECT SCOPE_IDENTITY() as new_id";
+        public override string InsertionIdentityFetchString { get { return _insertionIdentityFetchString; } }
 
-        
-
-        public SqlServerProvider()
-        {
-            Schema = new DatabaseSchema();
-            ClientName = "System.Data.SqlClient";
-        }
-
-        public SqlServerProvider(string connectionString, string providerName)
-        {
-            DbDataProviderName = String.IsNullOrEmpty(providerName) ? DEFAULT_DB_CLIENT_TYPE_NAME : providerName;
-            Schema = new DatabaseSchema();
-            ClientName = "System.Data.SqlClient";
-            
-            ConnectionString = connectionString;
-            Factory = DbProviderFactories.GetFactory(DbDataProviderName);
-        }
-
+        public SqlServerProvider(string connectionString, string providerName) : base(connectionString, providerName)
+        {}
 
         public override string QualifyTableName(ITable table)
         {
@@ -54,5 +37,11 @@ namespace SubSonic.DataProviders.SqlServer
             return String.Format(qualifiedFormat, column.Table.SchemaName, column.Table.Name, column.Name);
         }
 
+        public override ISchemaGenerator SchemaGenerator
+        {
+            get { return new Sql2005Schema(); }
+        }
+
+        public override IQueryLanguage QueryLanguage { get { return new TSqlLanguage(); } }
     }
 }

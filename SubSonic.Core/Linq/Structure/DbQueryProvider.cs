@@ -44,8 +44,7 @@ namespace SubSonic.Linq.Structure
         {
             _provider = provider;
 
-            IQueryLanguage lang = QueryLanguageFactory.Create(_provider);
-
+            IQueryLanguage lang = provider.QueryLanguage;
             policy = new QueryPolicy(new ImplicitMapping(lang));
 
             mapping = policy.Mapping;

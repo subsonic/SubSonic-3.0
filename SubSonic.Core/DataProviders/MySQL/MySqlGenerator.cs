@@ -17,12 +17,11 @@ using System.Text;
 using SubSonic.Extensions;
 using SubSonic.Query;
 using SubSonic.Schema;
-using LinFu.IoC.Configuration;
 using SubSonic.DataProviders;
 using SubSonic.SqlGeneration;
 using System.ComponentModel.Composition;
 
-namespace SubSonic.DataProvider.MySQL
+namespace SubSonic.DataProviders.MySQL
 {
     /// <summary>
     /// 

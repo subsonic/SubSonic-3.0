@@ -71,7 +71,8 @@ namespace SubSonic.SqlGeneration
 			get { return query; }
 			set
 			{
-				this.sqlFragment = SqlFragmentFactory.Create(value._provider.ClientName);
+                // TODO: What???
+                this.sqlFragment = value._provider.SqlFragment;
 				query = value;
 			}
 		}

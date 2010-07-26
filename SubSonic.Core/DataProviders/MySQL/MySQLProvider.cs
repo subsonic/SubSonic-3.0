@@ -4,31 +4,19 @@ using System.Linq;
 using System.Text;
 using SubSonic.Schema;
 using System.Data.Common;
-using LinFu.IoC.Configuration;
-using System.ComponentModel.Composition;
+using SubSonic.DataProviders.Schema;
+using SubSonic.Linq.Structure;
 
 
 namespace SubSonic.DataProviders.MySQL
 {
-    class MySQLProvider:DbDataProvider
+    class MySQLProvider : DbDataProvider
     {
-        private string _InsertionIdentityFetchString = "";
-        public override string InsertionIdentityFetchString { get { return _InsertionIdentityFetchString; } }
+        private string _insertionIdentityFetchString = "";
+        public override string InsertionIdentityFetchString { get { return _insertionIdentityFetchString; } }
 
-        public MySQLProvider()
-        {
-            Schema = new DatabaseSchema();
-            ClientName = "MySql.Data.MySqlClient";
-        }
-
-        public MySQLProvider(string connectionString, string providerName)
-        {
-            DbDataProviderName = String.IsNullOrEmpty(providerName) ? DEFAULT_DB_CLIENT_TYPE_NAME : providerName;
-            Schema = new DatabaseSchema();
-            ClientName = "MySql.Data.MySqlClient";
-            ConnectionString = connectionString;
-            Factory = DbProviderFactories.GetFactory(DbDataProviderName);
-        }
+        public MySQLProvider(string connectionString, string providerName) : base(connectionString, providerName)
+        {}
 
         public override string QualifyTableName(ITable table)
         {
@@ -39,12 +27,16 @@ namespace SubSonic.DataProviders.MySQL
         {
             string qualifiedFormat;
 
+            qualifiedFormat = String.IsNullOrEmpty(column.SchemaName) ? "`{2}`" : "`{0}`.`{1}`.`{2}`";
         
-                    qualifiedFormat = String.IsNullOrEmpty(column.SchemaName) ? "`{2}`" : "`{0}`.`{1}`.`{2}`";
-        
-
             return String.Format(qualifiedFormat, column.Table.SchemaName, column.Table.Name, column.Name);
         }
-        
+
+        public override ISchemaGenerator SchemaGenerator
+        {
+            get { return new MySqlSchema(); }
+        }
+
+        public override IQueryLanguage QueryLanguage { get { return new MySqlLanguage(); } }
     }
 }

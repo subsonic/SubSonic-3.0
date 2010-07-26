@@ -14,7 +14,6 @@
 using System;
 using System.Text;
 using SubSonic.Query;
-using LinFu.IoC.Configuration;
 using SubSonic.DataProviders;
 using SubSonic.SqlGeneration;
 using System.ComponentModel.Composition;
@@ -30,7 +29,7 @@ namespace SubSonic.DataProviders.SQLite
         LIMIT {2}, {3};";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MySqlGenerator"/> class.
+        /// Initializes a new instance of the <see cref="SQLiteGenerator"/> class.
         /// </summary>
         /// <param name="query">The query.</param>
         public SQLiteGenerator()

@@ -453,8 +453,8 @@ namespace SubSonic.Query
 
         internal ISqlGenerator GetGenerator()
         {
-
-            return SqlGeneratorFactory.GetInstance(_provider.ClientName, this);
+            return _provider.SqlGenerator;
+            //return SqlGeneratorFactory.GetInstance(_provider.ClientName, this);
 
         }
 

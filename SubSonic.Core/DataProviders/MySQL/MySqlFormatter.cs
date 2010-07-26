@@ -8,7 +8,7 @@ using SubSonic.Linq.Structure;
 
 #endregion
 
-namespace SubSonic.DataProviders.MySql
+namespace SubSonic.DataProviders.MySQL
 {
     /// <summary>
     /// Formats a query expression into TSQL language syntax
