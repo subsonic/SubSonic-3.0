@@ -24,11 +24,9 @@ using SubSonic.Schema;
 using SubSonic.SqlGeneration.Schema;
 using SubSonic.DataProviders;
 
-using LinFu.IoC;
 using SubSonic.DataProviders.Schema;
 
 using Microsoft.Practices.ServiceLocation;
-using LinFu.IoC.Interfaces;
 
 namespace SubSonic.DataProviders
 {

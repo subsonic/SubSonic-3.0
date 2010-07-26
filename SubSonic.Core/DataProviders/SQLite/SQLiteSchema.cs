@@ -15,7 +15,6 @@ using System;
 using System.Data;
 using System.Text;
 using SubSonic.Schema;
-using LinFu.IoC.Configuration;
 using SubSonic.DataProviders.Schema;
 using SubSonic.SqlGeneration.Schema;
 using System.ComponentModel.Composition;

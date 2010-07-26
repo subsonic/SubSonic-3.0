@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using SubSonic.DataProviders;
 using SubSonic.Linq.Structure;
-using LinFu.IoC.Configuration;
 using SubSonic.Linq.Translation;
 using System.ComponentModel.Composition;
 

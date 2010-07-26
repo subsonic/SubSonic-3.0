@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using SubSonic.DataProviders;
 
-using LinFu.IoC;
 using Microsoft.Practices.ServiceLocation;
 
 namespace SubSonic.DataProviders.Schema

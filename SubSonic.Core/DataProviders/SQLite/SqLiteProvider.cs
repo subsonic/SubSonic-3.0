@@ -5,8 +5,6 @@ using System.Text;
 using SubSonic.Schema;
 using System.Data.Common;
 
-using LinFu.IoC;
-using LinFu.IoC.Configuration;
 using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProviders.SQLite

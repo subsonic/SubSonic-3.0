@@ -5,8 +5,6 @@ using System.Text;
 using SubSonic.DataProviders;
 
 
-using LinFu.IoC;
-
 namespace SubSonic.Linq.Structure
 {
     public static class QueryLanguageFactory

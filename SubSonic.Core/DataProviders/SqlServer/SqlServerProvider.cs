@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using SubSonic.Schema;
 using System.Data.Common;
-using LinFu.IoC.Configuration;
 using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProviders.SqlServer

@@ -16,8 +16,6 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
-
-
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -57,9 +55,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LinFu.Core">
-      <HintPath>..\lib\LinFu.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -84,7 +79,7 @@
     <Compile Include="DataProviders\MySQL\MySQLProvider.cs" />
     <Compile Include="DataProviders\ServiceLocators\MefServiceLocator.cs" />
     <Compile Include="DataProviders\SqlServer\SqlServerProvider.cs" />
-    <Compile Include="DataProviders\SQLite\SqLiteProvider.cs" />
+    <Compile Include="DataProviders\SQLite\SQLiteProvider.cs" />
     <Compile Include="Linq\Structure\QueryLanguageFactory.cs" />
     <Compile Include="Linq\Translation\CountOrderByRemover.cs" />
     <Compile Include="Repository\SimpleRepositoryOptions.cs" />

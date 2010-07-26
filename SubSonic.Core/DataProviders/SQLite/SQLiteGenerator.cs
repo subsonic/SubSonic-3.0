@@ -14,7 +14,6 @@
 using System;
 using System.Text;
 using SubSonic.Query;
-using LinFu.IoC.Configuration;
 using SubSonic.DataProviders;
 using SubSonic.SqlGeneration;
 using System.ComponentModel.Composition;
