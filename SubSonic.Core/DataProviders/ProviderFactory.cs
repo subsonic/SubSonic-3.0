@@ -14,6 +14,9 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using SubSonic.DataProviders.SqlServer;
+using SubSonic.DataProviders.MySQL;
+using SubSonic.DataProviders.SQLite;
 
 namespace SubSonic.DataProviders
 {
@@ -21,7 +24,18 @@ namespace SubSonic.DataProviders
     {
         private const string DEFAULT_DB_CLIENT_TYPE_NAME = "System.Data.SqlClient";
 
-        private static Dictionary<string, Func<string, string, IDataProvider>> _factories = new Dictionary<string, Func<string, string, IDataProvider>>();
+        private static Dictionary<string, Func<string, string, IDataProvider>> _factories = BuildDefaults();
+
+        private static Dictionary<string, Func<string, string, IDataProvider>> BuildDefaults()
+        {
+            var defaults = new Dictionary<string, Func<string, string, IDataProvider>>();
+
+            defaults.Add("System.Data.SqlClient", (conn, provider) => new SqlServerProvider(conn, provider));
+            defaults.Add("MySql.Data.MySqlClient", (conn, provider) => new MySQLProvider(conn, provider));
+            defaults.Add("System.Data.SQLite", (conn, provider) => new SQLiteProvider(conn, provider));
+            
+            return defaults;
+        }
 
         public static void Register(string providerName, Func<string, string, IDataProvider> factoryMethod)
         {
