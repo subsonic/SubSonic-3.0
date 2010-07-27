@@ -174,4 +174,19 @@ namespace SubSonic.SqlGeneration.Schema
             column.DefaultSetting = DefaultSetting;
         }
     }
+
+	[AttributeUsage(AttributeTargets.Property)]
+	public class SubSonicXmlStringAttribute : Attribute, IPropertyMappingAttribute
+	{
+		public bool Accept(IColumn column)
+		{
+			return column.IsString;
+		}
+
+		public void Apply(IColumn column)
+		{
+			column.DataType = DbType.Xml;
+			column.MaxLength = 0;
+		}
+	}
 }

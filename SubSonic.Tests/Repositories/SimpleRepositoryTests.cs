@@ -48,6 +48,10 @@ namespace SubSonic.Tests.Repositories
         public Salutation Salutation { get; set; }
         public Salutation? NullableSalutation { get; set; }
         public byte[] Binary { get; set; }
+
+		[SubSonicXmlString]
+		[SubSonicNullString]
+		public string SomeXmlString { get; set; }
     }
 
     public class Shwerko2 : IShwerko
@@ -697,7 +701,20 @@ namespace SubSonic.Tests.Repositories
             Assert.Equal(3, count);
         }
 
-        private void GivenShwerkoAndShwerko2WithName(string name)
+		[Fact]
+		public void Simple_Repo_Should_Support_Xml_DatabaseTypes()
+		{
+			const string xmlContent = "<a>string</a>";
+
+			var shwerko = CreateTestRecord(Guid.NewGuid(), s => s.SomeXmlString = xmlContent);
+			_repo.Add(shwerko);
+
+			var loadedShwerko = _repo.Single<Shwerko>(shwerko.ID);
+
+			Assert.Equal(xmlContent, loadedShwerko.SomeXmlString);
+		}
+
+    	private void GivenShwerkoAndShwerko2WithName(string name)
         {
             var shwerko = CreateTestRecord<Shwerko>(Guid.NewGuid(), s => s.Name = name);
             _repo.Add(shwerko);
