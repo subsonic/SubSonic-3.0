@@ -108,6 +108,7 @@
     <Compile Include="BugReports\TestRepositoryBugs.cs" />
     <Compile Include="BugReports\Update.cs" />
     <Compile Include="Repositories\MySQLSimpleRepositoryTests.cs" />
+    <Compile Include="Repositories\SimpleTestRepositoryTests.cs" />
     <Compile Include="Repositories\SQLiteSimpleRepositoryTests.cs" />
     <Compile Include="Repositories\SqlServerSimpleRepositoryTests.cs" />
     <Compile Include="SimpleQuery\BatchTests.cs" />

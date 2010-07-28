@@ -48,10 +48,6 @@ namespace SubSonic.Tests.Repositories
         public Salutation Salutation { get; set; }
         public Salutation? NullableSalutation { get; set; }
         public byte[] Binary { get; set; }
-
-		[SubSonicXmlString]
-		[SubSonicNullString]
-		public string SomeXmlString { get; set; }
     }
 
     public class Shwerko2 : IShwerko
@@ -114,6 +110,11 @@ namespace SubSonic.Tests.Repositories
             _repo = new SimpleRepository(_provider, SimpleRepositoryOptions.RunMigrations);
 
             CleanTables();            
+        }
+
+        public SimpleRepositoryTests(IRepository repo)
+        {
+            _repo = repo;
         }
 
         private void CleanTables()
@@ -463,7 +464,7 @@ namespace SubSonic.Tests.Repositories
 			_repo.Add<Shwerko>(CreateTestRecord(Guid.NewGuid()));
 
 			// Act
-			Shwerko shwerko = _repo.Find<Shwerko>(s => s.Name.StartsWith("c")).FirstOrDefault();
+			Shwerko shwerko = _repo.Find<Shwerko>(s => s.Name.StartsWith("C")).FirstOrDefault();
 
 			// Assert	
 			Assert.NotNull(shwerko);
@@ -700,19 +701,6 @@ namespace SubSonic.Tests.Repositories
 
             Assert.Equal(3, count);
         }
-
-		[Fact]
-		public void Simple_Repo_Should_Support_Xml_DatabaseTypes()
-		{
-			const string xmlContent = "<a>string</a>";
-
-			var shwerko = CreateTestRecord(Guid.NewGuid(), s => s.SomeXmlString = xmlContent);
-			_repo.Add(shwerko);
-
-			var loadedShwerko = _repo.Single<Shwerko>(shwerko.ID);
-
-			Assert.Equal(xmlContent, loadedShwerko.SomeXmlString);
-		}
 
     	private void GivenShwerkoAndShwerko2WithName(string name)
         {
