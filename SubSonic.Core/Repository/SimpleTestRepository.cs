@@ -8,7 +8,7 @@ using SubSonic.Extensions;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace SubSonic.Core.Repository
+namespace SubSonic.Repository
 {
     public class SimpleTestRepository : IRepository
     {
