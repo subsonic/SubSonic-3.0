@@ -112,6 +112,11 @@ namespace SubSonic.Tests.Repositories
             CleanTables();            
         }
 
+        public SimpleRepositoryTests(IRepository repo)
+        {
+            _repo = repo;
+        }
+
         private void CleanTables()
         {
             try
@@ -459,7 +464,7 @@ namespace SubSonic.Tests.Repositories
 			_repo.Add<Shwerko>(CreateTestRecord(Guid.NewGuid()));
 
 			// Act
-			Shwerko shwerko = _repo.Find<Shwerko>(s => s.Name.StartsWith("c")).FirstOrDefault();
+			Shwerko shwerko = _repo.Find<Shwerko>(s => s.Name.StartsWith("C")).FirstOrDefault();
 
 			// Assert	
 			Assert.NotNull(shwerko);
@@ -697,7 +702,7 @@ namespace SubSonic.Tests.Repositories
             Assert.Equal(3, count);
         }
 
-        private void GivenShwerkoAndShwerko2WithName(string name)
+    	private void GivenShwerkoAndShwerko2WithName(string name)
         {
             var shwerko = CreateTestRecord<Shwerko>(Guid.NewGuid(), s => s.Name = name);
             _repo.Add(shwerko);

@@ -76,6 +76,7 @@
     <Compile Include="Linq\Translation\CountOrderByRemover.cs" />
     <Compile Include="Repository\SimpleRepositoryOptions.cs" />
     <Compile Include="Repository\SimpleRepositoryOptionsExtensions.cs" />
+    <Compile Include="Repository\SimpleTestRepository.cs" />
     <Compile Include="Schema\IActiveRecord.cs" />
     <Compile Include="DataProviders\Connection.cs" />
     <Compile Include="DataProviders\DbDataProvider.cs" />
