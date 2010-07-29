@@ -23,8 +23,8 @@ namespace SubSonic.Linq.Structure
     {
 
         IDataProvider _provider;
-        public QueryLanguage() {
-            
+        public QueryLanguage(IDataProvider provider) {
+            _provider = provider;
         }
 
         public string ClientName { get; set; }

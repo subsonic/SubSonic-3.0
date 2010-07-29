@@ -14,7 +14,7 @@
 using System.Collections.Generic;
 using SubSonic.Query;
 using SubSonic.Schema;
-using System.ComponentModel.Composition;
+
 
 namespace SubSonic.DataProviders
 {
@@ -22,7 +22,6 @@ namespace SubSonic.DataProviders
     /// 
     /// </summary>
     /// 
-    [InheritedExport]
     public interface ISqlGenerator
     {
         string ClientName { get; set; }

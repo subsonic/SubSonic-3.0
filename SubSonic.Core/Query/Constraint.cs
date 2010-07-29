@@ -13,9 +13,9 @@
 // 
 using System;
 using System.Collections;
-using System.ComponentModel;
 using System.Data;
 using SubSonic.Extensions;
+using System.ComponentModel;
 
 namespace SubSonic.Query
 {

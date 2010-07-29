@@ -17,7 +17,7 @@ using System.Text;
 using SubSonic.Schema;
 using SubSonic.DataProviders.Schema;
 using SubSonic.SqlGeneration.Schema;
-using System.ComponentModel.Composition;
+
 
 namespace SubSonic.DataProviders.SQLite
 {

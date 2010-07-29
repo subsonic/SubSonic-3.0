@@ -13,7 +13,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Linq.Expressions;
 using SubSonic.Extensions;
@@ -21,7 +20,7 @@ using SubSonic.DataProviders;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration;
 using System.Linq;
-using SubSonic.DataProviders;
+using System.ComponentModel;
 
 namespace SubSonic.Query
 {

@@ -71,7 +71,8 @@ namespace SubSonic.SqlGeneration
 			get { return query; }
 			set
 			{
-				this.sqlFragment = SqlFragmentFactory.Create(value._provider.ClientName);
+                // TODO: What???
+                this.sqlFragment = value._provider.SqlFragment;
 				query = value;
 			}
 		}
@@ -81,10 +82,9 @@ namespace SubSonic.SqlGeneration
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ANSISqlGenerator"/> class.
 		/// </summary>
-		/// <param name="q">The q.</param>
-		public ANSISqlGenerator()
+        public ANSISqlGenerator(SqlQuery query)
 		{
-			
+            Query = query;
 		}
 
 

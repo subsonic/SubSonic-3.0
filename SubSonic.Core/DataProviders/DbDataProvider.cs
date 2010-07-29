@@ -23,10 +23,10 @@ using SubSonic.Query;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration.Schema;
 using SubSonic.DataProviders;
-
 using SubSonic.DataProviders.Schema;
+using SubSonic.SqlGeneration;
+using SubSonic.Linq.Structure;
 
-using Microsoft.Practices.ServiceLocation;
 
 namespace SubSonic.DataProviders
 {
@@ -37,46 +37,28 @@ namespace SubSonic.DataProviders
         [ThreadStatic]
         private static DbConnection __sharedConnection;
 
-        protected const string DEFAULT_DB_CLIENT_TYPE_NAME = "System.Data.SqlClient";
-
-        public abstract string InsertionIdentityFetchString { get; }
-
-        private string _connectionString;
-        public string ConnectionString
+        protected DbDataProvider(string connectionString, string providerName)
         {
-            get { return _connectionString; }
-            set
+            if (String.IsNullOrEmpty(connectionString))
             {
-                _connectionString = value;
-
+                throw new ArgumentNullException("connectionString");
             }
-        }
 
-        private string _dbDataProviderName;
-        public string DbDataProviderName
-        {
-            get { return _dbDataProviderName; }
-            set
-            {
-                _dbDataProviderName = value;
+            ConnectionString = connectionString;
 
-                Factory = DbProviderFactories.GetFactory(DbDataProviderName);
-            }
-        }
-
-        public static IDataProvider GetInstance(string connectionString, string providerName)
-        {
             if (String.IsNullOrEmpty(providerName))
-                providerName = DEFAULT_DB_CLIENT_TYPE_NAME;
+            {
+                throw new ArgumentNullException("providerName");
+            }
 
-            
-            IDataProvider provider = IOCFactory.GetContainer().GetAllInstances<IDataProvider>().Where(p => p.ClientName == providerName).Single();
-            provider.ConnectionString = connectionString;
-            provider.DbDataProviderName = providerName;
-            return provider;
+            DbDataProviderName = providerName;
+
+            // TODO: Schema is specific to SQL Server?
+            Schema = new DatabaseSchema();
         }
 
-        
+        public string ConnectionString { get; private set; }
+        public string DbDataProviderName { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether [current connection string is default].
@@ -100,21 +82,33 @@ namespace SubSonic.DataProviders
 
         #region IDataProvider Members
 
-        public ISchemaGenerator SchemaGenerator
+        public abstract ISchemaGenerator SchemaGenerator { get; }
+        
+        public virtual ISqlFragment SqlFragment
         {
-            get
-            {
-                return SchemaGeneratorFactory.Create(ClientName);
-            }
+            get { return new SqlFragment(); }
         }
+
+        public abstract IQueryLanguage QueryLanguage { get; }
+
+        
+        public virtual ISqlGenerator GetSqlGenerator(SqlQuery query)
+        {
+            return new ANSISqlGenerator(query);
+        }
+
+
 
         public TextWriter Log { get; set; }
 
+        // TODO: Is that always equal to providername?
+        //public string ClientName { get; set; }
+        public IDatabaseSchema Schema { get; private set; }
 
-        public string ClientName { get; set; }
-        public IDatabaseSchema Schema { get; set; }
-
-        public DbProviderFactory Factory { get; protected set; }
+        public DbProviderFactory Factory 
+        {
+            get  { return DbProviderFactories.GetFactory(DbDataProviderName); }
+        }
 
         public DbDataReader ExecuteReader(QueryCommand qry)
         {
@@ -370,13 +364,12 @@ namespace SubSonic.DataProviders
             return FindOrCreateTable(typeof(T));
         }
 
+        public abstract string InsertionIdentityFetchString { get; }
 
         public abstract string QualifyTableName(ITable tbl);
-
-
         public abstract string QualifyColumnName(IColumn column);
        
-
+        // TODO: Make that abstract too? Or at least virtual
         public string QualifySPName(IStoredProcedure sp)
         {
             const string qualifiedFormat = "[{0}].[{1}]";
@@ -475,5 +468,7 @@ namespace SubSonic.DataProviders
                 conn.Open();
             return conn;
         }
+
+        
     }
 }

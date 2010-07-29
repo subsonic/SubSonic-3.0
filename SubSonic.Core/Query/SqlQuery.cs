@@ -23,7 +23,6 @@ using SubSonic.Extensions;
 using SubSonic.DataProviders;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration;
-using SubSonic.DataProviders;
 
 namespace SubSonic.Query
 {
@@ -453,8 +452,9 @@ namespace SubSonic.Query
 
         internal ISqlGenerator GetGenerator()
         {
-
-            return SqlGeneratorFactory.GetInstance(_provider.ClientName, this);
+            return _provider.GetSqlGenerator(this);
+            
+            //return SqlGeneratorFactory.GetInstance(_provider.ClientName, this);
 
         }
 

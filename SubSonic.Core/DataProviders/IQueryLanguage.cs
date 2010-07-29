@@ -1,32 +1,21 @@
-﻿using System;using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel.Composition;
+using SubSonic.DataProviders;
 using System.Linq.Expressions;
-
-namespace SubSonic.DataProviders
+using System;
+namespace SubSonic.Linq.Structure
 {
-    [InheritedExport]
+    /// <summary>
+    /// Defines the language rules for the query provider
+    /// </summary>
     public interface IQueryLanguage
     {
         string ClientName { get; set; }
-        IDataProvider DataProvider { get; set; }
+        IDataProvider DataProvider { get;set;}
         string Quote(string name);
-        
         bool IsScalar(Type type);
-       
-
-        
         bool CanBeColumn(Expression expression);
-       
-
-        
         Expression Translate(Expression expression);
-        
         string Format(Expression expression);
-
         Expression Parameterize(Expression expression);
-        
- 
     }
 }
+

@@ -2,19 +2,17 @@
 using SubSonic.DataProviders;
 using SubSonic.Linq.Structure;
 using SubSonic.Linq.Translation;
-using System.ComponentModel.Composition;
 
 namespace SubSonic.DataProviders.SQLite
 {
     /// <summary>
     /// SQLite specific QueryLanguage
     /// </summary>
-    /// 
-        
+
     public class SqliteLanguage : QueryLanguage
     {
-        public SqliteLanguage()
-            : base()
+        public SqliteLanguage(IDataProvider provider)
+            : base(provider)
         {
             ClientName = "System.Data.SQLite";
         }

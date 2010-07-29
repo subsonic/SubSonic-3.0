@@ -23,8 +23,8 @@ namespace SubSonic.Linq.Structure
     public class TSqlLanguage : QueryLanguage
     {
 
-        public TSqlLanguage()
-            : base()
+        public TSqlLanguage(IDataProvider provider)
+            : base(provider)
         {
         }
 

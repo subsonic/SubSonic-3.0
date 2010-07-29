@@ -14,11 +14,10 @@
 using System.Data;
 using SubSonic.DataProviders;
 using SubSonic.Schema;
-using System.ComponentModel.Composition;
+
 
 namespace SubSonic.DataProviders.Schema
 {
-    [InheritedExport]
     public interface ISchemaGenerator
     {
         /// <summary>

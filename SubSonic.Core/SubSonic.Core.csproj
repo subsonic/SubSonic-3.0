@@ -55,13 +55,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition">
-      <HintPath>..\lib\System.ComponentModel.Composition.dll</HintPath>
-    </Reference>
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -69,18 +63,16 @@
     <Reference Include="System.Data.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Net" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.XML" />
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataProviders\IOCFactory.cs" />
     <Compile Include="DataProviders\IQueryLanguage.cs" />
     <Compile Include="DataProviders\MySQL\MySQLProvider.cs" />
-    <Compile Include="DataProviders\ServiceLocators\MefServiceLocator.cs" />
     <Compile Include="DataProviders\SqlServer\SqlServerProvider.cs" />
     <Compile Include="DataProviders\SQLite\SQLiteProvider.cs" />
-    <Compile Include="Linq\Structure\QueryLanguageFactory.cs" />
     <Compile Include="Linq\Translation\CountOrderByRemover.cs" />
     <Compile Include="Repository\SimpleRepositoryOptions.cs" />
     <Compile Include="Repository\SimpleRepositoryOptionsExtensions.cs" />
@@ -178,7 +170,6 @@
     <Compile Include="Schema\IDatabaseSchema.cs" />
     <Compile Include="Schema\IView.cs" />
     <Compile Include="DataProviders\MySQL\MySqlGenerator.cs" />
-    <Compile Include="DataProviders\Schema\SchemaGeneratorFactory.cs" />
     <Compile Include="DataProviders\SQLite\SQLiteSchema.cs" />
     <Compile Include="DataProviders\Schema\ISchemaGenerator.cs" />
     <Compile Include="SQLGeneration\Schema\SchemaAttributes.cs" />
@@ -202,8 +193,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SQLGeneration\SqlFragment.cs" />
-    <Compile Include="DataProviders\SqlFragmentFactory.cs" />
-    <Compile Include="DataProviders\SqlGeneratorFactory.cs" />
     <Compile Include="DataProviders\SQLite\SQLiteGenerator.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -15,9 +15,8 @@ using System;
 using System.Text;
 using SubSonic.DataProviders;
 using SubSonic.Query;
-using SubSonic.DataProviders;
 using SubSonic.SqlGeneration;
-using System.ComponentModel.Composition;
+
 
 namespace SubSonic.DataProviders.SqlServer
 {
@@ -44,8 +43,8 @@ WHERE  Row >= {5} AND Row <= {6}";
         /// Initializes a new instance of the <see cref="Sql2005Generator"/> class.
         /// </summary>
         /// <param name="query">The query.</param>
-        public Sql2005Generator()
-            : base() {
+        public Sql2005Generator(SqlQuery query)
+            : base(query) {
                 ClientName = "System.Data.SqlClient";
         }
 

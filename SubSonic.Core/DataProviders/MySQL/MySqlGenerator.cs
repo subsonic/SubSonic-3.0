@@ -19,9 +19,9 @@ using SubSonic.Query;
 using SubSonic.Schema;
 using SubSonic.DataProviders;
 using SubSonic.SqlGeneration;
-using System.ComponentModel.Composition;
 
-namespace SubSonic.DataProvider.MySQL
+
+namespace SubSonic.DataProviders.MySQL
 {
     /// <summary>
     /// 
@@ -39,8 +39,8 @@ namespace SubSonic.DataProvider.MySQL
         /// Initializes a new instance of the <see cref="MySqlGenerator"/> class.
         /// </summary>
         /// <param name="query">The query.</param>
-        public MySqlGenerator()
-            : base() {
+        public MySqlGenerator(SqlQuery query)
+            : base(query) {
                 ClientName = "MySql.Data.MySqlClient";
         }
 

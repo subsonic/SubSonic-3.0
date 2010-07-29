@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel.Composition;
+
 
 namespace SubSonic.DataProviders
 {
-    [InheritedExport]
+    
     public interface ISqlFragment
     {
         string AND { get; }
