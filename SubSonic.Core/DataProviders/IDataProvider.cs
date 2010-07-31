@@ -20,7 +20,6 @@ using System.Reflection;
 using SubSonic.Query;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration.Schema;
-using SubSonic.DataProviders.Schema;
 
 using SubSonic.Linq.Structure;
 
@@ -33,7 +32,6 @@ namespace SubSonic.DataProviders
         //execution
         string DbDataProviderName { get; }
         string Name { get; }
-        //string ClientName { get; set; }
         TextWriter Log { get; set; }
 
         /// <summary>

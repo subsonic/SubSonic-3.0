@@ -19,7 +19,6 @@ using System.Text;
 using SubSonic.Extensions;
 using SubSonic.DataProviders;
 using SubSonic.Schema;
-using SubSonic.DataProviders.Schema;
 
 namespace SubSonic.SqlGeneration.Schema
 {

@@ -4,18 +4,16 @@ using System.Linq;
 using System.Text;
 using SubSonic.Schema;
 using System.Data.Common;
-using SubSonic.DataProviders.Schema;
 using SubSonic.Linq.Structure;
 using SubSonic.Query;
 
 
 namespace SubSonic.DataProviders.SQLite
 {
-    
-    public class SQLiteProvider: DbDataProvider, IDataProvider
+
+    public class SQLiteProvider : DbDataProvider, IDataProvider
     {
-        private string _InsertionIdentityFetchString = "";
-        public override string InsertionIdentityFetchString { get { return _InsertionIdentityFetchString; } }
+        public override string InsertionIdentityFetchString { get { return String.Empty; } }
 
         public SQLiteProvider(string connectionString, string providerName) : base(connectionString, providerName)
         {}
@@ -47,7 +45,7 @@ namespace SubSonic.DataProviders.SQLite
             return new SQLiteGenerator(query);
         }
 
-        public override IQueryLanguage QueryLanguage { get { return new SqliteLanguage(this); } }
+        public override IQueryLanguage QueryLanguage { get { return new SQLiteLanguage(this); } }
 
     }
 }

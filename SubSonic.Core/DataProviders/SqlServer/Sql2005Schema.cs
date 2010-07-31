@@ -15,7 +15,6 @@ using System.Data;
 using System.Text;
 using SubSonic.Schema;
 using System;
-using SubSonic.DataProviders.Schema;
 using SubSonic.SqlGeneration.Schema;
 
 

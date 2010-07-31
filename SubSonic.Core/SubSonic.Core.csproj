@@ -70,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataProviders\IQueryLanguage.cs" />
-    <Compile Include="DataProviders\MySQL\MySQLProvider.cs" />
+    <Compile Include="DataProviders\MySQL\MySqlProvider.cs" />
     <Compile Include="DataProviders\SqlServer\SqlServerProvider.cs" />
     <Compile Include="DataProviders\SQLite\SQLiteProvider.cs" />
     <Compile Include="Linq\Translation\CountOrderByRemover.cs" />
@@ -172,7 +172,7 @@
     <Compile Include="Schema\IView.cs" />
     <Compile Include="DataProviders\MySQL\MySqlGenerator.cs" />
     <Compile Include="DataProviders\SQLite\SQLiteSchema.cs" />
-    <Compile Include="DataProviders\Schema\ISchemaGenerator.cs" />
+    <Compile Include="DataProviders\ISchemaGenerator.cs" />
     <Compile Include="SQLGeneration\Schema\SchemaAttributes.cs" />
     <Compile Include="DataProviders\MySQL\MySqlSchema.cs" />
     <Compile Include="DataProviders\SqlServer\Sql2005Schema.cs" />

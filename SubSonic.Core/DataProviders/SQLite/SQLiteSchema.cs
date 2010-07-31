@@ -15,13 +15,12 @@ using System;
 using System.Data;
 using System.Text;
 using SubSonic.Schema;
-using SubSonic.DataProviders.Schema;
 using SubSonic.SqlGeneration.Schema;
 
 
 namespace SubSonic.DataProviders.SQLite
 {
-    
+
     public class SQLiteSchema : ANSISchemaGenerator
     {
         public SQLiteSchema()

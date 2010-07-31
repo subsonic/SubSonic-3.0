@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using SubSonic.Schema;
 using System.Data.Common;
-using SubSonic.DataProviders.Schema;
 using SubSonic.Linq.Structure;
 using SubSonic.Query;
 
@@ -12,12 +11,11 @@ using SubSonic.Query;
 
 namespace SubSonic.DataProviders.MySQL
 {
-    class MySQLProvider : DbDataProvider
+    class MySqlProvider : DbDataProvider
     {
-        private string _insertionIdentityFetchString = "";
-        public override string InsertionIdentityFetchString { get { return _insertionIdentityFetchString; } }
+        public override string InsertionIdentityFetchString { get { return String.Empty; } }
 
-        public MySQLProvider(string connectionString, string providerName) : base(connectionString, providerName)
+        public MySqlProvider(string connectionString, string providerName) : base(connectionString, providerName)
         {}
 
         public override string QualifyTableName(ITable table)

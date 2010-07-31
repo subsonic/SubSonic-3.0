@@ -23,15 +23,12 @@ using SubSonic.Query;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration.Schema;
 using SubSonic.DataProviders;
-using SubSonic.DataProviders.Schema;
 using SubSonic.SqlGeneration;
 using SubSonic.Linq.Structure;
 
 
 namespace SubSonic.DataProviders
 {
-    
-
     public abstract class DbDataProvider : IDataProvider
     {
         [ThreadStatic]
@@ -97,12 +94,8 @@ namespace SubSonic.DataProviders
             return new ANSISqlGenerator(query);
         }
 
-
-
         public TextWriter Log { get; set; }
 
-        // TODO: Is that always equal to providername?
-        //public string ClientName { get; set; }
         public IDatabaseSchema Schema { get; private set; }
 
         public DbProviderFactory Factory 

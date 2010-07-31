@@ -31,7 +31,7 @@ namespace SubSonic.DataProviders
             var defaults = new Dictionary<string, Func<string, string, IDataProvider>>();
 
             defaults.Add("System.Data.SqlClient", (conn, provider) => new SqlServerProvider(conn, provider));
-            defaults.Add("MySql.Data.MySqlClient", (conn, provider) => new MySQLProvider(conn, provider));
+            defaults.Add("MySql.Data.MySqlClient", (conn, provider) => new MySqlProvider(conn, provider));
             defaults.Add("System.Data.SQLite", (conn, provider) => new SQLiteProvider(conn, provider));
             
             return defaults;

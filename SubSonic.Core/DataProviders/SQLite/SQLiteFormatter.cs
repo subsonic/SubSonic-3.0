@@ -13,7 +13,7 @@ namespace SubSonic.DataProviders.SQLite
     /// <summary>
     /// Formats a query expression into TSQL language syntax
     /// </summary>
-    public class SqliteFormatter : TSqlFormatter
+    public class SQLiteFormatter : TSqlFormatter
     {
 
         protected override Expression VisitMethodCall(MethodCallExpression m) {
@@ -413,7 +413,7 @@ namespace SubSonic.DataProviders.SQLite
 
         public static string FormatExpression(Expression expression)
         {
-            SqliteFormatter formatter = new SqliteFormatter();
+            var formatter = new SQLiteFormatter();
             formatter.Visit(expression);
             return formatter.sb.ToString();
         }

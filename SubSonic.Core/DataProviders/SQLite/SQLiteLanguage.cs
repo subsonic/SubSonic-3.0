@@ -9,9 +9,9 @@ namespace SubSonic.DataProviders.SQLite
     /// SQLite specific QueryLanguage
     /// </summary>
 
-    public class SqliteLanguage : QueryLanguage
+    public class SQLiteLanguage : QueryLanguage
     {
-        public SqliteLanguage(IDataProvider provider)
+        public SQLiteLanguage(IDataProvider provider)
             : base(provider)
         {
             ClientName = "System.Data.SQLite";
@@ -66,7 +66,7 @@ namespace SubSonic.DataProviders.SQLite
 
         public override string Format(Expression expression)
         {
-            return SqliteFormatter.FormatExpression(expression);
+            return SQLiteFormatter.FormatExpression(expression);
         }
 
         private bool isPaged(Expression exp)

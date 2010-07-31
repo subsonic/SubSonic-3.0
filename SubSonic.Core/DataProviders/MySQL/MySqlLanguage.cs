@@ -7,7 +7,7 @@ using SubSonic.Linq.Translation;
 namespace SubSonic.DataProviders.MySQL
 {
     /// <summary>
-    /// TSQL specific QueryLanguage
+    /// MySQL specific QueryLanguage
     /// </summary>
     /// 
     public class MySqlLanguage : QueryLanguage
@@ -22,7 +22,6 @@ namespace SubSonic.DataProviders.MySQL
         public override string Quote(string name)
         {
             return string.Format("'{0}'", name);
-            //return cb.QuoteIdentifier(name);
         }
 
         public override Expression Translate(Expression expression)

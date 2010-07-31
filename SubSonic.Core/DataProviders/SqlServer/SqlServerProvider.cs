@@ -5,7 +5,6 @@ using System.Text;
 using SubSonic.Schema;
 using System.Data.Common;
 
-using SubSonic.DataProviders.Schema;
 using SubSonic.Linq.Structure;
 using SubSonic.Query;
 
