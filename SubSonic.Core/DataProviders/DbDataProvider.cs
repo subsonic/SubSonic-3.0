@@ -107,8 +107,7 @@ namespace SubSonic.DataProviders
         {
             AutomaticConnectionScope scope = new AutomaticConnectionScope(this);
 
-            if(Log != null)
-                Log.WriteLine(qry.CommandSql);
+            WriteToLog(() => qry.CommandSql);
 
 #if DEBUG
             //Console.Error.WriteLine("ExecuteReader(QueryCommand):\r\n{0}", qry.CommandSql);
@@ -144,8 +143,7 @@ namespace SubSonic.DataProviders
 
         public DataSet ExecuteDataSet(QueryCommand qry)
         {
-            if(Log != null)
-                Log.WriteLine(qry.CommandSql);
+            WriteToLog(() => qry.CommandSql);
 #if DEBUG
             //Console.Error.WriteLine("ExecuteDataSet(QueryCommand): {0}.", qry.CommandSql);
 #endif
@@ -168,8 +166,7 @@ namespace SubSonic.DataProviders
 
         public object ExecuteScalar(QueryCommand qry)
         {
-            if(Log != null)
-                Log.WriteLine(qry.CommandSql);
+            WriteToLog(() => qry.CommandSql);
 
 #if DEBUG
             //Console.Error.WriteLine("ExecuteScalar(QueryCommand): {0}.", qry.CommandSql);
@@ -197,8 +194,7 @@ namespace SubSonic.DataProviders
 
         public T ExecuteSingle<T>(QueryCommand qry) where T : new()
         {
-            if(Log != null)
-                Log.WriteLine(qry.CommandSql);
+            WriteToLog(() => qry.CommandSql);
 
 #if DEBUG
             //Console.Error.WriteLine("ExecuteSingle<T>(QueryCommand): {0}.", qry.CommandSql);
@@ -221,8 +217,7 @@ namespace SubSonic.DataProviders
 
         public int ExecuteQuery(QueryCommand qry)
         {
-            if(Log != null)
-                Log.WriteLine(qry.CommandSql);
+            WriteToLog(() => qry.CommandSql);
 
 #if DEBUG
             //Console.Error.WriteLine("ExecuteQuery(QueryCommand): {0}.", qry.CommandSql);
@@ -462,6 +457,12 @@ namespace SubSonic.DataProviders
             return conn;
         }
 
-        
+        private void WriteToLog(Func<string> logMessage)
+        {
+            if (Log != null)
+            {
+                Log.WriteLine(logMessage());
+            }
+        }
     }
 }
