@@ -702,6 +702,23 @@ namespace SubSonic.Tests.Repositories
             Assert.Equal(3, count);
         }
 
+			[Fact]
+			public void Simple_Repo_Should_Support_Contains_Enumerable()
+			{
+				List<int> ids = new List<int>();
+				var shwerko = CreateTestRecord<Shwerko>(Guid.NewGuid(), s => s.Name = "test1");
+				_repo.Add(shwerko);
+				ids.Add(shwerko.ID);
+
+				var shwerko2 = CreateTestRecord<Shwerko2>(Guid.NewGuid(), s => s.Name = "test2");
+				_repo.Add(shwerko2);
+				ids.Add(shwerko.ID);
+
+				var result = _repo.All<Shwerko>().Where(o => ids.Contains(o.ID)).ToList();
+				Assert.NotEmpty(result);
+				Assert.True(result.Count == 2);
+			}
+
     	private void GivenShwerkoAndShwerko2WithName(string name)
         {
             var shwerko = CreateTestRecord<Shwerko>(Guid.NewGuid(), s => s.Name = name);

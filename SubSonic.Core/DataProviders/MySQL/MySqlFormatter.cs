@@ -97,10 +97,11 @@ namespace SubSonic.DataProviders.MySQL
                         return m;
                     case "Contains":
                         sb.Append("(");
-                        this.Visit(m.Object);
-                        sb.Append(" LIKE CONCAT('%',");
-                        this.Visit(m.Arguments[0]);
-                        sb.Append(",'%'))");
+								this.Visit(m.Object);
+								sb.Append(" LIKE CONCAT('%',");
+								this.Visit(m.Arguments[0]);
+								sb.Append(",'%')");
+								sb.Append(")");
                         return m;
                     case "Concat":
                         IList<Expression> args = m.Arguments;
@@ -181,7 +182,33 @@ namespace SubSonic.DataProviders.MySQL
                         sb.Append("))");
                         return m;
                 }
-            } else if (m.Method.DeclaringType == typeof(DateTime)) {
+            }
+				else if (typeof(System.Collections.IEnumerable).IsAssignableFrom(m.Method.DeclaringType))
+				{
+					switch(m.Method.Name)
+					{
+						case "Contains":
+							sb.Append('(');
+							this.Visit(m.Arguments[0]);
+							sb.Append(" IN (");
+							//treat this as a WHERE IN (n,...) (like linq to sql)
+							int ix=0;
+							foreach (object item in (System.Collections.IEnumerable)((NamedValueExpression)m.Object).Value.GetConstantValue())
+							{
+							   if (ix > 0)
+							      sb.Append(',');
+
+								if (item is string)
+									sb.AppendFormat("'{0}'",item.ToString().Replace("'","\'")); //TODO: possible sql injection...need to fix this...parameterize it maybe?...
+								else
+									sb.Append(item.ToString()); 
+							   ix++;
+							}
+							sb.Append("))");
+							return m;
+					}
+				}
+				else if (m.Method.DeclaringType == typeof(DateTime)) {
                 switch (m.Method.Name) {
                     case "op_Subtract":
                         if (m.Arguments[1].Type == typeof(DateTime)) {
