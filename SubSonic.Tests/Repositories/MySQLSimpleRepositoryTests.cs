@@ -9,7 +9,7 @@ namespace SubSonic.Tests.Repositories
     public class MySQLSimpleRepositoryTests : SimpleRepositoryTests
     {
         public MySQLSimpleRepositoryTests() :
-            base(ProviderFactory.GetProvider(@"server=localhost;database=subsonic;user id=subsonic; password=pass;", "MySql.Data.MySqlClient"))
+			 base(ProviderFactory.GetProvider(@"server=localhost;database=SubSonic;user id=root; password=;", "MySql.Data.MySqlClient"))
         {
         }
     }
