@@ -189,22 +189,37 @@ namespace SubSonic.DataProviders.MySQL
 					{
 						case "Contains":
 							sb.Append('(');
-							this.Visit(m.Arguments[0]);
-							sb.Append(" IN (");
+
+							//temp string buff. since it's enumerable, we can't count elements. so we'll process a temp and keep count of how many we've done. 
+							var staging = new System.Text.StringBuilder();
+							staging.Append(" IN (");
 							//treat this as a WHERE IN (n,...) (like linq to sql)
 							int ix=0;
 							foreach (object item in (System.Collections.IEnumerable)((NamedValueExpression)m.Object).Value.GetConstantValue())
 							{
 							   if (ix > 0)
-							      sb.Append(',');
+									staging.Append(',');
 
 								if (item is string)
-									sb.AppendFormat("'{0}'",item.ToString().Replace("'","\'")); //TODO: possible sql injection...need to fix this...parameterize it maybe?...
+									staging.AppendFormat("'{0}'", item.ToString().Replace("'", "\'")); //TODO: possible sql injection...need to fix this...parameterize it maybe?...
 								else
-									sb.Append(item.ToString()); 
+									staging.Append(item.ToString()); 
 							   ix++;
 							}
-							sb.Append("))");
+							staging.Append(")");
+
+							//apply to real buffer. 
+							if (ix > 0)
+							{
+								//got some! render out the statement, append it to sb. 
+								this.Visit(m.Arguments[0]);
+								sb.Append(staging.ToString());
+							}
+							else
+								sb.Append("0 = 1"); //missed!  make this clause return no results.
+
+							sb.Append(")");
+
 							return m;
 					}
 				}

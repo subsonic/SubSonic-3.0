@@ -46,5 +46,21 @@ namespace SubSonic.Tests.Repositories
 			  Assert.NotEmpty(result);
 			  Assert.True(result.Count == 2);
 		  }
+
+		  public void Simple_Repo_Should_Return_Zero_Results_When_Using_Contains_With_Empty_Enumerable()
+		  {
+			  //I'm building this using the same logic as Linq to Sql Classes.  They append a where clause of 0 = 1
+			  //	to force the statment to return no results.  This does not result in an exception being thrown and 
+			  //	allows the logic of Contains(id) to be valid. 
+			  var shwerko = CreateTestRecord<Shwerko>(Guid.NewGuid(), s => s.Name = "test1");
+			  _repo.Add(shwerko);
+
+			  var shwerko2 = CreateTestRecord<Shwerko>(Guid.NewGuid(), s => s.Name = "test2");
+			  _repo.Add(shwerko2);
+
+			  List<int> ids = new List<int>();
+			  var result = _repo.All<Shwerko>().Where(o => ids.Contains(o.ID)).ToList();
+			  Assert.Empty(result);
+		  }
     }
 }
