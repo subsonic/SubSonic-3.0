@@ -226,61 +226,7 @@ namespace SubSonic.Linq.Structure
         /// <returns></returns>
         public virtual IEnumerable<T> Execute<T>(QueryCommand<T> query, object[] paramValues)
         {
-            QueryCommand cmd = new QueryCommand(query.CommandText, _provider);
-            for (int i = 0; i < paramValues.Length; i++)
-            {
-                
-                //need to assign a DbType
-                var valueType = paramValues[i].GetType();
-                var dbType = Database.GetDbType(valueType);
-                
-                
-                cmd.AddParameter(query.ParameterNames[i], paramValues[i],dbType);
-            }
-
-            // TODO: Can we use Database.ToEnumerable here? -> See commit 654aa2f48a67ba537e34 that fixes some issues
-            IEnumerable<T> result;
-            Type type = typeof (T);
-            //this is so hacky - the issue is that the Projector below uses Expression.Convert, which is a bottleneck
-            //it's about 10x slower than our ToEnumerable. Our ToEnumerable, however, stumbles on Anon types and groupings
-            //since it doesn't know how to instantiate them (I tried - not smart enough). So we do some trickery here.
-            if (type.Name.Contains("AnonymousType") || type.Name.StartsWith("Grouping`") || type.FullName.StartsWith("System.")) {
-                var reader = _provider.ExecuteReader(cmd);
-                result = Project(reader, query.Projector);
-            } 
-			else 
-            {
-            	using (var reader = _provider.ExecuteReader(cmd)) 
-                {
-                    result = reader.ToEnumerable<T>(query.ColumnNames);
-            	}
-            }
-
-        	return result;
-        }
-
-        /// <summary>
-        /// Converts a data reader into a sequence of objects using a projector function on each row
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="reader">The reader.</param>
-        /// <param name="fnProjector">The fn projector.</param>
-        /// <returns></returns>
-        public virtual IEnumerable<T> Project<T>(DbDataReader reader, Func<DbDataReader, T> fnProjector)
-        {
-            try
-            {
-                var readValues = new List<T>();
-                while (reader.Read())
-                {
-                    readValues.Add(fnProjector(reader));
-                }
-                return readValues;
-            }
-            finally
-            {
-                reader.Dispose();
-            }
+            return _provider.ToEnumerable<T>(query, paramValues);
         }
 
         /// <summary>

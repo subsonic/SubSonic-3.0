@@ -51,6 +51,7 @@ namespace SubSonic.DataProviders
         DbDataReader ExecuteReader(QueryCommand cmd);
         DataSet ExecuteDataSet(QueryCommand cmd);
         IList<T> ToList<T>(QueryCommand cmd) where T : new();
+        IEnumerable<T> ToEnumerable<T>(QueryCommand<T> cmd, object[] paramValues);
         object ExecuteScalar(QueryCommand cmd);
         T ExecuteSingle<T>(QueryCommand cmd) where T : new();
         int ExecuteQuery(QueryCommand cmd);

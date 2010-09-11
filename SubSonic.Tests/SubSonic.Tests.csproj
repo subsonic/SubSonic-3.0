@@ -53,6 +53,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=2.5.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.0.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\MySql.Data.dll</HintPath>
@@ -107,10 +111,27 @@
     <Compile Include="BugReports\TestRepositoryBugs.cs" />
     <Compile Include="BugReports\Update.cs" />
     <Compile Include="DbClientTypeName.cs" />
+    <Compile Include="Repositories\AutoCollectionTests.cs" />
+    <Compile Include="Repositories\SqlServerAutoCollectionTests.cs" />
+    <Compile Include="Repositories\SQLiteAutoCollectionTests.cs" />
+    <Compile Include="Repositories\MySQLAutoCollectionTests.cs" />
     <Compile Include="Repositories\MySQLSimpleRepositoryTests.cs" />
     <Compile Include="Repositories\SimpleTestRepositoryTests.cs" />
     <Compile Include="Repositories\SQLiteSimpleRepositoryTests.cs" />
     <Compile Include="Repositories\SqlServerSimpleRepositoryTests.cs" />
+    <Compile Include="Repositories\TestBases\Comment.cs" />
+    <Compile Include="Repositories\TestBases\Director.cs" />
+    <Compile Include="Repositories\TestBases\DummyForDelete.cs" />
+    <Compile Include="Repositories\TestBases\IShwerko.cs" />
+    <Compile Include="Repositories\TestBases\MockInterceptionStrategy.cs" />
+    <Compile Include="Repositories\TestBases\Movie.cs" />
+    <Compile Include="Repositories\TestBases\NonAutoIncrementingIdWithDefaultSetting.cs" />
+    <Compile Include="Repositories\TestBases\NonVirtualRelationProperty.cs" />
+    <Compile Include="Repositories\TestBases\Plot.cs" />
+    <Compile Include="Repositories\TestBases\Shwerko.cs" />
+    <Compile Include="Repositories\TestBases\Shwerko2.cs" />
+    <Compile Include="Repositories\TestBases\SQLitey.cs" />
+    <Compile Include="Repositories\TestSupport.cs" />
     <Compile Include="SimpleQuery\BatchTests.cs" />
     <Compile Include="LINQ\MySqlTests.cs" />
     <Compile Include="LINQ\SQL2005Tests.cs" />

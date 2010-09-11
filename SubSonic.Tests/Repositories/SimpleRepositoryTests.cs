@@ -20,82 +20,12 @@ using SubSonic.Query;
 using SubSonic.Repository;
 using Xunit;
 using SubSonic.SqlGeneration.Schema;
+using SubSonic.Tests.Repositories.TestBases;
 
 namespace SubSonic.Tests.Repositories
 {
-    public interface IShwerko
-    {
-        Guid Key { get; set; }
-        string Name { get; set; }
-        DateTime ElDate { get; set; }
-        decimal SomeNumber { get; set; }
-        decimal? NullSomeNumber { get; set; }
-        int Underscored_Column { get; set; }
-    }
-
-    public class Shwerko : IShwerko
-    {
-        public int ID { get; set; }
-        public Guid Key { get; set; }
-        public string Name { get; set; }
-        public DateTime ElDate { get; set; }
-        public decimal SomeNumber { get; set; }
-        public int? NullInt { get; set; }
-        public decimal? NullSomeNumber { get; set; }
-        public DateTime? NullElDate { get; set; }
-        public Guid? NullKey { get; set; }
-        public int Underscored_Column { get; set; }
-        public Salutation Salutation { get; set; }
-        public Salutation? NullableSalutation { get; set; }
-        public byte[] Binary { get; set; }
-    }
-
-    public class Shwerko2 : IShwerko
-    {
-        public Guid ID { get; set; }
-        public Guid Key { get; set; }
-        public string Name { get; set; }
-        public DateTime ElDate { get; set; }
-        public decimal SomeNumber { get; set; }
-        public int? NullInt { get; set; }
-        public decimal? NullSomeNumber { get; set; }
-        public DateTime? NullElDate { get; set; }
-        public Guid? NullKey { get; set; }
-        public int Underscored_Column { get; set; }
-    }
-
-    public enum Salutation
-    {
-        Mr,
-        Ms
-    }
-
-    public class DummyForDelete
-    {
-        public int Id { get; set; }
-        public String Name { get; set; }
-    }
-
-    public class NonAutoIncrementingIdWithDefaultSetting
-    {
-        [SubSonicPrimaryKey(false)]
-        public int Id { get; set; }
-
-        [SubSonicDefaultSetting("NN")]
-        [SubSonicNullString()]
-        public String Name { get; set; }
-    }
-
-    public class ProjectionJoinResult
-    {
-        public string SelectedName { get; set; }
-        public Guid Key { get; set; }
-        public int ID { get; set; }
-    }
-
     public abstract class SimpleRepositoryTests
     {
-        private readonly IDataProvider _provider;
         private readonly IRepository _repo;
 
         protected virtual string[] StringNumbers
@@ -105,43 +35,16 @@ namespace SubSonic.Tests.Repositories
 
         public SimpleRepositoryTests(IDataProvider provider)
         {
-            _provider = provider;
-            _provider.Log = Console.Out;
-            _repo = new SimpleRepository(_provider, SimpleRepositoryOptions.RunMigrations);
+            provider.Log = Console.Out;
+            _repo = new SimpleRepository(provider, SimpleRepositoryOptions.RunMigrations);
 
-            CleanTables();            
+            TestSupport.CleanTables(provider,
+                            "Shwerkos", "DummyForDeletes", "Shwerko2s", "NonAutoIncrementingIdWithDefaultSettings");            
         }
 
         public SimpleRepositoryTests(IRepository repo)
         {
             _repo = repo;
-        }
-
-        private void CleanTables()
-        {
-            try
-            {
-                var qry = new CodingHorror(_provider, "DROP TABLE Shwerkos").Execute();
-            }
-            catch { }
-
-            try
-            {
-                new CodingHorror(_provider, "DROP TABLE DummyForDeletes").Execute();
-            }
-            catch { }
-
-            try
-            {
-                new CodingHorror(_provider, "DROP TABLE Shwerko2s").Execute();
-            }
-            catch { }
-
-            try
-            {
-                new CodingHorror(_provider, "DROP TABLE NonAutoIncrementingIdWithDefaultSettings").Execute();
-            }
-            catch { }
         }
 
         private Shwerko CreateTestRecord(Guid key)
@@ -710,5 +613,12 @@ namespace SubSonic.Tests.Repositories
             var shwerko2 = CreateTestRecord<Shwerko2>(Guid.NewGuid(), s => s.Name = name);
             _repo.Add(shwerko2);
         }
+    }
+
+    public class ProjectionJoinResult
+    {
+        public string SelectedName { get; set; }
+        public Guid Key { get; set; }
+        public int ID { get; set; }
     }
 }

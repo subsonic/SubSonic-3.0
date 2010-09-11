@@ -309,8 +309,10 @@ namespace SubSonic.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="rdr"></param>
         /// <param name="columnNames"></param>
-    	public static IEnumerable<T> ToEnumerable<T>(this IDataReader rdr, List<string> columnNames){//mike added ColumnNames
-
+        /// <param name="onItemCreated">Invoked when a new item is created</param>
+        public static IEnumerable<T> ToEnumerable<T>(this IDataReader rdr, List<string> columnNames, Func<object, object> onItemCreated)
+        {
+            //mike added ColumnNames
             List<T> result = new List<T>();
             while(rdr.Read()){
                 T instance = default(T);
@@ -347,6 +349,11 @@ namespace SubSonic.Extensions
                 {
                     instance = Activator.CreateInstance<T>();
 
+                    if (onItemCreated != null)
+                    {
+                        instance = (T)onItemCreated(instance);
+                    }
+                    
                     //do we have a parameterless constructor?
                     Load(rdr, instance, columnNames);//mike added ColumnNames
                     result.Add(instance);
@@ -356,10 +363,15 @@ namespace SubSonic.Extensions
             return result;
         }
 
+        public static List<T> ToList<T>(this IDataReader rdr) where T : new()
+        {
+            return rdr.ToList<T>(null);
+        }
+
         /// <summary>
         /// Creates a typed list from an IDataReader
         /// </summary>
-        public static List<T> ToList<T>(this IDataReader rdr) where T : new()
+        public static List<T> ToList<T>(this IDataReader rdr, Func<object, object> onItemCreated) where T : new()
         {
             List<T> result = new List<T>();
             Type iType = typeof(T);
@@ -368,6 +380,12 @@ namespace SubSonic.Extensions
             while(rdr.Read())
             {
                 T item = new T();
+                
+                if (onItemCreated != null)
+                {
+                    item = (T)onItemCreated(item);
+                }
+
                 rdr.Load(item,null);//mike added null to match ColumnNames
                 result.Add(item);
             }

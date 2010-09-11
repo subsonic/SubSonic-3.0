@@ -11,12 +11,15 @@
 //   implied. See the License for the specific language governing
 //   rights and limitations under the License.
 // 
+using System;
 using System.Collections.Generic;
 
 namespace SubSonic.Schema
 {
     public interface ITable : IDBObject
     {
+        IEnumerable<IRelation> Relations { get; }
+        bool HasRelations { get; }
         IList<IColumn> Columns { get; set; }
         string ClassName { get; set; }
         bool HasPrimaryKey { get; }
@@ -26,6 +29,7 @@ namespace SubSonic.Schema
         string CreateSql { get; }
         string DropSql { get; }
         IColumn GetColumn(string columName);
+        IRelation GetRelation(string columName);
         IColumn GetColumnByPropertyName(string columName);
         string DropColumnSql(string columnName);
     }

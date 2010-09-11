@@ -102,6 +102,38 @@ namespace SubSonic.Schema
 
         public IList<IColumn> Columns { get; set; }
 
+        private IRelation[] _relations;
+        
+        public IEnumerable<IRelation> Relations 
+        {
+            get 
+            {
+                if (_relations == null)
+                {
+                    _relations = _relationFuncs.Select(x => x()).ToArray();
+                }
+
+                return _relations; 
+            } 
+        }
+
+        public bool HasRelations
+        {
+            get { return Relations.FirstOrDefault() != null; }
+        }
+
+        private List<Func<IRelation>> _relationFuncs = new List<Func<IRelation>>();
+
+        public void AddRelation(Func<IRelation> relation)
+        {
+            _relationFuncs.Add(relation);
+        }
+
+        public IRelation GetRelation(string relationName)
+        {
+            return Relations.Where(r => r.Name.Matches(relationName)).SingleOrDefault();
+        }
+
         public IColumn GetColumn(string ColumnName)
         {
             return Columns.Where(c => c.Name.Matches(ColumnName)).SingleOrDefault();
