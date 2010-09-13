@@ -174,4 +174,8 @@ namespace SubSonic.SqlGeneration.Schema
             column.DefaultSetting = DefaultSetting;
         }
     }
+
+    //hilton smith - i added this attribute, its used in DbDataProvider to see which projector gets used when filling a class
+    [AttributeUsage(AttributeTargets.Class)]
+    public class SubsonicDefaultProjectionAttribute : Attribute { }
 }

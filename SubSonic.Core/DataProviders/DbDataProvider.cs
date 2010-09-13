@@ -477,10 +477,16 @@ namespace SubSonic.DataProviders
 
             // TODO: Can we use Database.ToEnumerable here? -> See commit 654aa2f48a67ba537e34 that fixes some issues
             Type type = typeof (T);
+            
             //this is so hacky - the issue is that the Projector below uses Expression.Convert, which is a bottleneck
             //it's about 10x slower than our ToEnumerable. Our ToEnumerable, however, stumbles on Anon types and groupings
             //since it doesn't know how to instantiate them (I tried - not smart enough). So we do some trickery here.
-            if (type.Name.Contains("AnonymousType") || type.Name.StartsWith("Grouping`") || type.FullName.StartsWith("System.")) {
+
+            //hilton smith - added a check onto this if statement checking if the class is marked with the SubsonicDefaultProjectionAttribute
+            //i have been having trouble with some viewmodels where the property names don't line up with the column names.
+            //in order to get around this i added a new attribute type than can be applied to classes where the default linq projector is required
+
+            if (type.Name.Contains("AnonymousType") || type.Name.StartsWith("Grouping`") || type.FullName.StartsWith("System.") || type.GetCustomAttributes(typeof(SubsonicDefaultProjectionAttribute), false).Length > 0) {
                 var reader = ExecuteReader(cmd);
                 return Project(reader, query.Projector);
             } 
