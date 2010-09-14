@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SubSonic.DataProviders;
 using Xunit;
+using SubSonic.Tests.Repositories.TestBases;
 
 namespace SubSonic.Tests.Repositories
 {
