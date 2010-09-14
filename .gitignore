@@ -29,9 +29,10 @@ httpd.parse.errors
 # Office Temp Files
 ~$*
  
-# If you have a deploy folder
-# deploy
-# deploy/*
+# build folder - for ILMerged output
+build
+build/*
+
  
 # Exclude ALL DLLs? (
 # *.dll

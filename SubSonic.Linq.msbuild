@@ -1,7 +1,48 @@
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<UsingTask AssemblyFile="lib\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
-	<Target Name="Build">
-		<MSBuild Projects="SubSonic.Linq.sln" Targets="Build" Properties="Configuration=Debug" />
-		<xunit assembly="SubSonic.Tests.Unit\bin\Debug\SubSonic.Tests.Unit.dll" />
-	</Target>
+<Project DefaultTargets="Test" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!-- default configuration is "Debug"; the other is "Release" -->
+    <configuration Condition="'$(configuration)'==''">Debug</configuration>
+
+    <buildDir Condition="'$(buildDir)'==''">SubSonic.Core\bin\$(configuration)</buildDir>
+    <libDir>$(MSBuildProjectDirectory)\lib</libDir>
+    <toolsDir>$(MSBuildProjectDirectory)\tools</toolsDir>
+
+    <outputDir>$(MSBuildProjectDirectory)\build</outputDir>
+	<subsonicLib>SubSonic.Core.dll</subsonicLib>
+    <outputFile>$(outputDir)\$(subsonicLib)</outputFile>
+
+    <includeDependencyOutput Condition="'$(includeDependencyOutput)'==''">false</includeDependencyOutput>
+
+    <MSBuildCommunityTasksPath>$(toolsDir)\MSBuild.Community.Tasks</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <inputAssemblies Include="$(buildDir)\$(subsonicLib)" />
+    <inputAssemblies Include="$(buildDir)\Castle.Core.dll" />
+  </ItemGroup>
+
+  <UsingTask AssemblyFile="lib\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
+
+  <Target Name="Clean">
+    <RemoveDir Directories="$(outputdir)" />
+  </Target>
+
+  <Target Name="Merge" DependsOnTargets="Build">
+    <MakeDir Directories="$(outputDir)" Condition="!Exists('$(outputDir)')"/> 
+    <ILMerge
+      InputAssemblies="@(inputAssemblies)" 
+      AllowDuplicateTypes="@(allowDuplicates)" 
+      OutputFile="$(outputFile)" 
+      ToolPath="$(toolsDir)\ILMerge"
+      DebugInfo="false" />
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="Clean">
+    <MSBuild Projects="SubSonic.Linq.sln" Targets="Build" Properties="Configuration=$(configuration)" />
+  </Target>
+
+  <Target Name="Test" DependsOnTargets="Build">
+    <xunit assembly="SubSonic.Tests.Unit\bin\Debug\SubSonic.Tests.Unit.dll" />
+  </Target>
 </Project>

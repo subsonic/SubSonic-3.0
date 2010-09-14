@@ -3,21 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SubSonic.DataProviders;
+using System.IO;
 using SubSonic.Tests.Repositories.TestBases;
 
 namespace SubSonic.Tests.Repositories
 {
-
-    public class SQLiteSimpleRepositoryTests : SimpleRepositoryTests
+    public class SQLiteAutoCollectionTests : AutoCollectionTests
     {
-        protected override string[] StringNumbers
-        {
-            get { return new string[] { "1", "2", "3" }; }
-        }
-
-        public SQLiteSimpleRepositoryTests() :
+        public SQLiteAutoCollectionTests() :
             base(ProviderFactory.GetProvider(new SQLitey().Connection, "System.Data.SQLite"))
-        {
-        }
+        {}
     }
 }

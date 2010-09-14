@@ -189,15 +189,12 @@ namespace SubSonic.Extensions
             foreach(var prop in props)
             {
                 var attributes = prop.GetCustomAttributes(false);
-                bool isIgnored = false;
-                foreach(var att in attributes)
+                if (ColumnIsIgnored(attributes))
                 {
-                    isIgnored = att.ToString().Equals("SubSonic.SqlGeneration.Schema.SubSonicIgnoreAttribute");
-                    if(isIgnored)
-                        break;
+                        continue;
                 }
 
-                if(CanGenerateSchemaFor(prop.PropertyType) & !isIgnored)
+                if(CanGenerateSchemaFor(prop.PropertyType))
                 {
                     var column = new DatabaseColumn(prop.Name, result);
 					bool isNullable = prop.PropertyType.Name.Contains("Nullable");
@@ -233,6 +230,32 @@ namespace SubSonic.Extensions
 
                     result.Columns.Add(column);
                 }
+                else if (IsRelationColumm(attributes))
+                {
+                    if (!IsPropertyDeclaredVirtual(prop))
+                    {
+                        throw new InvalidOperationException(String.Format(
+                            "Property {0} of type {1} marked as relation must be declared virtual to allow dynamic proxy mechanisms work correctly!",
+                            prop.Name, prop.DeclaringType.Name));
+                    }
+
+                    var innerProp = prop;
+
+                    result.AddRelation(() =>
+                    {
+                        var relation = new DatabaseRelation(innerProp.Name, result);
+
+                        foreach (IRelationMappingAttribute attr in attributes.Where(x => x is IRelationMappingAttribute))
+                        {
+                            if (attr.Accept(relation, innerProp))
+                            {
+                                attr.Apply(relation, innerProp);
+                            }
+                        }
+
+                        return relation;
+                    });
+                }
             }
 
             //if the PK is still null-look for a column called [tableName]ID - if it's there then make it PK
@@ -262,6 +285,29 @@ namespace SubSonic.Extensions
             if(result.PrimaryKey == null)
                 throw new InvalidOperationException("Can't decide which property to consider the Key - you can create one called 'ID' or mark one with SubSonicPrimaryKey attribute");
             return result;
+        }
+
+        private static bool IsRelationColumm(object[] attributes)
+        {
+            return attributes.Any(a => a is IRelationMappingAttribute);
+        }
+
+        private static bool IsPropertyDeclaredVirtual(PropertyInfo prop)
+        {
+            return prop.GetAccessors().All(a => a.IsVirtual);
+        }
+
+        private static bool ColumnIsIgnored(object[] attributes)
+        {
+            foreach (var att in attributes)
+            {
+                if (att.ToString().Equals("SubSonic.SqlGeneration.Schema.SubSonicIgnoreAttribute"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
 		private static DbType IdentifyColumnDataType(Type type, bool isNullable)
