@@ -191,7 +191,7 @@ namespace SubSonic.Extensions
                 var attributes = prop.GetCustomAttributes(false);
                 if (ColumnIsIgnored(attributes))
                 {
-                        break;
+                        continue;
                 }
 
                 if(CanGenerateSchemaFor(prop.PropertyType))
