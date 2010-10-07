@@ -64,6 +64,7 @@ namespace SubSonic.DataProviders
         string QualifyColumnName(IColumn column);
         string QualifySPName(IStoredProcedure sp);
         string InsertionIdentityFetchString {get;}
+        Boolean LogParams { get; set; }
         //connection bits
         DbConnection InitializeSharedConnection(string connectionString);
         DbConnection InitializeSharedConnection();
