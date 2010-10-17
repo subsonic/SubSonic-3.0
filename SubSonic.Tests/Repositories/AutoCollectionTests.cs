@@ -41,7 +41,7 @@ namespace SubSonic.Tests.Repositories
         }
 
         [Fact]
-        public void Simple_Repo_Should_Lacy_Load_1toN_Relation()
+        public void Simple_Repo_Should_Lazy_Load_1toN_Relation()
         {
             GivenMovies();
 
@@ -51,7 +51,7 @@ namespace SubSonic.Tests.Repositories
         }
 
         [Fact]
-        public void Simple_Repo_Should_Lacy_Load_1toN_Relation_Of_Relation()
+        public void Simple_Repo_Should_Lazy_Load_1toN_Relation_Of_Relation()
         {
             GivenMovies();
 
@@ -66,7 +66,7 @@ namespace SubSonic.Tests.Repositories
         }
 
         [Fact]
-        public void Simple_Repo_Should_Lacy_Load_1toN_Relation_Only_Once()
+        public void Simple_Repo_Should_Lazy_Load_1toN_Relation_Only_Once()
         {
             GivenMovies();
 
@@ -74,7 +74,7 @@ namespace SubSonic.Tests.Repositories
 
             Assert.NotNull(director.Movies);
 
-            _provider.InterceptionStrategy = new MockInterceptionStragegy(_provider);
+            _provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
 
             Assert.DoesNotThrow(() => {
                 var someAccess = director.Movies[0];
@@ -82,14 +82,14 @@ namespace SubSonic.Tests.Repositories
         }
 
         [Fact]
-        public void Simple_Repo_Should_Lacy_Not_Reload_Set_Properties_for_1toN_Relation()
+        public void Simple_Repo_Should_Lazy_Not_Reload_Set_Properties_for_1toN_Relation()
         {
             GivenMovies();
 
             var director = _repo.All<Director>().FirstOrDefault();
             director.Movies = new List<Movie>();
 
-            _provider.InterceptionStrategy = new MockInterceptionStragegy(_provider);
+            _provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
 
             Assert.DoesNotThrow(() =>
             {
@@ -98,7 +98,7 @@ namespace SubSonic.Tests.Repositories
         }
 
         [Fact]
-        public void Simple_Repo_Should_Lacy_Load_1to1_Relation_Only_Once()
+        public void Simple_Repo_Should_Lazy_Load_1to1_Relation_Only_Once()
         {
             GivenMovies();
 
@@ -106,7 +106,7 @@ namespace SubSonic.Tests.Repositories
 
             Assert.NotNull(movie.Director);
 
-            _provider.InterceptionStrategy = new MockInterceptionStragegy(_provider);
+            _provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
 
             Assert.DoesNotThrow(() =>
             {
@@ -115,14 +115,14 @@ namespace SubSonic.Tests.Repositories
         }
 
         [Fact]
-        public void Simple_Repo_Should_Lacy_Not_Reload_Set_Properties_for_1to1_Relation()
+        public void Simple_Repo_Should_Lazy_Not_Reload_Set_Properties_for_1to1_Relation()
         {
             GivenMovies();
 
             var movie = _repo.All<Movie>().FirstOrDefault();
             movie.Director = new Director { Name = "Unknown" };
 
-            _provider.InterceptionStrategy = new MockInterceptionStragegy(_provider);
+            _provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
 
             Assert.DoesNotThrow(() =>
             {
@@ -131,7 +131,7 @@ namespace SubSonic.Tests.Repositories
         }
 
         [Fact]
-        public void Simple_Repo_Should_Lacy_Load_1to1_Relation()
+        public void Simple_Repo_Should_Lazy_Load_1to1_Relation()
         {
             GivenMovies();
 
@@ -141,7 +141,7 @@ namespace SubSonic.Tests.Repositories
         }
 
         [Fact]
-        public void Simple_Repo_Should_Lacy_Load_1to1_Relation_With_Inverted_Relation()
+        public void Simple_Repo_Should_Lazy_Load_1to1_Relation_With_Inverted_Relation()
         {
             GivenMovies();
 

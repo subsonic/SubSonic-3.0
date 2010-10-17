@@ -33,7 +33,7 @@ namespace SubSonic.DataProviders
 
         protected virtual IInterceptor CreateInterceptor(object objectToIntercept)
         {
-            return new LacyLoadInterceptor(_provider, objectToIntercept);
+            return new LazyLoadInterceptor(_provider, objectToIntercept);
         }
 
         public bool Accept(Type type)

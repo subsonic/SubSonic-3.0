@@ -310,58 +310,60 @@ namespace SubSonic.Extensions
         /// <param name="rdr"></param>
         /// <param name="columnNames"></param>
         /// <param name="onItemCreated">Invoked when a new item is created</param>
-        public static IEnumerable<T> ToEnumerable<T>(this IDataReader rdr, List<string> columnNames, Func<object, object> onItemCreated)
-        {
-            //mike added ColumnNames
-            List<T> result = new List<T>();
-            while(rdr.Read()){
-                T instance = default(T);
-                var type = typeof(T);
-                if(type.Name.Contains("AnonymousType")){
-                
-                    //this is an anon type and it has read-only fields that are set
-                    //in a constructor. So - read the fields and build it
-                    //http://stackoverflow.com/questions/478013/how-do-i-create-and-access-a-new-instance-of-an-anonymous-class-passed-as-a-param
-                    var properties = type.GetProperties();
-                    int objIdx = 0;
-                    object[] objArray = new object[properties.Length];
+				public static IEnumerable<T> ToEnumerable<T>(this IDataReader rdr, List<string> columnNames, Func<object, object> onItemCreated)
+				{
+					//mike added ColumnNames
+					List<T> result = new List<T>();
+					while (rdr.Read())
+					{
+						T instance = default(T);
+						var type = typeof(T);
+						if (type.Name.Contains("AnonymousType"))
+						{
 
-                    foreach (var prop in properties)
-                    {
-                        objArray[objIdx++] = rdr[prop.Name];
-                    }
+							//this is an anon type and it has read-only fields that are set
+							//in a constructor. So - read the fields and build it
+							//http://stackoverflow.com/questions/478013/how-do-i-create-and-access-a-new-instance-of-an-anonymous-class-passed-as-a-param
+							var properties = type.GetProperties();
+							int objIdx = 0;
+							object[] objArray = new object[properties.Length];
 
-                    result.Add((T)Activator.CreateInstance(type, objArray));
-                }
-                    //TODO: there has to be a better way to work with the type system
-                else if (IsCoreSystemType(type))
-                {
-                    instance = (T)rdr.GetValue(0).ChangeTypeTo(type);
-                    result.Add(instance);
-                }
-                else if (type.IsValueType)
-                {
-                    instance = Activator.CreateInstance<T>();
-                    LoadValueType(rdr, ref instance);
-                    result.Add(instance);
-                }
-                else
-                {
-                    instance = Activator.CreateInstance<T>();
+							foreach (var prop in properties)
+							{
+								objArray[objIdx++] = rdr[prop.Name];
+							}
 
-                    if (onItemCreated != null)
-                    {
-                        instance = (T)onItemCreated(instance);
-                    }
-                    
-                    //do we have a parameterless constructor?
-                    Load(rdr, instance, columnNames);//mike added ColumnNames
-                    result.Add(instance);
-                }
-            }
+							result.Add((T)Activator.CreateInstance(type, objArray));
+						}
+						//TODO: there has to be a better way to work with the type system
+						else if (IsCoreSystemType(type))
+						{
+							instance = (T)rdr.GetValue(0).ChangeTypeTo(type);
+							result.Add(instance);
+						}
+						else if (type.IsValueType)
+						{
+							instance = Activator.CreateInstance<T>();
+							LoadValueType(rdr, ref instance);
+							result.Add(instance);
+						}
+						else
+						{
+							instance = Activator.CreateInstance<T>();
 
-            return result;
-        }
+							if (onItemCreated != null)
+							{
+								instance = (T)onItemCreated(instance);
+							}
+
+							//do we have a parameterless constructor?
+							Load(rdr, instance, columnNames);//mike added ColumnNames
+							result.Add(instance);
+						}
+					}
+
+					return result;
+				}
 
         public static List<T> ToList<T>(this IDataReader rdr) where T : new()
         {
