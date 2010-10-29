@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace SubSonic.DataProviders
 {
-    public class LacyLoadInterceptor : IInterceptor
+    public class LazyLoadInterceptor : IInterceptor
     {
         private object _left;
         private IDataProvider _provider;
@@ -19,7 +19,7 @@ namespace SubSonic.DataProviders
 
         private List<string> _setProperties;
 
-        public LacyLoadInterceptor(IDataProvider provider, object left)
+        public LazyLoadInterceptor(IDataProvider provider, object left)
         {
             _left = left;
             _provider = provider;

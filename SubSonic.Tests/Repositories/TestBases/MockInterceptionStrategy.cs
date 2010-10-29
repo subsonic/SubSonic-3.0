@@ -7,11 +7,11 @@ using Castle.DynamicProxy;
 
 namespace SubSonic.Tests.Repositories.TestBases
 {
-    public class MockInterceptionStragegy : IInterceptionStrategy
+    public class MockInterceptionStrategy : IInterceptionStrategy
     {
         private MockDynamicProxyInterceptionStrategy _strategy;
 
-        public MockInterceptionStragegy(IDataProvider provider)
+        public MockInterceptionStrategy(IDataProvider provider)
         {
             _strategy = new MockDynamicProxyInterceptionStrategy(provider);
         }
@@ -43,7 +43,7 @@ namespace SubSonic.Tests.Repositories.TestBases
         }
     }
 
-    public class ThrowOnLoadInterceptor : LacyLoadInterceptor
+    public class ThrowOnLoadInterceptor : LazyLoadInterceptor
     {
         public ThrowOnLoadInterceptor(IDataProvider provider, object left)
             : base(provider, left)

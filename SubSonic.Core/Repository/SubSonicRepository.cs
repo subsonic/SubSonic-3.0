@@ -43,29 +43,29 @@ namespace SubSonic.Repository
             return tbl;
         }
 
-        /// <summary>
-        /// Loads a T object
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="item">The item.</param>
-        /// <param name="column">The column.</param>
-        /// <param name="value">The value.</param>
-        /// <returns></returns>
-        public bool Load<T>(T item, string column, object value) where T : class, new()
-        {
-            var qry = _db.Select.From(GetTable()).Where(column).IsEqualTo(value);
-            bool loaded = false;
-            using(var rdr = qry.ExecuteReader())
-            {
-                if(rdr.Read())
-                {
-                    rdr.Load(item,null);//mike added null as ColumnNames not known
-                    loaded = true;
-                }
-                rdr.Dispose();
-            }
-            return loaded;
-        }
+				/// <summary>
+				/// Loads a T object
+				/// </summary>
+				/// <typeparam name="T"></typeparam>
+				/// <param name="item">The item.</param>
+				/// <param name="column">The column.</param>
+				/// <param name="value">The value.</param>
+				/// <returns></returns>
+				public bool Load<T>(T item, string column, object value) where T : class, new()
+				{
+					var qry = _db.Select.From(GetTable()).Where(column).IsEqualTo(value);
+					bool loaded = false;
+					using (var rdr = qry.ExecuteReader())
+					{
+						if (rdr.Read())
+						{
+							rdr.Load(item, null);//mike added null as ColumnNames not known
+							loaded = true;
+						}
+						rdr.Dispose();
+					}
+					return loaded;
+				}
 
         /// <summary>
         /// Loads a T object
@@ -74,21 +74,21 @@ namespace SubSonic.Repository
         /// <param name="item">The item.</param>
         /// <param name="expression">The expression.</param>
         /// <returns></returns>
-        public bool Load<T>(T item, Expression<Func<T, bool>> expression) where T : class, new()
-        {
-            var qry = _db.Select.From(GetTable()).Where(expression);
-            bool loaded = false;
-            using(var rdr = qry.ExecuteReader())
-            {
-                if(rdr.Read())
-                {
-                    rdr.Load(item,null);//mike added null as ColumnNames not known
-                    loaded = true;
-                }
-                rdr.Dispose();
-            }
-            return loaded;
-        }
+				public bool Load<T>(T item, Expression<Func<T, bool>> expression) where T : class, new()
+				{
+					var qry = _db.Select.From(GetTable()).Where(expression);
+					bool loaded = false;
+					using (var rdr = qry.ExecuteReader())
+					{
+						if (rdr.Read())
+						{
+							rdr.Load(item, null);//mike added null as ColumnNames not known
+							loaded = true;
+						}
+						rdr.Dispose();
+					}
+					return loaded;
+				}
 
         /// <summary>
         /// Returns all T items 
