@@ -119,7 +119,7 @@ namespace SubSonic.Query
             _provider = table.Provider;
             _query.QueryCommandType = QueryType.Update;
             ITable tbl = table;
-            DatabaseTable dbTable = new DatabaseTable(tbl.Name, _provider, tbl.ClassName);
+            DatabaseTable dbTable = new DatabaseTable(tbl.SchemaName, tbl.Name, _provider, tbl.ClassName);
             dbTable.Columns = tbl.Columns;
             _query.FromTables.Add(dbTable);
         }
