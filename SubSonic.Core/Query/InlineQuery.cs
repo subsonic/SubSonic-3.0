@@ -171,11 +171,13 @@ namespace SubSonic.Query
 			if (SupportMySqlUserVariables)
 			{
 				cmd.CommandSql = ConvertMySqlParametersAndVariables(cmd.CommandSql);
-				paramList = ParseParameters(cmd.CommandSql, true);
+                // altered this so only supports MySql "?" parameters
+                paramList = ParseParameters(cmd.CommandSql, new Regex(@"\?\w*"));
 			}
 			else
 			{
-				paramList = ParseParameters(cmd.CommandSql, false);
+                //bferrier altered this so Inline Query works with Oracle
+                paramList = ParseParameters(cmd.CommandSql, new Regex(@"@\w*|:\w*"));
 			}
 
 			//validate it
@@ -192,23 +194,9 @@ namespace SubSonic.Query
 			}
 		}
 
-		private static List<string> ParseParameters(string sql, bool MySql)
+		private static List<string> ParseParameters(string sql, Regex paramRegex)
 		{
-			Regex paramReg;
-			if (MySql)
-			{
-				// altered this so only supports MySql "?" parameters
-				paramReg = new Regex(@"\?\w*");
-
-			}
-			else
-			{
-				//bferrier altered this so Inline Query works with Oracle
-				paramReg = new Regex(@"@\w*|:\w*");
-			}
-
-
-			MatchCollection matches = paramReg.Matches(String.Concat(sql, " "));
+            MatchCollection matches = paramRegex.Matches(String.Concat(sql, " "));
 			List<string> result = new List<string>(matches.Count);
 			foreach (Match m in matches)
 				result.Add(m.Value);
