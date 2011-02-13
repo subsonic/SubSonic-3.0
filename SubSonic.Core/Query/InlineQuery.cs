@@ -198,8 +198,14 @@ namespace SubSonic.Query
 		{
             MatchCollection matches = paramRegex.Matches(String.Concat(sql, " "));
 			List<string> result = new List<string>(matches.Count);
-			foreach (Match m in matches)
-				result.Add(m.Value);
+            
+            foreach (Match m in matches)
+            {
+                if (!result.Contains(m.Value))
+                {
+                    result.Add(m.Value);
+                }
+            }
 
 			return result;
 		}
