@@ -233,4 +233,36 @@ namespace SubSonic.Query
 		}
 
 	}
+
+    public class InlineQuery : CodingHorror {
+        /// <summary>
+		/// Initializes a new instance of the <see cref="InlineQuery"/> class.
+		/// Warning: This method assumes the default provider is intended.
+		/// Call InlineQuery(string providerName) if this is not the case.
+		/// </summary>
+		/// <param name="sql">The SQL.</param>
+		public InlineQuery(string sql) : base(sql)
+		{}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="InlineQuery"/> class.
+		/// </summary>
+		/// <param name="sql">The SQL.</param>
+		/// <param name="values">The values.</param>
+		public InlineQuery(string sql, params object[] values) : base(sql, values)
+		{}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="InlineQuery"/> class.
+		/// </summary>
+		/// <param name="provider">The provider.</param>
+		public InlineQuery(IDataProvider provider) : base(provider)
+		{}
+
+		public InlineQuery(IDataProvider provider, string sql, params object[] values) : base(provider, sql, values)
+		{}
+
+        public InlineQuery(IDataProvider provider, string sql) : base(provider, sql)
+		{}
+    }
 }
