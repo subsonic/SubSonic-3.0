@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SouthWind;
 using Xunit;
 using SubSonic;
 using SubSonic.Query;
@@ -76,6 +77,18 @@ namespace SubSonic.Tests.BugReports {
                 .Set("RequiredDate").EqualTo(new DateTime(2001, 12, 1));
 
             Assert.Contains("WHERE [Orders].[EmployeeID] < @0 AND [Orders].[OrderID] > @1", qry.GetCommand().CommandSql);
+        }
+
+        [Fact]
+        public void Github_Issue246_Update_Should_Support_Set_To_Null()
+        {
+            var provider = ProviderFactory.GetProvider("Northwind");
+            var qry = new Update<SouthWind.Category>(provider)
+                .Where(x => x.Picture == null)
+                .Set(x => x.Description == null);
+
+            Assert.Contains("SET [Categories].[Description]=@up_Description", qry.GetCommand().CommandSql);
+            Assert.Contains("WHERE [Categories].[Picture] IS NULL", qry.GetCommand().CommandSql);
         }
         
     }
