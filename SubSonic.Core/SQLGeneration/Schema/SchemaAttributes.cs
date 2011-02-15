@@ -50,6 +50,27 @@ namespace SubSonic.SqlGeneration.Schema
         }
     }
 
+	[AttributeUsage(AttributeTargets.Class)]
+	public class SubSonicColumnNameOverrideAttribute : Attribute, IPropertyMappingAttribute
+	{
+		public string ColumnName { get; set; }
+
+		public SubSonicColumnNameOverrideAttribute(string tableName)
+		{
+			ColumnName = tableName;
+		}
+
+		public bool Accept(IColumn col)
+		{
+			return true;
+		}
+
+		public void Apply(IColumn col)
+		{
+			col.Name = ColumnName;
+		}
+	}
+
     [AttributeUsage(AttributeTargets.Property)]
     public class SubSonicNullStringAttribute : Attribute, IPropertyMappingAttribute 
     {
