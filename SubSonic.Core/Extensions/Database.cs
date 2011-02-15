@@ -418,7 +418,7 @@ namespace SubSonic.Extensions
             {
                 foreach(string key in settings.Keys)
                 {
-                    IColumn col = tbl.GetColumn(key);
+						 IColumn col = tbl.GetColumnByPropertyName(key);
                     if(col != null)
                     {
                         if(!col.IsPrimaryKey && !col.IsReadOnly)
@@ -454,7 +454,8 @@ namespace SubSonic.Extensions
                 query = new Insert(provider).Into<T>(tbl);
                 foreach(string key in hashed.Keys)
                 {
-                    IColumn col = tbl.GetColumn(key);
+                    IColumn col = tbl.GetColumnByPropertyName(key);
+						  
                     if(col != null)
                     {
                         if(!col.AutoIncrement && !col.IsReadOnly && !(col.DefaultSetting != null && hashed[key] == null))

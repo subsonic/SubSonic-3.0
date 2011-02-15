@@ -141,7 +141,7 @@ namespace SubSonic.Schema
 
         public IColumn GetColumnByPropertyName(string PropertyName)
         {
-            return Columns.SingleOrDefault(x => x.Name.Equals(PropertyName, StringComparison.InvariantCultureIgnoreCase));
+            return Columns.SingleOrDefault(x => x.PropertyName.Equals(PropertyName, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public string CreateSql

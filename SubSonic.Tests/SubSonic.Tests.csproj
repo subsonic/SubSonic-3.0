@@ -120,6 +120,7 @@
     <Compile Include="Repositories\SQLiteSimpleRepositoryTests.cs" />
     <Compile Include="Repositories\SqlServerSimpleRepositoryTests.cs" />
     <Compile Include="Repositories\TestBases\Comment.cs" />
+    <Compile Include="Repositories\TestBases\Shwerko3.cs" />
     <Compile Include="Repositories\TestBases\Director.cs" />
     <Compile Include="Repositories\TestBases\DummyForDelete.cs" />
     <Compile Include="Repositories\TestBases\IShwerko.cs" />
@@ -196,9 +197,6 @@
     <Content Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Transactions\" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -214,6 +212,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Transactions\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

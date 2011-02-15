@@ -197,6 +197,7 @@ namespace SubSonic.Extensions
                 if(CanGenerateSchemaFor(prop.PropertyType))
                 {
                     var column = new DatabaseColumn(prop.Name, result);
+						  column.PropertyName = prop.Name;
 					bool isNullable = prop.PropertyType.Name.Contains("Nullable");
 
                 	column.DataType = IdentifyColumnDataType(prop.PropertyType, isNullable);
