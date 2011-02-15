@@ -101,6 +101,9 @@ namespace SubSonic.Linq.Structure
         public override string GetColumnName(MemberInfo member)
         {
             string propertyName = member.Name;
+            var overrides = member.GetCustomAttributes(typeof(SqlGeneration.Schema.SubSonicColumnNameOverrideAttribute), true);
+            if (overrides != null && overrides.Length > 0)
+                propertyName = ((SqlGeneration.Schema.SubSonicColumnNameOverrideAttribute)overrides[0]).ColumnName;
             string result = "";
             try {
                 IColumn column = this.Language.DataProvider.FindTable(member.ReflectedType.Name).GetColumnByPropertyName(propertyName);
