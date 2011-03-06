@@ -162,7 +162,9 @@
     <Compile Include="TestConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="BugReports\Generated\ActiveRecord.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ActiveRecord.cs</LastGenOutput>
