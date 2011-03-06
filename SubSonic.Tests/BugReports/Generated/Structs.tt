@@ -1,4 +1,4 @@
-﻿<#@ template language="C#v3.5" debug="False" hostspecific="True"  #>
+<#@ template language="C#v3.5" debug="False" hostspecific="True"  #>
 <#@ output extension=".cs" #>
 <#@ include file="SQLServer.ttinclude" #>
 <#
@@ -36,8 +36,7 @@ namespace <#=Namespace#> {
 	                IsNullable = <#=col.IsNullable.ToString().ToLower()#>,
 	                AutoIncrement = <#=col.AutoIncrement.ToString().ToLower()#>,
 	                IsForeignKey = <#=col.IsForeignKey.ToString().ToLower()#>,
-	                MaxLength = <#=col.MaxLength#>,
-						PropertyName = "<#=col.Name#>"
+	                MaxLength = <#=col.MaxLength#>
                 });
 <#          }#>                    
                 

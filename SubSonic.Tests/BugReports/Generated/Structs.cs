@@ -1,20 +1,3 @@
-﻿
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -26,117 +9,6 @@ using System.Data;
 
 namespace SouthWind {
 	
-        /// <summary>
-        /// Table: Categories
-        /// Primary Key: CategoryID
-        /// </summary>
-
-        public class CategoriesTable: DatabaseTable {
-            
-            public CategoriesTable(IDataProvider provider):base("Categories",provider){
-                ClassName = "Category";
-                SchemaName = "dbo";
-                
-
-                Columns.Add(new DatabaseColumn("CategoryID", this)
-                {
-	                IsPrimaryKey = true,
-	                DataType = DbType.Int32,
-	                IsNullable = false,
-	                AutoIncrement = true,
-	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "CategoryID"
-                });
-
-                Columns.Add(new DatabaseColumn("CategoryName", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = false,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 15,
-						PropertyName = "CategoryName"
-                });
-
-                Columns.Add(new DatabaseColumn("Description", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 1073741823,
-						PropertyName = "Description"
-                });
-
-                Columns.Add(new DatabaseColumn("Picture", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.Binary,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 2147483647,
-						PropertyName = "Picture"
-                });
-                    
-                
-                
-            }
-
-            public IColumn CategoryID{
-                get{
-                    return this.GetColumn("CategoryID");
-                }
-            }
-				
-   			public static string CategoryIDColumn{
-			      get{
-        			return "CategoryID";
-      			}
-		    }
-            
-            public IColumn CategoryName{
-                get{
-                    return this.GetColumn("CategoryName");
-                }
-            }
-				
-   			public static string CategoryNameColumn{
-			      get{
-        			return "CategoryName";
-      			}
-		    }
-            
-            public IColumn Description{
-                get{
-                    return this.GetColumn("Description");
-                }
-            }
-				
-   			public static string DescriptionColumn{
-			      get{
-        			return "Description";
-      			}
-		    }
-            
-            public IColumn Picture{
-                get{
-                    return this.GetColumn("Picture");
-                }
-            }
-				
-   			public static string PictureColumn{
-			      get{
-        			return "Picture";
-      			}
-		    }
-            
-                    
-        }
-        
         /// <summary>
         /// Table: Customers
         /// Primary Key: CustomerID
@@ -156,8 +28,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 5,
-						PropertyName = "CustomerID"
+	                MaxLength = 5
                 });
 
                 Columns.Add(new DatabaseColumn("CompanyName", this)
@@ -167,8 +38,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 40,
-						PropertyName = "CompanyName"
+	                MaxLength = 40
                 });
 
                 Columns.Add(new DatabaseColumn("ContactName", this)
@@ -178,8 +48,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 30,
-						PropertyName = "ContactName"
+	                MaxLength = 30
                 });
 
                 Columns.Add(new DatabaseColumn("ContactTitle", this)
@@ -189,8 +58,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 30,
-						PropertyName = "ContactTitle"
+	                MaxLength = 30
                 });
 
                 Columns.Add(new DatabaseColumn("Address", this)
@@ -200,8 +68,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 60,
-						PropertyName = "Address"
+	                MaxLength = 60
                 });
 
                 Columns.Add(new DatabaseColumn("City", this)
@@ -211,8 +78,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 15,
-						PropertyName = "City"
+	                MaxLength = 15
                 });
 
                 Columns.Add(new DatabaseColumn("Region", this)
@@ -222,8 +88,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 15,
-						PropertyName = "Region"
+	                MaxLength = 15
                 });
 
                 Columns.Add(new DatabaseColumn("PostalCode", this)
@@ -233,8 +98,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 10,
-						PropertyName = "PostalCode"
+	                MaxLength = 10
                 });
 
                 Columns.Add(new DatabaseColumn("Country", this)
@@ -244,8 +108,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 15,
-						PropertyName = "Country"
+	                MaxLength = 15
                 });
 
                 Columns.Add(new DatabaseColumn("Phone", this)
@@ -255,8 +118,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 24,
-						PropertyName = "Phone"
+	                MaxLength = 24
                 });
 
                 Columns.Add(new DatabaseColumn("Fax", this)
@@ -266,8 +128,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 24,
-						PropertyName = "Fax"
+	                MaxLength = 24
                 });
                     
                 
@@ -428,8 +289,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = true,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "ShipperID"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("CompanyName", this)
@@ -439,8 +299,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 40,
-						PropertyName = "CompanyName"
+	                MaxLength = 40
                 });
 
                 Columns.Add(new DatabaseColumn("Phone", this)
@@ -450,8 +309,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 24,
-						PropertyName = "Phone"
+	                MaxLength = 24
                 });
                     
                 
@@ -516,8 +374,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = true,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "SupplierID"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("CompanyName", this)
@@ -527,8 +384,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 40,
-						PropertyName = "CompanyName"
+	                MaxLength = 40
                 });
 
                 Columns.Add(new DatabaseColumn("ContactName", this)
@@ -538,8 +394,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 30,
-						PropertyName = "ContactName"
+	                MaxLength = 30
                 });
 
                 Columns.Add(new DatabaseColumn("ContactTitle", this)
@@ -549,8 +404,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 30,
-						PropertyName = "ContactTitle"
+	                MaxLength = 30
                 });
 
                 Columns.Add(new DatabaseColumn("Address", this)
@@ -560,8 +414,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 60,
-						PropertyName = "Address"
+	                MaxLength = 60
                 });
 
                 Columns.Add(new DatabaseColumn("City", this)
@@ -571,8 +424,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 15,
-						PropertyName = "City"
+	                MaxLength = 15
                 });
 
                 Columns.Add(new DatabaseColumn("Region", this)
@@ -582,8 +434,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 15,
-						PropertyName = "Region"
+	                MaxLength = 15
                 });
 
                 Columns.Add(new DatabaseColumn("PostalCode", this)
@@ -593,8 +444,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 10,
-						PropertyName = "PostalCode"
+	                MaxLength = 10
                 });
 
                 Columns.Add(new DatabaseColumn("Country", this)
@@ -604,8 +454,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 15,
-						PropertyName = "Country"
+	                MaxLength = 15
                 });
 
                 Columns.Add(new DatabaseColumn("Phone", this)
@@ -615,8 +464,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 24,
-						PropertyName = "Phone"
+	                MaxLength = 24
                 });
 
                 Columns.Add(new DatabaseColumn("Fax", this)
@@ -626,8 +474,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 24,
-						PropertyName = "Fax"
+	                MaxLength = 24
                 });
 
                 Columns.Add(new DatabaseColumn("HomePage", this)
@@ -637,8 +484,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 1073741823,
-						PropertyName = "HomePage"
+	                MaxLength = 1073741823
                 });
                     
                 
@@ -811,8 +657,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = true,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "OrderID"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("CustomerID", this)
@@ -822,8 +667,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 5,
-						PropertyName = "CustomerID"
+	                MaxLength = 5
                 });
 
                 Columns.Add(new DatabaseColumn("EmployeeID", this)
@@ -833,8 +677,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "EmployeeID"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("OrderDate", this)
@@ -844,8 +687,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 0,
-						PropertyName = "OrderDate"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("RequiredDate", this)
@@ -855,8 +697,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 0,
-						PropertyName = "RequiredDate"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("ShippedDate", this)
@@ -866,8 +707,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 0,
-						PropertyName = "ShippedDate"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("ShipVia", this)
@@ -877,8 +717,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "ShipVia"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("Freight", this)
@@ -888,8 +727,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 0,
-						PropertyName = "Freight"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("ShipName", this)
@@ -899,8 +737,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 40,
-						PropertyName = "ShipName"
+	                MaxLength = 40
                 });
 
                 Columns.Add(new DatabaseColumn("ShipAddress", this)
@@ -910,8 +747,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 60,
-						PropertyName = "ShipAddress"
+	                MaxLength = 60
                 });
 
                 Columns.Add(new DatabaseColumn("ShipCity", this)
@@ -921,8 +757,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 15,
-						PropertyName = "ShipCity"
+	                MaxLength = 15
                 });
 
                 Columns.Add(new DatabaseColumn("ShipRegion", this)
@@ -932,8 +767,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 15,
-						PropertyName = "ShipRegion"
+	                MaxLength = 15
                 });
 
                 Columns.Add(new DatabaseColumn("ShipPostalCode", this)
@@ -943,8 +777,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 10,
-						PropertyName = "ShipPostalCode"
+	                MaxLength = 10
                 });
 
                 Columns.Add(new DatabaseColumn("ShipCountry", this)
@@ -954,8 +787,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 15,
-						PropertyName = "ShipCountry"
+	                MaxLength = 15
                 });
                     
                 
@@ -1152,8 +984,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = true,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "ProductID"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("ProductName", this)
@@ -1163,8 +994,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 40,
-						PropertyName = "ProductName"
+	                MaxLength = 40
                 });
 
                 Columns.Add(new DatabaseColumn("SupplierID", this)
@@ -1174,8 +1004,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "SupplierID"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("CategoryID", this)
@@ -1185,8 +1014,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "CategoryID"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("QuantityPerUnit", this)
@@ -1196,8 +1024,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 20,
-						PropertyName = "QuantityPerUnit"
+	                MaxLength = 20
                 });
 
                 Columns.Add(new DatabaseColumn("UnitPrice", this)
@@ -1207,8 +1034,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 0,
-						PropertyName = "UnitPrice"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("UnitsInStock", this)
@@ -1218,8 +1044,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 0,
-						PropertyName = "UnitsInStock"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("UnitsOnOrder", this)
@@ -1229,8 +1054,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 0,
-						PropertyName = "UnitsOnOrder"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("ReorderLevel", this)
@@ -1240,8 +1064,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 0,
-						PropertyName = "ReorderLevel"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("Discontinued", this)
@@ -1251,8 +1074,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 0,
-						PropertyName = "Discontinued"
+	                MaxLength = 0
                 });
                     
                 
@@ -1401,8 +1223,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "OrderID"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("ProductID", this)
@@ -1412,8 +1233,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "ProductID"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("UnitPrice", this)
@@ -1423,8 +1243,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 0,
-						PropertyName = "UnitPrice"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("Quantity", this)
@@ -1434,8 +1253,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 0,
-						PropertyName = "Quantity"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("Discount", this)
@@ -1445,8 +1263,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 0,
-						PropertyName = "Discount"
+	                MaxLength = 0
                 });
                     
                 
@@ -1535,8 +1352,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 5,
-						PropertyName = "CustomerID"
+	                MaxLength = 5
                 });
 
                 Columns.Add(new DatabaseColumn("CustomerTypeID", this)
@@ -1546,8 +1362,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 10,
-						PropertyName = "CustomerTypeID"
+	                MaxLength = 10
                 });
                     
                 
@@ -1600,8 +1415,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 10,
-						PropertyName = "CustomerTypeID"
+	                MaxLength = 10
                 });
 
                 Columns.Add(new DatabaseColumn("CustomerDesc", this)
@@ -1611,8 +1425,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 1073741823,
-						PropertyName = "CustomerDesc"
+	                MaxLength = 1073741823
                 });
                     
                 
@@ -1665,8 +1478,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "RegionID"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("RegionDescription", this)
@@ -1676,8 +1488,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 50,
-						PropertyName = "RegionDescription"
+	                MaxLength = 50
                 });
                     
                 
@@ -1730,8 +1541,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 20,
-						PropertyName = "TerritoryID"
+	                MaxLength = 20
                 });
 
                 Columns.Add(new DatabaseColumn("TerritoryDescription", this)
@@ -1741,8 +1551,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 50,
-						PropertyName = "TerritoryDescription"
+	                MaxLength = 50
                 });
 
                 Columns.Add(new DatabaseColumn("RegionID", this)
@@ -1752,8 +1561,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "RegionID"
+	                MaxLength = 0
                 });
                     
                 
@@ -1818,8 +1626,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "EmployeeID"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("TerritoryID", this)
@@ -1829,8 +1636,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 20,
-						PropertyName = "TerritoryID"
+	                MaxLength = 20
                 });
                     
                 
@@ -1883,8 +1689,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = true,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "EmployeeID"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("LastName", this)
@@ -1894,8 +1699,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 20,
-						PropertyName = "LastName"
+	                MaxLength = 20
                 });
 
                 Columns.Add(new DatabaseColumn("FirstName", this)
@@ -1905,8 +1709,7 @@ namespace SouthWind {
 	                IsNullable = false,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 10,
-						PropertyName = "FirstName"
+	                MaxLength = 10
                 });
 
                 Columns.Add(new DatabaseColumn("Title", this)
@@ -1916,8 +1719,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 30,
-						PropertyName = "Title"
+	                MaxLength = 30
                 });
 
                 Columns.Add(new DatabaseColumn("TitleOfCourtesy", this)
@@ -1927,8 +1729,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 25,
-						PropertyName = "TitleOfCourtesy"
+	                MaxLength = 25
                 });
 
                 Columns.Add(new DatabaseColumn("BirthDate", this)
@@ -1938,8 +1739,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 0,
-						PropertyName = "BirthDate"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("HireDate", this)
@@ -1949,8 +1749,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 0,
-						PropertyName = "HireDate"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("Address", this)
@@ -1960,8 +1759,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 60,
-						PropertyName = "Address"
+	                MaxLength = 60
                 });
 
                 Columns.Add(new DatabaseColumn("City", this)
@@ -1971,8 +1769,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 15,
-						PropertyName = "City"
+	                MaxLength = 15
                 });
 
                 Columns.Add(new DatabaseColumn("Region", this)
@@ -1982,8 +1779,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 15,
-						PropertyName = "Region"
+	                MaxLength = 15
                 });
 
                 Columns.Add(new DatabaseColumn("PostalCode", this)
@@ -1993,8 +1789,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 10,
-						PropertyName = "PostalCode"
+	                MaxLength = 10
                 });
 
                 Columns.Add(new DatabaseColumn("Country", this)
@@ -2004,8 +1799,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 15,
-						PropertyName = "Country"
+	                MaxLength = 15
                 });
 
                 Columns.Add(new DatabaseColumn("HomePhone", this)
@@ -2015,8 +1809,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 24,
-						PropertyName = "HomePhone"
+	                MaxLength = 24
                 });
 
                 Columns.Add(new DatabaseColumn("Extension", this)
@@ -2026,8 +1819,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 4,
-						PropertyName = "Extension"
+	                MaxLength = 4
                 });
 
                 Columns.Add(new DatabaseColumn("Photo", this)
@@ -2037,8 +1829,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 2147483647,
-						PropertyName = "Photo"
+	                MaxLength = 2147483647
                 });
 
                 Columns.Add(new DatabaseColumn("Notes", this)
@@ -2048,8 +1839,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 1073741823,
-						PropertyName = "Notes"
+	                MaxLength = 1073741823
                 });
 
                 Columns.Add(new DatabaseColumn("ReportsTo", this)
@@ -2059,8 +1849,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = true,
-	                MaxLength = 0,
-						PropertyName = "ReportsTo"
+	                MaxLength = 0
                 });
 
                 Columns.Add(new DatabaseColumn("PhotoPath", this)
@@ -2070,8 +1859,7 @@ namespace SouthWind {
 	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
-	                MaxLength = 255,
-						PropertyName = "PhotoPath"
+	                MaxLength = 255
                 });
                     
                 
@@ -2291,6 +2079,113 @@ namespace SouthWind {
    			public static string PhotoPathColumn{
 			      get{
         			return "PhotoPath";
+      			}
+		    }
+            
+                    
+        }
+        
+        /// <summary>
+        /// Table: Categories
+        /// Primary Key: CategoryID
+        /// </summary>
+
+        public class CategoriesTable: DatabaseTable {
+            
+            public CategoriesTable(IDataProvider provider):base("Categories",provider){
+                ClassName = "Category";
+                SchemaName = "dbo";
+                
+
+                Columns.Add(new DatabaseColumn("CategoryID", this)
+                {
+	                IsPrimaryKey = true,
+	                DataType = DbType.Int32,
+	                IsNullable = false,
+	                AutoIncrement = true,
+	                IsForeignKey = true,
+	                MaxLength = 0
+                });
+
+                Columns.Add(new DatabaseColumn("CategoryName", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = false,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 15
+                });
+
+                Columns.Add(new DatabaseColumn("Description", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 1073741823
+                });
+
+                Columns.Add(new DatabaseColumn("Picture", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.Binary,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 2147483647
+                });
+                    
+                
+                
+            }
+
+            public IColumn CategoryID{
+                get{
+                    return this.GetColumn("CategoryID");
+                }
+            }
+				
+   			public static string CategoryIDColumn{
+			      get{
+        			return "CategoryID";
+      			}
+		    }
+            
+            public IColumn CategoryName{
+                get{
+                    return this.GetColumn("CategoryName");
+                }
+            }
+				
+   			public static string CategoryNameColumn{
+			      get{
+        			return "CategoryName";
+      			}
+		    }
+            
+            public IColumn Description{
+                get{
+                    return this.GetColumn("Description");
+                }
+            }
+				
+   			public static string DescriptionColumn{
+			      get{
+        			return "Description";
+      			}
+		    }
+            
+            public IColumn Picture{
+                get{
+                    return this.GetColumn("Picture");
+                }
+            }
+				
+   			public static string PictureColumn{
+			      get{
+        			return "Picture";
       			}
 		    }
             

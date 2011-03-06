@@ -1,23 +1,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,522 +18,6 @@ using System.Data.Common;
 
 namespace SouthWind
 {
-
-    
-    
-    /// <summary>
-    /// A class which represents the Categories table in the Northwind Database.
-    /// </summary>
-    public partial class Category: IActiveRecord
-    {
-    
-        #region Built-in testing
-        static TestRepository<Category> _testRepo;
-        
-
-        
-        static void SetTestRepo(){
-            _testRepo = _testRepo ?? new TestRepository<Category>(new SouthWind.NorthwindDB());
-        }
-        public static void ResetTestRepo(){
-            _testRepo = null;
-            SetTestRepo();
-        }
-        public static void Setup(List<Category> testlist){
-            SetTestRepo();
-            foreach (var item in testlist)
-            {
-                _testRepo._items.Add(item);
-            }
-        }
-        public static void Setup(Category item) {
-            SetTestRepo();
-            _testRepo._items.Add(item);
-        }
-        public static void Setup(int testItems) {
-            SetTestRepo();
-            for(int i=0;i<testItems;i++){
-                Category item=new Category();
-                _testRepo._items.Add(item);
-            }
-        }
-        
-        public bool TestMode = false;
-
-
-        #endregion
-
-        IRepository<Category> _repo;
-        ITable tbl;
-        bool _isNew;
-        public bool IsNew(){
-            return _isNew;
-        }
-        
-        public void SetIsLoaded(bool isLoaded){
-            _isLoaded=isLoaded;
-            if(isLoaded)
-                OnLoaded();
-        }
-        
-        public void SetIsNew(bool isNew){
-            _isNew=isNew;
-        }
-        bool _isLoaded;
-        public bool IsLoaded(){
-            return _isLoaded;
-        }
-                
-        List<IColumn> _dirtyColumns;
-        public bool IsDirty(){
-            return _dirtyColumns.Count>0;
-        }
-        
-        public List<IColumn> GetDirtyColumns (){
-            return _dirtyColumns;
-        }
-
-        SouthWind.NorthwindDB _db;
-        public Category(string connectionString, string providerName) {
-
-            _db=new SouthWind.NorthwindDB(connectionString, providerName);
-            Init();            
-         }
-        void Init(){
-            TestMode=this._db.DataProvider.ConnectionString.Equals("test", StringComparison.InvariantCultureIgnoreCase);
-            _dirtyColumns=new List<IColumn>();
-            if(TestMode){
-                Category.SetTestRepo();
-                _repo=_testRepo;
-            }else{
-                _repo = new SubSonicRepository<Category>(_db);
-            }
-            tbl=_repo.GetTable();
-            SetIsNew(true);
-            OnCreated();       
-
-        }
-        
-        public Category(){
-             _db=new SouthWind.NorthwindDB();
-            Init();            
-        }
-        
-       
-        partial void OnCreated();
-            
-        partial void OnLoaded();
-        
-        partial void OnSaved();
-        
-        partial void OnChanged();
-        
-        public IList<IColumn> Columns{
-            get{
-                return tbl.Columns;
-            }
-        }
-
-        public Category(Expression<Func<Category, bool>> expression):this() {
-
-            SetIsLoaded(_repo.Load(this,expression));
-        }
-        
-       
-        
-        internal static IRepository<Category> GetRepo(string connectionString, string providerName){
-            SouthWind.NorthwindDB db;
-            if(String.IsNullOrEmpty(connectionString)){
-                db=new SouthWind.NorthwindDB();
-            }else{
-                db=new SouthWind.NorthwindDB(connectionString, providerName);
-            }
-            IRepository<Category> _repo;
-            
-            if(db.TestMode){
-                Category.SetTestRepo();
-                _repo=_testRepo;
-            }else{
-                _repo = new SubSonicRepository<Category>(db);
-            }
-            return _repo;        
-        }       
-        
-        internal static IRepository<Category> GetRepo(){
-            return GetRepo("","");
-        }
-        
-        public static Category SingleOrDefault(Expression<Func<Category, bool>> expression) {
-
-            var repo = GetRepo();
-            var results=repo.Find(expression);
-            Category single=null;
-            if(results.Count() > 0){
-                single=results.ToList()[0];
-                single.OnLoaded();
-                single.SetIsLoaded(true);
-                single.SetIsNew(false);
-            }
-
-            return single;
-        }      
-        
-        public static Category SingleOrDefault(Expression<Func<Category, bool>> expression,string connectionString, string providerName) {
-            var repo = GetRepo(connectionString,providerName);
-            var results=repo.Find(expression);
-            Category single=null;
-            if(results.Count() > 0){
-                single=results.ToList()[0];
-            }
-
-            return single;
-
-
-        }
-        
-        
-        public static bool Exists(Expression<Func<Category, bool>> expression,string connectionString, string providerName) {
-           
-            return All(connectionString,providerName).Any(expression);
-        }        
-        public static bool Exists(Expression<Func<Category, bool>> expression) {
-           
-            return All().Any(expression);
-        }        
-
-        public static IList<Category> Find(Expression<Func<Category, bool>> expression) {
-            
-            var repo = GetRepo();
-            return repo.Find(expression).ToList();
-        }
-        
-        public static IList<Category> Find(Expression<Func<Category, bool>> expression,string connectionString, string providerName) {
-
-            var repo = GetRepo(connectionString,providerName);
-            return repo.Find(expression).ToList();
-
-        }
-        public static IQueryable<Category> All(string connectionString, string providerName) {
-            return GetRepo(connectionString,providerName).GetAll();
-        }
-        public static IQueryable<Category> All() {
-            return GetRepo().GetAll();
-        }
-        
-        public static PagedList<Category> GetPaged(string sortBy, int pageIndex, int pageSize,string connectionString, string providerName) {
-            return GetRepo(connectionString,providerName).GetPaged(sortBy, pageIndex, pageSize);
-        }
-      
-        public static PagedList<Category> GetPaged(string sortBy, int pageIndex, int pageSize) {
-            return GetRepo().GetPaged(sortBy, pageIndex, pageSize);
-        }
-
-        public static PagedList<Category> GetPaged(int pageIndex, int pageSize,string connectionString, string providerName) {
-            return GetRepo(connectionString,providerName).GetPaged(pageIndex, pageSize);
-            
-        }
-
-
-        public static PagedList<Category> GetPaged(int pageIndex, int pageSize) {
-            return GetRepo().GetPaged(pageIndex, pageSize);
-            
-        }
-
-        public string KeyName()
-        {
-            return "CategoryID";
-        }
-
-        public object KeyValue()
-        {
-            return this.CategoryID;
-        }
-        
-        public void SetKeyValue(object value) {
-            if (value != null && value!=DBNull.Value) {
-                var settable = value.ChangeTypeTo<int>();
-                this.GetType().GetProperty(this.KeyName()).SetValue(this, settable, null);
-            }
-        }
-        
-        public override string ToString(){
-            
-                return this.CategoryName.ToString();
-            
-        }
-
-        public override bool Equals(object obj){
-            if(obj.GetType()==typeof(Category)){
-                Category compare=(Category)obj;
-                return compare.KeyValue()==this.KeyValue();
-            }else{
-                return base.Equals(obj);
-            }
-        }
-
-
-        
-        public override int GetHashCode() {
-            return this.CategoryID;
-        }
-        
-
-        public string DescriptorValue()
-        {
-            
-                return this.CategoryName.ToString();
-            
-        }
-
-        public string DescriptorColumn() {
-            return "CategoryName";
-        }
-        public static string GetKeyColumn()
-        {
-            return "CategoryID";
-        }        
-        public static string GetDescriptorColumn()
-        {
-            return "CategoryName";
-        }
-        
-        #region ' Foreign Keys '
-
-        public IQueryable<Product> Products
-        {
-            get
-            {
-                
-                  var repo=SouthWind.Product.GetRepo();
-                  return from items in repo.GetAll()
-                       where items.CategoryID == _CategoryID
-                       select items;
-            }
-        }
-
-
-        #endregion
-        
-
-
-        int _CategoryID;
-        public int CategoryID
-        {
-            get { return _CategoryID; }
-            set
-            {
-                if(_CategoryID!=value){
-                    _CategoryID=value;
-                    var col=tbl.Columns.SingleOrDefault(x=>x.Name=="CategoryID");
-                    if(col!=null){
-                        if(!_dirtyColumns.Any(x=>x.Name==col.Name) && _isLoaded){
-                            _dirtyColumns.Add(col);
-                        }
-                    }
-                    OnChanged();
-                }
-            }
-        }
-
-
-        string _CategoryName;
-        public string CategoryName
-        {
-            get { return _CategoryName; }
-            set
-            {
-                if(_CategoryName!=value){
-                    _CategoryName=value;
-                    var col=tbl.Columns.SingleOrDefault(x=>x.Name=="CategoryName");
-                    if(col!=null){
-                        if(!_dirtyColumns.Any(x=>x.Name==col.Name) && _isLoaded){
-                            _dirtyColumns.Add(col);
-                        }
-                    }
-                    OnChanged();
-                }
-            }
-        }
-
-
-        string _Description;
-        public string Description
-        {
-            get { return _Description; }
-            set
-            {
-                if(_Description!=value){
-                    _Description=value;
-                    var col=tbl.Columns.SingleOrDefault(x=>x.Name=="Description");
-                    if(col!=null){
-                        if(!_dirtyColumns.Any(x=>x.Name==col.Name) && _isLoaded){
-                            _dirtyColumns.Add(col);
-                        }
-                    }
-                    OnChanged();
-                }
-            }
-        }
-
-
-        byte[] _Picture;
-        public byte[] Picture
-        {
-            get { return _Picture; }
-            set
-            {
-                if(_Picture!=value){
-                    _Picture=value;
-                    var col=tbl.Columns.SingleOrDefault(x=>x.Name=="Picture");
-                    if(col!=null){
-                        if(!_dirtyColumns.Any(x=>x.Name==col.Name) && _isLoaded){
-                            _dirtyColumns.Add(col);
-                        }
-                    }
-                    OnChanged();
-                }
-            }
-        }
-
-
-
-
-        public DbCommand GetUpdateCommand() {
-
-            if(TestMode)
-                return _db.DataProvider.CreateCommand();
-            else
-                return this.ToUpdateQuery(_db.Provider).GetCommand().ToDbCommand();
-            
-        }
-        public DbCommand GetInsertCommand() {
- 
-            if(TestMode)
-                return _db.DataProvider.CreateCommand();
-            else
-                return this.ToInsertQuery(_db.Provider).GetCommand().ToDbCommand();
-        }
-        
-        public DbCommand GetDeleteCommand() {
-            if(TestMode)
-                return _db.DataProvider.CreateCommand();
-            else
-                return this.ToDeleteQuery(_db.Provider).GetCommand().ToDbCommand();
-        }
-       
-        
-        public void Update(){
-            Update(_db.DataProvider);
-        }
-        
-        public void Update(IDataProvider provider){
-        
-
-
-            
-            if(this._dirtyColumns.Count>0)
-                _repo.Update(this,provider);
-            OnSaved();
-       }
- 
-        public void Add(){
-            Add(_db.DataProvider);
-        }
-        
-        
-
-       
-        public void Add(IDataProvider provider){
-
-
-
-
-
-            
-            var key=KeyValue();
-            if(key==null){
-                var newKey=_repo.Add(this,provider);
-                this.SetKeyValue(newKey);
-            }else{
-                _repo.Add(this,provider);
-            }
-            SetIsNew(false);
-            OnSaved();
-        }
-        
-        
-        
-        
-        public void Save() {
-            Save(_db.DataProvider);
-        }      
-        public void Save(IDataProvider provider) {
-            
-           
-            if (_isNew) {
-                Add(provider);
-                
-            } else {
-                Update(provider);
-            }
-            
-        }
-
-        
-
-
-        public void Delete(IDataProvider provider) {
-                   
-                 
-            _repo.Delete(KeyValue());
-            
-            
-        }
-
-
-        public void Delete() {
-            Delete(_db.DataProvider);
-        }
-
-
-        public static void Delete(Expression<Func<Category, bool>> expression) {
-            var repo = GetRepo();
-            
-       
-            
-            repo.DeleteMany(expression);
-            
-
-        }
-
-        
-
-
-        public void Load(IDataReader rdr) {
-            Load(rdr, true);
-        }
-        public void Load(IDataReader rdr, bool closeReader) {
-            if (rdr.Read()) {
-
-                try {
-                    rdr.Load(this);
-                    SetIsNew(false);
-                    SetIsLoaded(true);
-                } catch {
-                    SetIsLoaded(false);
-                    throw;
-                }
-            }else{
-                SetIsLoaded(false);
-            }
-
-            if (closeReader)
-                rdr.Dispose();
-        }
-        
-
-    } 
-
     
     
     /// <summary>
@@ -789,10 +256,8 @@ namespace SouthWind
         }
         
         public override string ToString(){
-            
-                return this.CustomerID.ToString();
-            
-        }
+                            return this.CustomerID.ToString();
+                    }
 
         public override bool Equals(object obj){
             if(obj.GetType()==typeof(Customer)){
@@ -803,13 +268,10 @@ namespace SouthWind
             }
         }
 
-
         public string DescriptorValue()
         {
-            
-                return this.CustomerID.ToString();
-            
-        }
+                            return this.CustomerID.ToString();
+                    }
 
         public string DescriptorColumn() {
             return "CustomerID";
@@ -824,7 +286,6 @@ namespace SouthWind
         }
         
         #region ' Foreign Keys '
-
         public IQueryable<CustomerCustomerDemo> CustomerCustomerDemos
         {
             get
@@ -836,7 +297,6 @@ namespace SouthWind
                        select items;
             }
         }
-
 
         public IQueryable<Order> Orders
         {
@@ -850,10 +310,8 @@ namespace SouthWind
             }
         }
 
-
         #endregion
         
-
 
         string _CustomerID;
         public string CustomerID
@@ -874,7 +332,6 @@ namespace SouthWind
             }
         }
 
-
         string _CompanyName;
         public string CompanyName
         {
@@ -893,7 +350,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _ContactName;
         public string ContactName
@@ -914,7 +370,6 @@ namespace SouthWind
             }
         }
 
-
         string _ContactTitle;
         public string ContactTitle
         {
@@ -933,7 +388,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _Address;
         public string Address
@@ -954,7 +408,6 @@ namespace SouthWind
             }
         }
 
-
         string _City;
         public string City
         {
@@ -973,7 +426,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _Region;
         public string Region
@@ -994,7 +446,6 @@ namespace SouthWind
             }
         }
 
-
         string _PostalCode;
         public string PostalCode
         {
@@ -1013,7 +464,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _Country;
         public string Country
@@ -1034,7 +484,6 @@ namespace SouthWind
             }
         }
 
-
         string _Phone;
         public string Phone
         {
@@ -1053,7 +502,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _Fax;
         public string Fax
@@ -1076,9 +524,7 @@ namespace SouthWind
 
 
 
-
         public DbCommand GetUpdateCommand() {
-
             if(TestMode)
                 return _db.DataProvider.CreateCommand();
             else
@@ -1107,8 +553,6 @@ namespace SouthWind
         
         public void Update(IDataProvider provider){
         
-
-
             
             if(this._dirtyColumns.Count>0)
                 _repo.Update(this,provider);
@@ -1120,13 +564,8 @@ namespace SouthWind
         }
         
         
-
        
         public void Add(IDataProvider provider){
-
-
-
-
 
             
             var key=KeyValue();
@@ -1140,8 +579,7 @@ namespace SouthWind
             OnSaved();
         }
         
-        
-        
+                
         
         public void Save() {
             Save(_db.DataProvider);
@@ -1160,14 +598,12 @@ namespace SouthWind
 
         
 
-
         public void Delete(IDataProvider provider) {
                    
                  
             _repo.Delete(KeyValue());
             
-            
-        }
+                    }
 
 
         public void Delete() {
@@ -1182,11 +618,9 @@ namespace SouthWind
             
             repo.DeleteMany(expression);
             
-
         }
 
         
-
 
         public void Load(IDataReader rdr) {
             Load(rdr, true);
@@ -1212,7 +646,6 @@ namespace SouthWind
         
 
     } 
-
     
     
     /// <summary>
@@ -1451,10 +884,8 @@ namespace SouthWind
         }
         
         public override string ToString(){
-            
-                return this.CompanyName.ToString();
-            
-        }
+                            return this.CompanyName.ToString();
+                    }
 
         public override bool Equals(object obj){
             if(obj.GetType()==typeof(Shipper)){
@@ -1465,19 +896,15 @@ namespace SouthWind
             }
         }
 
-
         
         public override int GetHashCode() {
             return this.ShipperID;
         }
         
-
         public string DescriptorValue()
         {
-            
-                return this.CompanyName.ToString();
-            
-        }
+                            return this.CompanyName.ToString();
+                    }
 
         public string DescriptorColumn() {
             return "CompanyName";
@@ -1492,7 +919,6 @@ namespace SouthWind
         }
         
         #region ' Foreign Keys '
-
         public IQueryable<Order> Orders
         {
             get
@@ -1505,10 +931,8 @@ namespace SouthWind
             }
         }
 
-
         #endregion
         
-
 
         int _ShipperID;
         public int ShipperID
@@ -1529,7 +953,6 @@ namespace SouthWind
             }
         }
 
-
         string _CompanyName;
         public string CompanyName
         {
@@ -1548,7 +971,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _Phone;
         public string Phone
@@ -1571,9 +993,7 @@ namespace SouthWind
 
 
 
-
         public DbCommand GetUpdateCommand() {
-
             if(TestMode)
                 return _db.DataProvider.CreateCommand();
             else
@@ -1602,8 +1022,6 @@ namespace SouthWind
         
         public void Update(IDataProvider provider){
         
-
-
             
             if(this._dirtyColumns.Count>0)
                 _repo.Update(this,provider);
@@ -1615,13 +1033,8 @@ namespace SouthWind
         }
         
         
-
        
         public void Add(IDataProvider provider){
-
-
-
-
 
             
             var key=KeyValue();
@@ -1635,8 +1048,7 @@ namespace SouthWind
             OnSaved();
         }
         
-        
-        
+                
         
         public void Save() {
             Save(_db.DataProvider);
@@ -1655,14 +1067,12 @@ namespace SouthWind
 
         
 
-
         public void Delete(IDataProvider provider) {
                    
                  
             _repo.Delete(KeyValue());
             
-            
-        }
+                    }
 
 
         public void Delete() {
@@ -1677,11 +1087,9 @@ namespace SouthWind
             
             repo.DeleteMany(expression);
             
-
         }
 
         
-
 
         public void Load(IDataReader rdr) {
             Load(rdr, true);
@@ -1707,7 +1115,6 @@ namespace SouthWind
         
 
     } 
-
     
     
     /// <summary>
@@ -1946,10 +1353,8 @@ namespace SouthWind
         }
         
         public override string ToString(){
-            
-                return this.CompanyName.ToString();
-            
-        }
+                            return this.CompanyName.ToString();
+                    }
 
         public override bool Equals(object obj){
             if(obj.GetType()==typeof(Supplier)){
@@ -1960,19 +1365,15 @@ namespace SouthWind
             }
         }
 
-
         
         public override int GetHashCode() {
             return this.SupplierID;
         }
         
-
         public string DescriptorValue()
         {
-            
-                return this.CompanyName.ToString();
-            
-        }
+                            return this.CompanyName.ToString();
+                    }
 
         public string DescriptorColumn() {
             return "CompanyName";
@@ -1987,7 +1388,6 @@ namespace SouthWind
         }
         
         #region ' Foreign Keys '
-
         public IQueryable<Product> Products
         {
             get
@@ -2000,10 +1400,8 @@ namespace SouthWind
             }
         }
 
-
         #endregion
         
-
 
         int _SupplierID;
         public int SupplierID
@@ -2024,7 +1422,6 @@ namespace SouthWind
             }
         }
 
-
         string _CompanyName;
         public string CompanyName
         {
@@ -2043,7 +1440,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _ContactName;
         public string ContactName
@@ -2064,7 +1460,6 @@ namespace SouthWind
             }
         }
 
-
         string _ContactTitle;
         public string ContactTitle
         {
@@ -2083,7 +1478,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _Address;
         public string Address
@@ -2104,7 +1498,6 @@ namespace SouthWind
             }
         }
 
-
         string _City;
         public string City
         {
@@ -2123,7 +1516,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _Region;
         public string Region
@@ -2144,7 +1536,6 @@ namespace SouthWind
             }
         }
 
-
         string _PostalCode;
         public string PostalCode
         {
@@ -2163,7 +1554,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _Country;
         public string Country
@@ -2184,7 +1574,6 @@ namespace SouthWind
             }
         }
 
-
         string _Phone;
         public string Phone
         {
@@ -2204,7 +1593,6 @@ namespace SouthWind
             }
         }
 
-
         string _Fax;
         public string Fax
         {
@@ -2223,7 +1611,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _HomePage;
         public string HomePage
@@ -2246,9 +1633,7 @@ namespace SouthWind
 
 
 
-
         public DbCommand GetUpdateCommand() {
-
             if(TestMode)
                 return _db.DataProvider.CreateCommand();
             else
@@ -2277,8 +1662,6 @@ namespace SouthWind
         
         public void Update(IDataProvider provider){
         
-
-
             
             if(this._dirtyColumns.Count>0)
                 _repo.Update(this,provider);
@@ -2290,13 +1673,8 @@ namespace SouthWind
         }
         
         
-
        
         public void Add(IDataProvider provider){
-
-
-
-
 
             
             var key=KeyValue();
@@ -2310,8 +1688,7 @@ namespace SouthWind
             OnSaved();
         }
         
-        
-        
+                
         
         public void Save() {
             Save(_db.DataProvider);
@@ -2330,14 +1707,12 @@ namespace SouthWind
 
         
 
-
         public void Delete(IDataProvider provider) {
                    
                  
             _repo.Delete(KeyValue());
             
-            
-        }
+                    }
 
 
         public void Delete() {
@@ -2352,11 +1727,9 @@ namespace SouthWind
             
             repo.DeleteMany(expression);
             
-
         }
 
         
-
 
         public void Load(IDataReader rdr) {
             Load(rdr, true);
@@ -2382,7 +1755,6 @@ namespace SouthWind
         
 
     } 
-
     
     
     /// <summary>
@@ -2621,10 +1993,8 @@ namespace SouthWind
         }
         
         public override string ToString(){
-            
-                return this.CustomerID.ToString();
-            
-        }
+                            return this.CustomerID.ToString();
+                    }
 
         public override bool Equals(object obj){
             if(obj.GetType()==typeof(Order)){
@@ -2635,19 +2005,15 @@ namespace SouthWind
             }
         }
 
-
         
         public override int GetHashCode() {
             return this.OrderID;
         }
         
-
         public string DescriptorValue()
         {
-            
-                return this.CustomerID.ToString();
-            
-        }
+                            return this.CustomerID.ToString();
+                    }
 
         public string DescriptorColumn() {
             return "CustomerID";
@@ -2662,7 +2028,6 @@ namespace SouthWind
         }
         
         #region ' Foreign Keys '
-
         public IQueryable<Customer> Customers
         {
             get
@@ -2674,7 +2039,6 @@ namespace SouthWind
                        select items;
             }
         }
-
 
         public IQueryable<Employee> Employees
         {
@@ -2688,7 +2052,6 @@ namespace SouthWind
             }
         }
 
-
         public IQueryable<OrderDetail> OrderDetails
         {
             get
@@ -2700,7 +2063,6 @@ namespace SouthWind
                        select items;
             }
         }
-
 
         public IQueryable<Shipper> Shippers
         {
@@ -2714,10 +2076,8 @@ namespace SouthWind
             }
         }
 
-
         #endregion
         
-
 
         int _OrderID;
         public int OrderID
@@ -2738,7 +2098,6 @@ namespace SouthWind
             }
         }
 
-
         string _CustomerID;
         public string CustomerID
         {
@@ -2757,7 +2116,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         int? _EmployeeID;
         public int? EmployeeID
@@ -2778,7 +2136,6 @@ namespace SouthWind
             }
         }
 
-
         DateTime _OrderDate;
         public DateTime OrderDate
         {
@@ -2797,7 +2154,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         DateTime? _RequiredDate;
         public DateTime? RequiredDate
@@ -2818,7 +2174,6 @@ namespace SouthWind
             }
         }
 
-
         DateTime? _ShippedDate;
         public DateTime? ShippedDate
         {
@@ -2837,7 +2192,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         int? _ShipVia;
         public int? ShipVia
@@ -2858,7 +2212,6 @@ namespace SouthWind
             }
         }
 
-
         decimal? _Freight;
         public decimal? Freight
         {
@@ -2877,7 +2230,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _ShipName;
         public string ShipName
@@ -2898,7 +2250,6 @@ namespace SouthWind
             }
         }
 
-
         string _ShipAddress;
         public string ShipAddress
         {
@@ -2917,7 +2268,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _ShipCity;
         public string ShipCity
@@ -2938,7 +2288,6 @@ namespace SouthWind
             }
         }
 
-
         string _ShipRegion;
         public string ShipRegion
         {
@@ -2958,7 +2307,6 @@ namespace SouthWind
             }
         }
 
-
         string _ShipPostalCode;
         public string ShipPostalCode
         {
@@ -2977,7 +2325,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _ShipCountry;
         public string ShipCountry
@@ -3000,9 +2347,7 @@ namespace SouthWind
 
 
 
-
         public DbCommand GetUpdateCommand() {
-
             if(TestMode)
                 return _db.DataProvider.CreateCommand();
             else
@@ -3031,8 +2376,6 @@ namespace SouthWind
         
         public void Update(IDataProvider provider){
         
-
-
             
             if(this._dirtyColumns.Count>0)
                 _repo.Update(this,provider);
@@ -3044,13 +2387,8 @@ namespace SouthWind
         }
         
         
-
        
         public void Add(IDataProvider provider){
-
-
-
-
 
             
             var key=KeyValue();
@@ -3064,8 +2402,7 @@ namespace SouthWind
             OnSaved();
         }
         
-        
-        
+                
         
         public void Save() {
             Save(_db.DataProvider);
@@ -3084,14 +2421,12 @@ namespace SouthWind
 
         
 
-
         public void Delete(IDataProvider provider) {
                    
                  
             _repo.Delete(KeyValue());
             
-            
-        }
+                    }
 
 
         public void Delete() {
@@ -3106,11 +2441,9 @@ namespace SouthWind
             
             repo.DeleteMany(expression);
             
-
         }
 
         
-
 
         public void Load(IDataReader rdr) {
             Load(rdr, true);
@@ -3136,7 +2469,6 @@ namespace SouthWind
         
 
     } 
-
     
     
     /// <summary>
@@ -3375,10 +2707,8 @@ namespace SouthWind
         }
         
         public override string ToString(){
-            
-                return this.ProductName.ToString();
-            
-        }
+                            return this.ProductName.ToString();
+                    }
 
         public override bool Equals(object obj){
             if(obj.GetType()==typeof(Product)){
@@ -3389,19 +2719,15 @@ namespace SouthWind
             }
         }
 
-
         
         public override int GetHashCode() {
             return this.ProductID;
         }
         
-
         public string DescriptorValue()
         {
-            
-                return this.ProductName.ToString();
-            
-        }
+                            return this.ProductName.ToString();
+                    }
 
         public string DescriptorColumn() {
             return "ProductName";
@@ -3416,7 +2742,6 @@ namespace SouthWind
         }
         
         #region ' Foreign Keys '
-
         public IQueryable<Category> Categories
         {
             get
@@ -3428,7 +2753,6 @@ namespace SouthWind
                        select items;
             }
         }
-
 
         public IQueryable<OrderDetail> OrderDetails
         {
@@ -3442,7 +2766,6 @@ namespace SouthWind
             }
         }
 
-
         public IQueryable<Supplier> Suppliers
         {
             get
@@ -3455,10 +2778,8 @@ namespace SouthWind
             }
         }
 
-
         #endregion
         
-
 
         int _ProductID;
         public int ProductID
@@ -3479,7 +2800,6 @@ namespace SouthWind
             }
         }
 
-
         string _ProductName;
         public string ProductName
         {
@@ -3498,7 +2818,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         int? _SupplierID;
         public int? SupplierID
@@ -3519,7 +2838,6 @@ namespace SouthWind
             }
         }
 
-
         int? _CategoryID;
         public int? CategoryID
         {
@@ -3538,7 +2856,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _QuantityPerUnit;
         public string QuantityPerUnit
@@ -3559,7 +2876,6 @@ namespace SouthWind
             }
         }
 
-
         decimal? _UnitPrice;
         public decimal? UnitPrice
         {
@@ -3578,7 +2894,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         short? _UnitsInStock;
         public short? UnitsInStock
@@ -3599,7 +2914,6 @@ namespace SouthWind
             }
         }
 
-
         short? _UnitsOnOrder;
         public short? UnitsOnOrder
         {
@@ -3619,7 +2933,6 @@ namespace SouthWind
             }
         }
 
-
         short? _ReorderLevel;
         public short? ReorderLevel
         {
@@ -3638,7 +2951,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         bool _Discontinued;
         public bool Discontinued
@@ -3661,9 +2973,7 @@ namespace SouthWind
 
 
 
-
         public DbCommand GetUpdateCommand() {
-
             if(TestMode)
                 return _db.DataProvider.CreateCommand();
             else
@@ -3692,8 +3002,6 @@ namespace SouthWind
         
         public void Update(IDataProvider provider){
         
-
-
             
             if(this._dirtyColumns.Count>0)
                 _repo.Update(this,provider);
@@ -3705,13 +3013,8 @@ namespace SouthWind
         }
         
         
-
        
         public void Add(IDataProvider provider){
-
-
-
-
 
             
             var key=KeyValue();
@@ -3725,8 +3028,7 @@ namespace SouthWind
             OnSaved();
         }
         
-        
-        
+                
         
         public void Save() {
             Save(_db.DataProvider);
@@ -3745,14 +3047,12 @@ namespace SouthWind
 
         
 
-
         public void Delete(IDataProvider provider) {
                    
                  
             _repo.Delete(KeyValue());
             
-            
-        }
+                    }
 
 
         public void Delete() {
@@ -3767,11 +3067,9 @@ namespace SouthWind
             
             repo.DeleteMany(expression);
             
-
         }
 
         
-
 
         public void Load(IDataReader rdr) {
             Load(rdr, true);
@@ -3797,7 +3095,6 @@ namespace SouthWind
         
 
     } 
-
     
     
     /// <summary>
@@ -4036,10 +3333,8 @@ namespace SouthWind
         }
         
         public override string ToString(){
-            
-                return this.ProductID.ToString();
-            
-        }
+                            return this.ProductID.ToString();
+                    }
 
         public override bool Equals(object obj){
             if(obj.GetType()==typeof(OrderDetail)){
@@ -4050,19 +3345,15 @@ namespace SouthWind
             }
         }
 
-
         
         public override int GetHashCode() {
             return this.OrderID;
         }
         
-
         public string DescriptorValue()
         {
-            
-                return this.ProductID.ToString();
-            
-        }
+                            return this.ProductID.ToString();
+                    }
 
         public string DescriptorColumn() {
             return "ProductID";
@@ -4077,7 +3368,6 @@ namespace SouthWind
         }
         
         #region ' Foreign Keys '
-
         public IQueryable<Order> Orders
         {
             get
@@ -4089,7 +3379,6 @@ namespace SouthWind
                        select items;
             }
         }
-
 
         public IQueryable<Product> Products
         {
@@ -4103,10 +3392,8 @@ namespace SouthWind
             }
         }
 
-
         #endregion
         
-
 
         int _OrderID;
         public int OrderID
@@ -4127,7 +3414,6 @@ namespace SouthWind
             }
         }
 
-
         int _ProductID;
         public int ProductID
         {
@@ -4146,7 +3432,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         decimal _UnitPrice;
         public decimal UnitPrice
@@ -4167,7 +3452,6 @@ namespace SouthWind
             }
         }
 
-
         short _Quantity;
         public short Quantity
         {
@@ -4186,7 +3470,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         decimal _Discount;
         public decimal Discount
@@ -4209,9 +3492,7 @@ namespace SouthWind
 
 
 
-
         public DbCommand GetUpdateCommand() {
-
             if(TestMode)
                 return _db.DataProvider.CreateCommand();
             else
@@ -4240,8 +3521,6 @@ namespace SouthWind
         
         public void Update(IDataProvider provider){
         
-
-
             
             if(this._dirtyColumns.Count>0)
                 _repo.Update(this,provider);
@@ -4253,13 +3532,8 @@ namespace SouthWind
         }
         
         
-
        
         public void Add(IDataProvider provider){
-
-
-
-
 
             
             var key=KeyValue();
@@ -4273,8 +3547,7 @@ namespace SouthWind
             OnSaved();
         }
         
-        
-        
+                
         
         public void Save() {
             Save(_db.DataProvider);
@@ -4293,14 +3566,12 @@ namespace SouthWind
 
         
 
-
         public void Delete(IDataProvider provider) {
                    
                  
             _repo.Delete(KeyValue());
             
-            
-        }
+                    }
 
 
         public void Delete() {
@@ -4315,11 +3586,9 @@ namespace SouthWind
             
             repo.DeleteMany(expression);
             
-
         }
 
         
-
 
         public void Load(IDataReader rdr) {
             Load(rdr, true);
@@ -4345,7 +3614,6 @@ namespace SouthWind
         
 
     } 
-
     
     
     /// <summary>
@@ -4584,10 +3852,8 @@ namespace SouthWind
         }
         
         public override string ToString(){
-            
-                return this.CustomerID.ToString();
-            
-        }
+                            return this.CustomerID.ToString();
+                    }
 
         public override bool Equals(object obj){
             if(obj.GetType()==typeof(CustomerCustomerDemo)){
@@ -4598,13 +3864,10 @@ namespace SouthWind
             }
         }
 
-
         public string DescriptorValue()
         {
-            
-                return this.CustomerID.ToString();
-            
-        }
+                            return this.CustomerID.ToString();
+                    }
 
         public string DescriptorColumn() {
             return "CustomerID";
@@ -4619,7 +3882,6 @@ namespace SouthWind
         }
         
         #region ' Foreign Keys '
-
         public IQueryable<CustomerDemographic> CustomerDemographics
         {
             get
@@ -4631,7 +3893,6 @@ namespace SouthWind
                        select items;
             }
         }
-
 
         public IQueryable<Customer> Customers
         {
@@ -4645,10 +3906,8 @@ namespace SouthWind
             }
         }
 
-
         #endregion
         
-
 
         string _CustomerID;
         public string CustomerID
@@ -4668,7 +3927,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _CustomerTypeID;
         public string CustomerTypeID
@@ -4691,9 +3949,7 @@ namespace SouthWind
 
 
 
-
         public DbCommand GetUpdateCommand() {
-
             if(TestMode)
                 return _db.DataProvider.CreateCommand();
             else
@@ -4722,8 +3978,6 @@ namespace SouthWind
         
         public void Update(IDataProvider provider){
         
-
-
             
             if(this._dirtyColumns.Count>0)
                 _repo.Update(this,provider);
@@ -4735,13 +3989,8 @@ namespace SouthWind
         }
         
         
-
        
         public void Add(IDataProvider provider){
-
-
-
-
 
             
             var key=KeyValue();
@@ -4755,8 +4004,7 @@ namespace SouthWind
             OnSaved();
         }
         
-        
-        
+                
         
         public void Save() {
             Save(_db.DataProvider);
@@ -4775,14 +4023,12 @@ namespace SouthWind
 
         
 
-
         public void Delete(IDataProvider provider) {
                    
                  
             _repo.Delete(KeyValue());
             
-            
-        }
+                    }
 
 
         public void Delete() {
@@ -4797,11 +4043,9 @@ namespace SouthWind
             
             repo.DeleteMany(expression);
             
-
         }
 
         
-
 
         public void Load(IDataReader rdr) {
             Load(rdr, true);
@@ -4827,7 +4071,6 @@ namespace SouthWind
         
 
     } 
-
     
     
     /// <summary>
@@ -5066,10 +4309,8 @@ namespace SouthWind
         }
         
         public override string ToString(){
-            
-                return this.CustomerTypeID.ToString();
-            
-        }
+                            return this.CustomerTypeID.ToString();
+                    }
 
         public override bool Equals(object obj){
             if(obj.GetType()==typeof(CustomerDemographic)){
@@ -5080,13 +4321,10 @@ namespace SouthWind
             }
         }
 
-
         public string DescriptorValue()
         {
-            
-                return this.CustomerTypeID.ToString();
-            
-        }
+                            return this.CustomerTypeID.ToString();
+                    }
 
         public string DescriptorColumn() {
             return "CustomerTypeID";
@@ -5101,7 +4339,6 @@ namespace SouthWind
         }
         
         #region ' Foreign Keys '
-
         public IQueryable<CustomerCustomerDemo> CustomerCustomerDemos
         {
             get
@@ -5114,10 +4351,8 @@ namespace SouthWind
             }
         }
 
-
         #endregion
         
-
 
         string _CustomerTypeID;
         public string CustomerTypeID
@@ -5137,7 +4372,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _CustomerDesc;
         public string CustomerDesc
@@ -5160,9 +4394,7 @@ namespace SouthWind
 
 
 
-
         public DbCommand GetUpdateCommand() {
-
             if(TestMode)
                 return _db.DataProvider.CreateCommand();
             else
@@ -5191,8 +4423,6 @@ namespace SouthWind
         
         public void Update(IDataProvider provider){
         
-
-
             
             if(this._dirtyColumns.Count>0)
                 _repo.Update(this,provider);
@@ -5204,13 +4434,8 @@ namespace SouthWind
         }
         
         
-
        
         public void Add(IDataProvider provider){
-
-
-
-
 
             
             var key=KeyValue();
@@ -5224,8 +4449,7 @@ namespace SouthWind
             OnSaved();
         }
         
-        
-        
+                
         
         public void Save() {
             Save(_db.DataProvider);
@@ -5244,14 +4468,12 @@ namespace SouthWind
 
         
 
-
         public void Delete(IDataProvider provider) {
                    
                  
             _repo.Delete(KeyValue());
             
-            
-        }
+                    }
 
 
         public void Delete() {
@@ -5266,11 +4488,9 @@ namespace SouthWind
             
             repo.DeleteMany(expression);
             
-
         }
 
         
-
 
         public void Load(IDataReader rdr) {
             Load(rdr, true);
@@ -5296,7 +4516,6 @@ namespace SouthWind
         
 
     } 
-
     
     
     /// <summary>
@@ -5535,10 +4754,8 @@ namespace SouthWind
         }
         
         public override string ToString(){
-            
-                return this.RegionDescription.ToString();
-            
-        }
+                            return this.RegionDescription.ToString();
+                    }
 
         public override bool Equals(object obj){
             if(obj.GetType()==typeof(Region)){
@@ -5549,19 +4766,15 @@ namespace SouthWind
             }
         }
 
-
         
         public override int GetHashCode() {
             return this.RegionID;
         }
         
-
         public string DescriptorValue()
         {
-            
-                return this.RegionDescription.ToString();
-            
-        }
+                            return this.RegionDescription.ToString();
+                    }
 
         public string DescriptorColumn() {
             return "RegionDescription";
@@ -5576,7 +4789,6 @@ namespace SouthWind
         }
         
         #region ' Foreign Keys '
-
         public IQueryable<Territory> Territories
         {
             get
@@ -5589,10 +4801,8 @@ namespace SouthWind
             }
         }
 
-
         #endregion
         
-
 
         int _RegionID;
         public int RegionID
@@ -5612,7 +4822,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _RegionDescription;
         public string RegionDescription
@@ -5635,9 +4844,7 @@ namespace SouthWind
 
 
 
-
         public DbCommand GetUpdateCommand() {
-
             if(TestMode)
                 return _db.DataProvider.CreateCommand();
             else
@@ -5666,8 +4873,6 @@ namespace SouthWind
         
         public void Update(IDataProvider provider){
         
-
-
             
             if(this._dirtyColumns.Count>0)
                 _repo.Update(this,provider);
@@ -5679,13 +4884,8 @@ namespace SouthWind
         }
         
         
-
        
         public void Add(IDataProvider provider){
-
-
-
-
 
             
             var key=KeyValue();
@@ -5699,8 +4899,7 @@ namespace SouthWind
             OnSaved();
         }
         
-        
-        
+                
         
         public void Save() {
             Save(_db.DataProvider);
@@ -5719,14 +4918,12 @@ namespace SouthWind
 
         
 
-
         public void Delete(IDataProvider provider) {
                    
                  
             _repo.Delete(KeyValue());
             
-            
-        }
+                    }
 
 
         public void Delete() {
@@ -5741,11 +4938,9 @@ namespace SouthWind
             
             repo.DeleteMany(expression);
             
-
         }
 
         
-
 
         public void Load(IDataReader rdr) {
             Load(rdr, true);
@@ -5771,7 +4966,6 @@ namespace SouthWind
         
 
     } 
-
     
     
     /// <summary>
@@ -6010,10 +5204,8 @@ namespace SouthWind
         }
         
         public override string ToString(){
-            
-                return this.TerritoryID.ToString();
-            
-        }
+                            return this.TerritoryID.ToString();
+                    }
 
         public override bool Equals(object obj){
             if(obj.GetType()==typeof(Territory)){
@@ -6024,13 +5216,10 @@ namespace SouthWind
             }
         }
 
-
         public string DescriptorValue()
         {
-            
-                return this.TerritoryID.ToString();
-            
-        }
+                            return this.TerritoryID.ToString();
+                    }
 
         public string DescriptorColumn() {
             return "TerritoryID";
@@ -6045,7 +5234,6 @@ namespace SouthWind
         }
         
         #region ' Foreign Keys '
-
         public IQueryable<Region> Regions
         {
             get
@@ -6057,7 +5245,6 @@ namespace SouthWind
                        select items;
             }
         }
-
 
         public IQueryable<EmployeeTerritory> EmployeeTerritories
         {
@@ -6071,10 +5258,8 @@ namespace SouthWind
             }
         }
 
-
         #endregion
         
-
 
         string _TerritoryID;
         public string TerritoryID
@@ -6095,7 +5280,6 @@ namespace SouthWind
             }
         }
 
-
         string _TerritoryDescription;
         public string TerritoryDescription
         {
@@ -6114,7 +5298,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         int _RegionID;
         public int RegionID
@@ -6137,9 +5320,7 @@ namespace SouthWind
 
 
 
-
         public DbCommand GetUpdateCommand() {
-
             if(TestMode)
                 return _db.DataProvider.CreateCommand();
             else
@@ -6168,8 +5349,6 @@ namespace SouthWind
         
         public void Update(IDataProvider provider){
         
-
-
             
             if(this._dirtyColumns.Count>0)
                 _repo.Update(this,provider);
@@ -6181,13 +5360,8 @@ namespace SouthWind
         }
         
         
-
        
         public void Add(IDataProvider provider){
-
-
-
-
 
             
             var key=KeyValue();
@@ -6201,8 +5375,7 @@ namespace SouthWind
             OnSaved();
         }
         
-        
-        
+                
         
         public void Save() {
             Save(_db.DataProvider);
@@ -6221,14 +5394,12 @@ namespace SouthWind
 
         
 
-
         public void Delete(IDataProvider provider) {
                    
                  
             _repo.Delete(KeyValue());
             
-            
-        }
+                    }
 
 
         public void Delete() {
@@ -6243,11 +5414,9 @@ namespace SouthWind
             
             repo.DeleteMany(expression);
             
-
         }
 
         
-
 
         public void Load(IDataReader rdr) {
             Load(rdr, true);
@@ -6273,7 +5442,6 @@ namespace SouthWind
         
 
     } 
-
     
     
     /// <summary>
@@ -6512,10 +5680,8 @@ namespace SouthWind
         }
         
         public override string ToString(){
-            
-                return this.TerritoryID.ToString();
-            
-        }
+                            return this.TerritoryID.ToString();
+                    }
 
         public override bool Equals(object obj){
             if(obj.GetType()==typeof(EmployeeTerritory)){
@@ -6526,19 +5692,15 @@ namespace SouthWind
             }
         }
 
-
         
         public override int GetHashCode() {
             return this.EmployeeID;
         }
         
-
         public string DescriptorValue()
         {
-            
-                return this.TerritoryID.ToString();
-            
-        }
+                            return this.TerritoryID.ToString();
+                    }
 
         public string DescriptorColumn() {
             return "TerritoryID";
@@ -6553,7 +5715,6 @@ namespace SouthWind
         }
         
         #region ' Foreign Keys '
-
         public IQueryable<Employee> Employees
         {
             get
@@ -6565,7 +5726,6 @@ namespace SouthWind
                        select items;
             }
         }
-
 
         public IQueryable<Territory> Territories
         {
@@ -6579,10 +5739,8 @@ namespace SouthWind
             }
         }
 
-
         #endregion
         
-
 
         int _EmployeeID;
         public int EmployeeID
@@ -6602,7 +5760,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _TerritoryID;
         public string TerritoryID
@@ -6625,9 +5782,7 @@ namespace SouthWind
 
 
 
-
         public DbCommand GetUpdateCommand() {
-
             if(TestMode)
                 return _db.DataProvider.CreateCommand();
             else
@@ -6656,8 +5811,6 @@ namespace SouthWind
         
         public void Update(IDataProvider provider){
         
-
-
             
             if(this._dirtyColumns.Count>0)
                 _repo.Update(this,provider);
@@ -6669,13 +5822,8 @@ namespace SouthWind
         }
         
         
-
        
         public void Add(IDataProvider provider){
-
-
-
-
 
             
             var key=KeyValue();
@@ -6689,8 +5837,7 @@ namespace SouthWind
             OnSaved();
         }
         
-        
-        
+                
         
         public void Save() {
             Save(_db.DataProvider);
@@ -6709,14 +5856,12 @@ namespace SouthWind
 
         
 
-
         public void Delete(IDataProvider provider) {
                    
                  
             _repo.Delete(KeyValue());
             
-            
-        }
+                    }
 
 
         public void Delete() {
@@ -6731,11 +5876,9 @@ namespace SouthWind
             
             repo.DeleteMany(expression);
             
-
         }
 
         
-
 
         public void Load(IDataReader rdr) {
             Load(rdr, true);
@@ -6761,7 +5904,6 @@ namespace SouthWind
         
 
     } 
-
     
     
     /// <summary>
@@ -7000,10 +6142,8 @@ namespace SouthWind
         }
         
         public override string ToString(){
-            
-                return this.LastName.ToString();
-            
-        }
+                            return this.LastName.ToString();
+                    }
 
         public override bool Equals(object obj){
             if(obj.GetType()==typeof(Employee)){
@@ -7014,19 +6154,15 @@ namespace SouthWind
             }
         }
 
-
         
         public override int GetHashCode() {
             return this.EmployeeID;
         }
         
-
         public string DescriptorValue()
         {
-            
-                return this.LastName.ToString();
-            
-        }
+                            return this.LastName.ToString();
+                    }
 
         public string DescriptorColumn() {
             return "LastName";
@@ -7041,7 +6177,6 @@ namespace SouthWind
         }
         
         #region ' Foreign Keys '
-
         public IQueryable<Employee> Employees
         {
             get
@@ -7053,7 +6188,6 @@ namespace SouthWind
                        select items;
             }
         }
-
 
         public IQueryable<EmployeeTerritory> EmployeeTerritories
         {
@@ -7067,7 +6201,6 @@ namespace SouthWind
             }
         }
 
-
         public IQueryable<Order> Orders
         {
             get
@@ -7080,10 +6213,8 @@ namespace SouthWind
             }
         }
 
-
         #endregion
         
-
 
         int _EmployeeID;
         public int EmployeeID
@@ -7104,7 +6235,6 @@ namespace SouthWind
             }
         }
 
-
         string _LastName;
         public string LastName
         {
@@ -7123,7 +6253,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _FirstName;
         public string FirstName
@@ -7144,7 +6273,6 @@ namespace SouthWind
             }
         }
 
-
         string _Title;
         public string Title
         {
@@ -7163,7 +6291,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _TitleOfCourtesy;
         public string TitleOfCourtesy
@@ -7184,7 +6311,6 @@ namespace SouthWind
             }
         }
 
-
         DateTime? _BirthDate;
         public DateTime? BirthDate
         {
@@ -7203,7 +6329,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         DateTime? _HireDate;
         public DateTime? HireDate
@@ -7224,7 +6349,6 @@ namespace SouthWind
             }
         }
 
-
         string _Address;
         public string Address
         {
@@ -7243,7 +6367,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _City;
         public string City
@@ -7264,7 +6387,6 @@ namespace SouthWind
             }
         }
 
-
         string _Region;
         public string Region
         {
@@ -7283,7 +6405,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _PostalCode;
         public string PostalCode
@@ -7304,7 +6425,6 @@ namespace SouthWind
             }
         }
 
-
         string _Country;
         public string Country
         {
@@ -7323,7 +6443,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _HomePhone;
         public string HomePhone
@@ -7344,7 +6463,6 @@ namespace SouthWind
             }
         }
 
-
         string _Extension;
         public string Extension
         {
@@ -7363,7 +6481,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         byte[] _Photo;
         public byte[] Photo
@@ -7384,7 +6501,6 @@ namespace SouthWind
             }
         }
 
-
         string _Notes;
         public string Notes
         {
@@ -7404,7 +6520,6 @@ namespace SouthWind
             }
         }
 
-
         int? _ReportsTo;
         public int? ReportsTo
         {
@@ -7423,7 +6538,6 @@ namespace SouthWind
                 }
             }
         }
-
 
         string _PhotoPath;
         public string PhotoPath
@@ -7446,9 +6560,7 @@ namespace SouthWind
 
 
 
-
         public DbCommand GetUpdateCommand() {
-
             if(TestMode)
                 return _db.DataProvider.CreateCommand();
             else
@@ -7477,8 +6589,6 @@ namespace SouthWind
         
         public void Update(IDataProvider provider){
         
-
-
             
             if(this._dirtyColumns.Count>0)
                 _repo.Update(this,provider);
@@ -7490,13 +6600,8 @@ namespace SouthWind
         }
         
         
-
        
         public void Add(IDataProvider provider){
-
-
-
-
 
             
             var key=KeyValue();
@@ -7510,8 +6615,7 @@ namespace SouthWind
             OnSaved();
         }
         
-        
-        
+                
         
         public void Save() {
             Save(_db.DataProvider);
@@ -7530,14 +6634,12 @@ namespace SouthWind
 
         
 
-
         public void Delete(IDataProvider provider) {
                    
                  
             _repo.Delete(KeyValue());
             
-            
-        }
+                    }
 
 
         public void Delete() {
@@ -7552,11 +6654,9 @@ namespace SouthWind
             
             repo.DeleteMany(expression);
             
-
         }
 
         
-
 
         public void Load(IDataReader rdr) {
             Load(rdr, true);
@@ -7582,5 +6682,492 @@ namespace SouthWind
         
 
     } 
+    
+    
+    /// <summary>
+    /// A class which represents the Categories table in the Northwind Database.
+    /// </summary>
+    public partial class Category: IActiveRecord
+    {
+    
+        #region Built-in testing
+        static TestRepository<Category> _testRepo;
+        
 
+        
+        static void SetTestRepo(){
+            _testRepo = _testRepo ?? new TestRepository<Category>(new SouthWind.NorthwindDB());
+        }
+        public static void ResetTestRepo(){
+            _testRepo = null;
+            SetTestRepo();
+        }
+        public static void Setup(List<Category> testlist){
+            SetTestRepo();
+            foreach (var item in testlist)
+            {
+                _testRepo._items.Add(item);
+            }
+        }
+        public static void Setup(Category item) {
+            SetTestRepo();
+            _testRepo._items.Add(item);
+        }
+        public static void Setup(int testItems) {
+            SetTestRepo();
+            for(int i=0;i<testItems;i++){
+                Category item=new Category();
+                _testRepo._items.Add(item);
+            }
+        }
+        
+        public bool TestMode = false;
+
+
+        #endregion
+
+        IRepository<Category> _repo;
+        ITable tbl;
+        bool _isNew;
+        public bool IsNew(){
+            return _isNew;
+        }
+        
+        public void SetIsLoaded(bool isLoaded){
+            _isLoaded=isLoaded;
+            if(isLoaded)
+                OnLoaded();
+        }
+        
+        public void SetIsNew(bool isNew){
+            _isNew=isNew;
+        }
+        bool _isLoaded;
+        public bool IsLoaded(){
+            return _isLoaded;
+        }
+                
+        List<IColumn> _dirtyColumns;
+        public bool IsDirty(){
+            return _dirtyColumns.Count>0;
+        }
+        
+        public List<IColumn> GetDirtyColumns (){
+            return _dirtyColumns;
+        }
+
+        SouthWind.NorthwindDB _db;
+        public Category(string connectionString, string providerName) {
+
+            _db=new SouthWind.NorthwindDB(connectionString, providerName);
+            Init();            
+         }
+        void Init(){
+            TestMode=this._db.DataProvider.ConnectionString.Equals("test", StringComparison.InvariantCultureIgnoreCase);
+            _dirtyColumns=new List<IColumn>();
+            if(TestMode){
+                Category.SetTestRepo();
+                _repo=_testRepo;
+            }else{
+                _repo = new SubSonicRepository<Category>(_db);
+            }
+            tbl=_repo.GetTable();
+            SetIsNew(true);
+            OnCreated();       
+
+        }
+        
+        public Category(){
+             _db=new SouthWind.NorthwindDB();
+            Init();            
+        }
+        
+       
+        partial void OnCreated();
+            
+        partial void OnLoaded();
+        
+        partial void OnSaved();
+        
+        partial void OnChanged();
+        
+        public IList<IColumn> Columns{
+            get{
+                return tbl.Columns;
+            }
+        }
+
+        public Category(Expression<Func<Category, bool>> expression):this() {
+
+            SetIsLoaded(_repo.Load(this,expression));
+        }
+        
+       
+        
+        internal static IRepository<Category> GetRepo(string connectionString, string providerName){
+            SouthWind.NorthwindDB db;
+            if(String.IsNullOrEmpty(connectionString)){
+                db=new SouthWind.NorthwindDB();
+            }else{
+                db=new SouthWind.NorthwindDB(connectionString, providerName);
+            }
+            IRepository<Category> _repo;
+            
+            if(db.TestMode){
+                Category.SetTestRepo();
+                _repo=_testRepo;
+            }else{
+                _repo = new SubSonicRepository<Category>(db);
+            }
+            return _repo;        
+        }       
+        
+        internal static IRepository<Category> GetRepo(){
+            return GetRepo("","");
+        }
+        
+        public static Category SingleOrDefault(Expression<Func<Category, bool>> expression) {
+
+            var repo = GetRepo();
+            var results=repo.Find(expression);
+            Category single=null;
+            if(results.Count() > 0){
+                single=results.ToList()[0];
+                single.OnLoaded();
+                single.SetIsLoaded(true);
+                single.SetIsNew(false);
+            }
+
+            return single;
+        }      
+        
+        public static Category SingleOrDefault(Expression<Func<Category, bool>> expression,string connectionString, string providerName) {
+            var repo = GetRepo(connectionString,providerName);
+            var results=repo.Find(expression);
+            Category single=null;
+            if(results.Count() > 0){
+                single=results.ToList()[0];
+            }
+
+            return single;
+
+
+        }
+        
+        
+        public static bool Exists(Expression<Func<Category, bool>> expression,string connectionString, string providerName) {
+           
+            return All(connectionString,providerName).Any(expression);
+        }        
+        public static bool Exists(Expression<Func<Category, bool>> expression) {
+           
+            return All().Any(expression);
+        }        
+
+        public static IList<Category> Find(Expression<Func<Category, bool>> expression) {
+            
+            var repo = GetRepo();
+            return repo.Find(expression).ToList();
+        }
+        
+        public static IList<Category> Find(Expression<Func<Category, bool>> expression,string connectionString, string providerName) {
+
+            var repo = GetRepo(connectionString,providerName);
+            return repo.Find(expression).ToList();
+
+        }
+        public static IQueryable<Category> All(string connectionString, string providerName) {
+            return GetRepo(connectionString,providerName).GetAll();
+        }
+        public static IQueryable<Category> All() {
+            return GetRepo().GetAll();
+        }
+        
+        public static PagedList<Category> GetPaged(string sortBy, int pageIndex, int pageSize,string connectionString, string providerName) {
+            return GetRepo(connectionString,providerName).GetPaged(sortBy, pageIndex, pageSize);
+        }
+      
+        public static PagedList<Category> GetPaged(string sortBy, int pageIndex, int pageSize) {
+            return GetRepo().GetPaged(sortBy, pageIndex, pageSize);
+        }
+
+        public static PagedList<Category> GetPaged(int pageIndex, int pageSize,string connectionString, string providerName) {
+            return GetRepo(connectionString,providerName).GetPaged(pageIndex, pageSize);
+            
+        }
+
+
+        public static PagedList<Category> GetPaged(int pageIndex, int pageSize) {
+            return GetRepo().GetPaged(pageIndex, pageSize);
+            
+        }
+
+        public string KeyName()
+        {
+            return "CategoryID";
+        }
+
+        public object KeyValue()
+        {
+            return this.CategoryID;
+        }
+        
+        public void SetKeyValue(object value) {
+            if (value != null && value!=DBNull.Value) {
+                var settable = value.ChangeTypeTo<int>();
+                this.GetType().GetProperty(this.KeyName()).SetValue(this, settable, null);
+            }
+        }
+        
+        public override string ToString(){
+                            return this.CategoryName.ToString();
+                    }
+
+        public override bool Equals(object obj){
+            if(obj.GetType()==typeof(Category)){
+                Category compare=(Category)obj;
+                return compare.KeyValue()==this.KeyValue();
+            }else{
+                return base.Equals(obj);
+            }
+        }
+
+        
+        public override int GetHashCode() {
+            return this.CategoryID;
+        }
+        
+        public string DescriptorValue()
+        {
+                            return this.CategoryName.ToString();
+                    }
+
+        public string DescriptorColumn() {
+            return "CategoryName";
+        }
+        public static string GetKeyColumn()
+        {
+            return "CategoryID";
+        }        
+        public static string GetDescriptorColumn()
+        {
+            return "CategoryName";
+        }
+        
+        #region ' Foreign Keys '
+        public IQueryable<Product> Products
+        {
+            get
+            {
+                
+                  var repo=SouthWind.Product.GetRepo();
+                  return from items in repo.GetAll()
+                       where items.CategoryID == _CategoryID
+                       select items;
+            }
+        }
+
+        #endregion
+        
+
+        int _CategoryID;
+        public int CategoryID
+        {
+            get { return _CategoryID; }
+            set
+            {
+                if(_CategoryID!=value){
+                    _CategoryID=value;
+                    var col=tbl.Columns.SingleOrDefault(x=>x.Name=="CategoryID");
+                    if(col!=null){
+                        if(!_dirtyColumns.Any(x=>x.Name==col.Name) && _isLoaded){
+                            _dirtyColumns.Add(col);
+                        }
+                    }
+                    OnChanged();
+                }
+            }
+        }
+
+        string _CategoryName;
+        public string CategoryName
+        {
+            get { return _CategoryName; }
+            set
+            {
+                if(_CategoryName!=value){
+                    _CategoryName=value;
+                    var col=tbl.Columns.SingleOrDefault(x=>x.Name=="CategoryName");
+                    if(col!=null){
+                        if(!_dirtyColumns.Any(x=>x.Name==col.Name) && _isLoaded){
+                            _dirtyColumns.Add(col);
+                        }
+                    }
+                    OnChanged();
+                }
+            }
+        }
+
+        string _Description;
+        public string Description
+        {
+            get { return _Description; }
+            set
+            {
+                if(_Description!=value){
+                    _Description=value;
+                    var col=tbl.Columns.SingleOrDefault(x=>x.Name=="Description");
+                    if(col!=null){
+                        if(!_dirtyColumns.Any(x=>x.Name==col.Name) && _isLoaded){
+                            _dirtyColumns.Add(col);
+                        }
+                    }
+                    OnChanged();
+                }
+            }
+        }
+
+        byte[] _Picture;
+        public byte[] Picture
+        {
+            get { return _Picture; }
+            set
+            {
+                if(_Picture!=value){
+                    _Picture=value;
+                    var col=tbl.Columns.SingleOrDefault(x=>x.Name=="Picture");
+                    if(col!=null){
+                        if(!_dirtyColumns.Any(x=>x.Name==col.Name) && _isLoaded){
+                            _dirtyColumns.Add(col);
+                        }
+                    }
+                    OnChanged();
+                }
+            }
+        }
+
+
+
+        public DbCommand GetUpdateCommand() {
+            if(TestMode)
+                return _db.DataProvider.CreateCommand();
+            else
+                return this.ToUpdateQuery(_db.Provider).GetCommand().ToDbCommand();
+            
+        }
+        public DbCommand GetInsertCommand() {
+ 
+            if(TestMode)
+                return _db.DataProvider.CreateCommand();
+            else
+                return this.ToInsertQuery(_db.Provider).GetCommand().ToDbCommand();
+        }
+        
+        public DbCommand GetDeleteCommand() {
+            if(TestMode)
+                return _db.DataProvider.CreateCommand();
+            else
+                return this.ToDeleteQuery(_db.Provider).GetCommand().ToDbCommand();
+        }
+       
+        
+        public void Update(){
+            Update(_db.DataProvider);
+        }
+        
+        public void Update(IDataProvider provider){
+        
+            
+            if(this._dirtyColumns.Count>0)
+                _repo.Update(this,provider);
+            OnSaved();
+       }
+ 
+        public void Add(){
+            Add(_db.DataProvider);
+        }
+        
+        
+       
+        public void Add(IDataProvider provider){
+
+            
+            var key=KeyValue();
+            if(key==null){
+                var newKey=_repo.Add(this,provider);
+                this.SetKeyValue(newKey);
+            }else{
+                _repo.Add(this,provider);
+            }
+            SetIsNew(false);
+            OnSaved();
+        }
+        
+                
+        
+        public void Save() {
+            Save(_db.DataProvider);
+        }      
+        public void Save(IDataProvider provider) {
+            
+           
+            if (_isNew) {
+                Add(provider);
+                
+            } else {
+                Update(provider);
+            }
+            
+        }
+
+        
+
+        public void Delete(IDataProvider provider) {
+                   
+                 
+            _repo.Delete(KeyValue());
+            
+                    }
+
+
+        public void Delete() {
+            Delete(_db.DataProvider);
+        }
+
+
+        public static void Delete(Expression<Func<Category, bool>> expression) {
+            var repo = GetRepo();
+            
+       
+            
+            repo.DeleteMany(expression);
+            
+        }
+
+        
+
+        public void Load(IDataReader rdr) {
+            Load(rdr, true);
+        }
+        public void Load(IDataReader rdr, bool closeReader) {
+            if (rdr.Read()) {
+
+                try {
+                    rdr.Load(this);
+                    SetIsNew(false);
+                    SetIsLoaded(true);
+                } catch {
+                    SetIsLoaded(false);
+                    throw;
+                }
+            }else{
+                SetIsLoaded(false);
+            }
+
+            if (closeReader)
+                rdr.Dispose();
+        }
+        
+
+    } 
 }
