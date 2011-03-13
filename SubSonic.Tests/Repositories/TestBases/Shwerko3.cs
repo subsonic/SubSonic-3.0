@@ -16,7 +16,7 @@ namespace SubSonic.Tests.Repositories.TestBases
 		 public decimal? NullSomeNumber { get; set; }
 		 public int Underscored_Column { get; set; }
 
-		 [SubSonicColumnNameOverride("FunkyName$#")]
+		 [SubSonicColumnNameOverride("FünkyName$")]
 		 public decimal FunkyName { get; set; }
     }
 }
