@@ -110,13 +110,15 @@ namespace SubSonic.DataProviders.SqlServer
                     return "float";
                 case DbType.Guid:
                     return "uniqueidentifier";
-                case DbType.UInt32:
                 case DbType.UInt16:
                 case DbType.Int16:
+                    return "smallint";
+                case DbType.UInt32:
                 case DbType.Int32:
+                    return "int";
                 case DbType.UInt64:
                 case DbType.Int64:
-                    return "int";
+                    return "bigint";
                 case DbType.Single:
                     return "real";
                 case DbType.VarNumeric:

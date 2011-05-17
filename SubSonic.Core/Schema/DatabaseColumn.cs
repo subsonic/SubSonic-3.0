@@ -172,7 +172,7 @@ namespace SubSonic.Schema
 
         public override bool Equals(object obj)
         {
-            if(obj.GetType() == typeof(IColumn))
+            if (obj.GetType() == typeof(DatabaseColumn))
             {
                 DatabaseColumn compareTo = (DatabaseColumn)obj;
 
