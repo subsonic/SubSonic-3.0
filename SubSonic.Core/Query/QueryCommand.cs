@@ -268,6 +268,9 @@ namespace SubSonic.Query
                                            DataType = dbType
                                        };
 
+            if(maxSize > -1 )
+                param.Size = maxSize;
+
             parameters.Add(param);
         }
 
