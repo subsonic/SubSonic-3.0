@@ -76,6 +76,9 @@
     <Compile Include="DataProviders\IInterceptionStrategy.cs" />
     <Compile Include="DataProviders\LazyLoadInterceptor.cs" />
     <Compile Include="DataProviders\IQueryLanguage.cs" />
+    <Compile Include="DataProviders\Log\DelegatingLogAdapter.cs" />
+    <Compile Include="DataProviders\Log\ILogAdapter.cs" />
+    <Compile Include="DataProviders\Log\TextWriterLogAdapter.cs" />
     <Compile Include="DataProviders\MySQL\MySqlProvider.cs" />
     <Compile Include="DataProviders\SqlServer\SqlServerProvider.cs" />
     <Compile Include="DataProviders\SQLite\SQLiteProvider.cs" />
@@ -225,6 +228,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

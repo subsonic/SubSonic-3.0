@@ -18,6 +18,7 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using SubSonic.DataProviders.Log;
 using SubSonic.Extensions;
 using SubSonic.Query;
 using SubSonic.Schema;
@@ -34,7 +35,9 @@ namespace SubSonic.DataProviders
         [ThreadStatic]
         private static DbConnection __sharedConnection;
 
-		public IInterceptionStrategy InterceptionStrategy { get; set; }
+        private ILogAdapter _logger;
+
+        public IInterceptionStrategy InterceptionStrategy { get; set; }
 
         protected DbDataProvider(string connectionString, string providerName)
         {
@@ -98,7 +101,34 @@ namespace SubSonic.DataProviders
             return new ANSISqlGenerator(query);
         }
 
-        public TextWriter Log { get; set; }
+        public TextWriter Log
+        {
+            get
+            {
+                if (_logger == null)
+                {
+                    return null;
+                }
+
+                if (!(_logger is TextWriterLogAdapter))
+                {
+                    throw new InvalidOperationException("Logger that is currently used is not based on TextWriter");
+                }
+
+                return ((TextWriterLogAdapter) _logger).Writer;
+            }
+            set { _logger = new TextWriterLogAdapter(value); }
+        }
+
+        public void SetLogger(ILogAdapter logger)
+        {
+            _logger = logger;
+        }
+
+        public void SetLogger(Action<String> logger)
+        {
+            _logger = new DelegatingLogAdapter(logger);
+        }
 
         public IDatabaseSchema Schema { get; private set; }
 
@@ -511,9 +541,9 @@ namespace SubSonic.DataProviders
 
         private void WriteToLog(Func<string> logMessage)
         {
-            if (Log != null)
+            if (_logger != null)
             {
-                Log.WriteLine(logMessage());
+                _logger.Log(logMessage());
             }
         }
     }

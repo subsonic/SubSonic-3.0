@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SubSonic.DataProviders;
+using SubSonic.DataProviders.Log;
 using SubSonic.Query;
 using SubSonic.Repository;
 using Xunit;
@@ -35,7 +36,7 @@ namespace SubSonic.Tests.Repositories
 
         public SimpleRepositoryTests(IDataProvider provider)
         {
-            provider.Log = Console.Out;
+            provider.SetLogger(new TextWriterLogAdapter(Console.Out));
             _repo = new SimpleRepository(provider, SimpleRepositoryOptions.RunMigrations);
 
             TestSupport.CleanTables(provider,

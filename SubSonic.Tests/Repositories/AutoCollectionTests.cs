@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SubSonic.DataProviders;
+using SubSonic.DataProviders.Log;
 using SubSonic.Query;
 using SubSonic.Repository;
 using Xunit;
@@ -31,10 +32,10 @@ namespace SubSonic.Tests.Repositories
         private readonly DbDataProvider _provider;
         private readonly IRepository _repo;
 
-        public AutoCollectionTests(IDataProvider provider)
+        protected AutoCollectionTests(IDataProvider provider)
         {
             _provider = (DbDataProvider)provider;
-            _provider.Log = Console.Out;
+            _provider.SetLogger(new TextWriterLogAdapter(Console.Out));
             _repo = new SimpleRepository(_provider, SimpleRepositoryOptions.RunMigrations);
 
             TestSupport.CleanTables(_provider, "Directors", "Movies", "Comments", "NonVirtualRelationProperties");

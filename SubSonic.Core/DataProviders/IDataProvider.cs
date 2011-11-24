@@ -17,6 +17,7 @@ using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Reflection;
+using SubSonic.DataProviders.Log;
 using SubSonic.Query;
 using SubSonic.Schema;
 using SubSonic.SqlGeneration.Schema;
@@ -25,14 +26,17 @@ using SubSonic.Linq.Structure;
 
 namespace SubSonic.DataProviders
 {
- 
     public interface IDataProvider
     {
 
         //execution
         string DbDataProviderName { get; }
         string Name { get; }
+        [Obsolete("Use SetLogger method instead")]
         TextWriter Log { get; set; }
+
+        void SetLogger(ILogAdapter logger);
+        void SetLogger(Action<String> logger);
 
         /// <summary>
         /// Holds list of tables, views, stored procedures, etc.
