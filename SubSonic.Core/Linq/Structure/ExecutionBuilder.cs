@@ -20,7 +20,9 @@ namespace SubSonic.Linq.Structure
     /// </summary>
     public class ExecutionBuilder : DbExpressionVisitor
     {
-        private static IDictionary<Type, Expression> defaultValueActiviationDictionary = new Dictionary<Type, Expression>();
+        private static readonly IDictionary<Type, Expression> defaultValueActiviationDictionary = new Dictionary<Type, Expression>();
+        private static readonly IDictionary<Type, ConstantExpression> nonNullableTypeExpressionDictionary = new Dictionary<Type, ConstantExpression>();
+        private static readonly IDictionary<Type, string> readerGetValue;
 
         private readonly List<Expression> initializers = new List<Expression>();
         private readonly QueryPolicy policy;
@@ -31,6 +33,22 @@ namespace SubSonic.Linq.Structure
         private int nReaders;
         private MemberInfo receivingMember;
         private Scope scope;
+
+        static ExecutionBuilder()
+        {
+            readerGetValue = new Dictionary<Type, string>();
+            readerGetValue.Add(typeof(Boolean), "GetBoolean");
+            readerGetValue.Add(typeof(Byte), "GetByte");
+            readerGetValue.Add(typeof(DateTime), "GetDateTime");
+            readerGetValue.Add(typeof(Decimal), "GetDecimal");
+            readerGetValue.Add(typeof(Double), "GetDouble");
+            readerGetValue.Add(typeof(Single), "GetFloat");
+            readerGetValue.Add(typeof(Guid), "GetGuid");
+            readerGetValue.Add(typeof(Int16), "GetInt16");
+            readerGetValue.Add(typeof(Int32), "GetInt32");
+            readerGetValue.Add(typeof(Int64), "GetInt64");
+            readerGetValue.Add(typeof(String), "GetString");
+        }
 
         private ExecutionBuilder(QueryPolicy policy, Expression provider)
         {
@@ -308,16 +326,31 @@ namespace SubSonic.Linq.Structure
                     }
                 }
 
-                // this sucks, but since we don't track true SQL types through the query, and ADO throws exception if you
-                // call the wrong accessor, the best we can do is call GetValue and Convert.ChangeType
-                Expression value = Expression.Convert(
-                    Expression.Call(typeof (Convert), "ChangeType", null,
-                                    Expression.Call(reader, "GetValue", null, Expression.Constant(iOrdinal)),
-                                    Expression.Constant(TypeHelper.GetNonNullableType(column.Type), typeof(Type))
-                        ),
-                    column.Type
-                    );
-
+                // If we know what method to call on DbDataReader (as defined by the dictionary),
+                // then use that method. (Int32 => GetInt32, String => GetString, etc.) If we don't
+                // know the type, then default to our original code.
+                Expression value;
+                string methodName;
+                if (readerGetValue.TryGetValue(column.Type, out methodName))
+                {
+                    value = Expression.Call(reader, methodName, null, Expression.Constant(iOrdinal));
+                }
+                else
+                {
+                    ConstantExpression typeConstantExpression;
+                    if (!nonNullableTypeExpressionDictionary.TryGetValue(column.Type, out typeConstantExpression))
+                    {
+                        typeConstantExpression = Expression.Constant(TypeHelper.GetNonNullableType(column.Type), typeof(Type));
+                        nonNullableTypeExpressionDictionary.Add(column.Type, typeConstantExpression);
+                    }
+                    value = Expression.Convert(
+                        Expression.Call(typeof(Convert), "ChangeType", null,
+                                        Expression.Call(reader, "GetValue", null, Expression.Constant(iOrdinal)),
+                                        typeConstantExpression
+                            ),
+                        column.Type
+                        );
+                }
                 return Expression.Condition(
                     Expression.Call(reader, "IsDBNull", null, Expression.Constant(iOrdinal)),
                     defvalue, value
