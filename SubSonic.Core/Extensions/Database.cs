@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using SubSonic.DataProviders;
 using SubSonic.Query;
 using SubSonic.Schema;
@@ -172,21 +173,21 @@ namespace SubSonic.Extensions
                     if(valueType == typeof(Boolean))
                     {
                         string value = rdr.GetValue(i).ToString();
-                        currentProp.SetValue(item, value == "1" || value == "True", null);
+                        currentProp.SetValueFast(item, value == "1" || value == "True");
                     }
                     else if(currentProp.PropertyType == typeof(Guid))
                     {
-						currentProp.SetValue(item, rdr.GetGuid(i), null);
+						currentProp.SetValueFast(item, rdr.GetGuid(i));
 					}
 					else if (Objects.IsNullableEnum(currentProp.PropertyType))
 					{
 						var nullEnumObjectValue = Enum.ToObject(Nullable.GetUnderlyingType(currentProp.PropertyType), rdr.GetValue(i));
-						currentProp.SetValue(item, nullEnumObjectValue, null);
+						currentProp.SetValueFast(item, nullEnumObjectValue);
 					}
                     else if (currentProp.PropertyType.IsEnum)
                     {
                         var enumValue = Enum.ToObject(currentProp.PropertyType, rdr.GetValue(i));
-                        currentProp.SetValue(item, enumValue, null);
+						currentProp.SetValueFast(item, enumValue);
                     }
                     else{
 
@@ -194,9 +195,9 @@ namespace SubSonic.Extensions
 					    var valType = val.GetType();
                         //try to assign it
                         if (currentProp.PropertyType.IsAssignableFrom(valueType)) {
-                            currentProp.SetValue(item, val, null);
+							currentProp.SetValueFast(item, val);
                         } else {
-                            currentProp.SetValue(item, val.ChangeTypeTo(currentProp.PropertyType), null);
+							currentProp.SetValueFast(item, val.ChangeTypeTo(currentProp.PropertyType));
                         }
 					}
                 }
@@ -493,6 +494,54 @@ namespace SubSonic.Extensions
                     query.Constraints = item.ToConstraintList();
             }
             return query;
-        }
-    }
+		}
+
+		#region FastPropertySet / DynamicMethods
+
+		private delegate void DynamicSet(object target, object value);
+		private static readonly Dictionary<PropertyInfo, DynamicSet> _dynamicSetMethods
+			= new Dictionary<PropertyInfo, DynamicSet>();
+
+		// TODO: Dynamic Set Methods for Fields
+
+		/// <summary>
+		/// Sets a value of a property not via reflection, but via a dynamic method.
+		/// </summary>
+		public static void SetValueFast(this PropertyInfo me, object target, object value)
+		{
+			DynamicSet dynamicSetMethod;
+			if (!_dynamicSetMethods.TryGetValue(me, out dynamicSetMethod))
+			{
+				// Generate the dynamic set method.
+				// OPT: Generate one assembly directly for all property infos of the declaring type.
+
+				var declaringType = me.DeclaringType;
+				var method = new DynamicMethod(
+					"Set" + me.Name,
+					null,
+					new[]
+						{
+							typeof (object), 
+							typeof (object)
+						},
+					true);
+				var gen = method.GetILGenerator();
+
+				var setter = me.GetSetMethod(true);
+				gen.Emit(OpCodes.Ldarg_0); // Load input to stack
+				gen.Emit(OpCodes.Castclass, declaringType); // Cast to source type
+				gen.Emit(OpCodes.Ldarg_1); // Load value to stack
+				gen.Emit(OpCodes.Unbox_Any, me.PropertyType); // Unbox the value to its proper value type
+				gen.Emit(OpCodes.Callvirt, setter); // Call the setter method
+				gen.Emit(OpCodes.Ret);
+
+				dynamicSetMethod = (DynamicSet)method.CreateDelegate(typeof(DynamicSet));
+				_dynamicSetMethods[me] = dynamicSetMethod;
+			}
+
+			dynamicSetMethod(target, value);
+		}
+
+		#endregion
+	}
 }
