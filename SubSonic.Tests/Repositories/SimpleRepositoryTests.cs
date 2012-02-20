@@ -27,7 +27,8 @@ namespace SubSonic.Tests.Repositories
 {
     public abstract class SimpleRepositoryTests
     {
-        private readonly IRepository _repo;
+		 protected readonly IDataProvider _provider;
+		  protected readonly IRepository _repo;
 
         protected virtual string[] StringNumbers
         {
@@ -48,22 +49,22 @@ namespace SubSonic.Tests.Repositories
             _repo = repo;
         }
 
-        private Shwerko CreateTestRecord(Guid key)
+		  protected Shwerko CreateTestRecord(Guid key)
         {
             return CreateTestRecord(key, (s) => { });
         }
 
-        private Shwerko CreateTestRecord(Guid key, Action<Shwerko> withValuesApplied)
+		  protected Shwerko CreateTestRecord(Guid key, Action<Shwerko> withValuesApplied)
         {
             return CreateTestRecord<Shwerko>(key, withValuesApplied);
         }
 
-        private T CreateTestRecord<T>(Guid key) where T : IShwerko, new()
+        protected T CreateTestRecord<T>(Guid key) where T : IShwerko, new()
         {
             return CreateTestRecord<T>(key, x => { });
         }
 
-        private T CreateTestRecord<T>(Guid key, Action<T> withValuesApplied) where T : IShwerko, new()
+		  protected T CreateTestRecord<T>(Guid key, Action<T> withValuesApplied) where T : IShwerko, new()
         {
             var item = new T();
             item.Key = key;
