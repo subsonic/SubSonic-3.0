@@ -27,168 +27,175 @@ using SubSonic.Tests.Repositories.TestBases;
 
 namespace SubSonic.Tests.Repositories
 {
-    public abstract class AutoCollectionTests
-    {
-        private readonly DbDataProvider _provider;
-        private readonly IRepository _repo;
+	public abstract class AutoCollectionTests
+	{
+		private readonly DbDataProvider _provider;
+		private readonly IRepository _repo;
 
-        protected AutoCollectionTests(IDataProvider provider)
-        {
-            _provider = (DbDataProvider)provider;
-            _provider.SetLogger(new TextWriterLogAdapter(Console.Out));
-            _repo = new SimpleRepository(_provider, SimpleRepositoryOptions.RunMigrations);
+		protected AutoCollectionTests(IDataProvider provider)
+		{
+			_provider = (DbDataProvider)provider;
+			_provider.SetLogger(new TextWriterLogAdapter(Console.Out));
+			_repo = new SimpleRepository(_provider, SimpleRepositoryOptions.RunMigrations);
 
-            TestSupport.CleanTables(_provider, "Directors", "Movies", "Comments", "NonVirtualRelationProperties");
-        }
+			TestSupport.CleanTables(_provider, "Directors", "Movies", "Comments", "NonVirtualRelationProperties");
+		}
 
-        [Fact]
-        public void Simple_Repo_Should_Lazy_Load_1toN_Relation()
-        {
-            GivenMovies();
+		[Fact]
+		public void Simple_Repo_Should_Lazy_Load_1toN_Relation()
+		{
+			GivenMovies();
 
-            var director = _repo.All<Director>().FirstOrDefault();
+			var director = _repo.All<Director>().FirstOrDefault();
 
-            Assert.NotNull(director.Movies);
-        }
+			Assert.NotNull(director.Movies);
+		}
 
-        [Fact]
-        public void Simple_Repo_Should_Lazy_Load_1toN_Relation_Of_Relation()
-        {
-            GivenMovies();
+		[Fact]
+		public void Simple_Repo_Should_Lazy_Load_1toN_Relation_Of_Relation()
+		{
+			GivenMovies();
 
-            var director = _repo.All<Director>().FirstOrDefault();
+			var director = _repo.All<Director>().FirstOrDefault();
 
-            Assert.NotNull(director.Movies);
+			Assert.NotNull(director.Movies);
 
-            foreach (var movie in director.Movies)
-            {
-                Assert.NotNull(movie.Comments);
-            }
-        }
+			foreach (var movie in director.Movies)
+			{
+				Assert.NotNull(movie.Comments);
+			}
+		}
 
-        [Fact]
-        public void Simple_Repo_Should_Lazy_Load_1toN_Relation_Only_Once()
-        {
-            GivenMovies();
+		[Fact]
+		public void Simple_Repo_Should_Lazy_Load_1toN_Relation_Only_Once()
+		{
+			GivenMovies();
 
-            var director = _repo.All<Director>().FirstOrDefault();
+			var director = _repo.All<Director>().FirstOrDefault();
 
-            Assert.NotNull(director.Movies);
+			Assert.NotNull(director.Movies);
 
-            _provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
+			_provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
 
-            Assert.DoesNotThrow(() => {
-                var someAccess = director.Movies[0];
-            });
-        }
+			var ex = Record.Exception(() =>
+			{
+				var someAccess = director.Movies[0];
+			});
+			Assert.Null(ex);
+		}
 
-        [Fact]
-        public void Simple_Repo_Should_Lazy_Not_Reload_Set_Properties_for_1toN_Relation()
-        {
-            GivenMovies();
+		[Fact]
+		public void Simple_Repo_Should_Lazy_Not_Reload_Set_Properties_for_1toN_Relation()
+		{
+			GivenMovies();
 
-            var director = _repo.All<Director>().FirstOrDefault();
-            director.Movies = new List<Movie>();
+			var director = _repo.All<Director>().FirstOrDefault();
+			director.Movies = new List<Movie>();
 
-            _provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
+			_provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
 
-            Assert.DoesNotThrow(() =>
-            {
-                var someAccess = director.Movies;
-            });
-        }
+			var ex = Record.Exception(() =>
+			{
+				var someAccess = director.Movies;
+			});
+			Assert.Null(ex);
+		}
 
-        [Fact]
-        public void Simple_Repo_Should_Lazy_Load_1to1_Relation_Only_Once()
-        {
-            GivenMovies();
+		[Fact]
+		public void Simple_Repo_Should_Lazy_Load_1to1_Relation_Only_Once()
+		{
+			GivenMovies();
 
-            var movie = _repo.All<Movie>().FirstOrDefault();
+			var movie = _repo.All<Movie>().FirstOrDefault();
 
-            Assert.NotNull(movie.Director);
+			Assert.NotNull(movie.Director);
 
-            _provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
+			_provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
 
-            Assert.DoesNotThrow(() =>
-            {
-                var someAccess = movie.Director.Name;
-            });
-        }
+			var ex = Record.Exception(() =>
+			{
+				var someAccess = movie.Director.Name;
+			});
+			Assert.Null(ex);
+		}
 
-        [Fact]
-        public void Simple_Repo_Should_Lazy_Not_Reload_Set_Properties_for_1to1_Relation()
-        {
-            GivenMovies();
+		[Fact]
+		public void Simple_Repo_Should_Lazy_Not_Reload_Set_Properties_for_1to1_Relation()
+		{
+			GivenMovies();
 
-            var movie = _repo.All<Movie>().FirstOrDefault();
-            movie.Director = new Director { Name = "Unknown" };
+			var movie = _repo.All<Movie>().FirstOrDefault();
+			movie.Director = new Director { Name = "Unknown" };
 
-            _provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
+			_provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
 
-            Assert.DoesNotThrow(() =>
-            {
-                var someAccess = movie.Director;
-            });
-        }
+			var ex = Record.Exception(() =>
+			{
+				var someAccess = movie.Director;
+			});
+			Assert.Null(ex);
+		}
 
-        [Fact]
-        public void Simple_Repo_Should_Lazy_Load_1to1_Relation()
-        {
-            GivenMovies();
+		[Fact]
+		public void Simple_Repo_Should_Lazy_Load_1to1_Relation()
+		{
+			GivenMovies();
 
-            var movie = _repo.All<Movie>().FirstOrDefault();
+			var movie = _repo.All<Movie>().FirstOrDefault();
 
-            Assert.NotNull(movie.Director);
-        }
+			Assert.NotNull(movie.Director);
+		}
 
-        [Fact]
-        public void Simple_Repo_Should_Lazy_Load_1to1_Relation_With_Inverted_Relation()
-        {
-            GivenMovies();
+		[Fact]
+		public void Simple_Repo_Should_Lazy_Load_1to1_Relation_With_Inverted_Relation()
+		{
+			GivenMovies();
 
-            var movie = _repo.All<Movie>().FirstOrDefault();
+			var movie = _repo.All<Movie>().FirstOrDefault();
 
-            Assert.NotNull(movie.Plot);
-        }
+			Assert.NotNull(movie.Plot);
+		}
 
-        [Fact]
-        public void NonVirtual_Relation_Property_Should_Throw_An_Exception()
-        {
-            Assert.Throws<InvalidOperationException>(() => {
-                _repo.Add(new NonVirtualRelationProperty { DirectorId = 1 });
-            });
-        }
+		[Fact]
+		public void NonVirtual_Relation_Property_Should_Throw_An_Exception()
+		{
+			Assert.Throws<InvalidOperationException>(() =>
+			{
+				_repo.Add(new NonVirtualRelationProperty { DirectorId = 1 });
+			});
+		}
 
-        private void GivenMovies()
-        {
-            var director = new Director { Name = "Martin Scorsese" };
-            _repo.Add(director);
+		private void GivenMovies()
+		{
+			var director = new Director { Name = "Martin Scorsese" };
+			_repo.Add(director);
 
-            var movie = new Movie { DirectorId = director.Id, Title="Taxi Driver" };
-            _repo.Add(movie);
+			var movie = new Movie { DirectorId = director.Id, Title = "Taxi Driver" };
+			_repo.Add(movie);
 
-            var plot = new Plot() {
-                Movie = movie.Id,
-                PlotWithoutSpoiler = "Taxi Driver meets girl",
-                PlotWithSpoiler = "Taxi Driver meets girl and life goes down the sewer!",
-                Tagline = "Taxi Driver, Girl, Sewer"
-            };
-            _repo.Add(plot);
+			var plot = new Plot()
+			{
+				Movie = movie.Id,
+				PlotWithoutSpoiler = "Taxi Driver meets girl",
+				PlotWithSpoiler = "Taxi Driver meets girl and life goes down the sewer!",
+				Tagline = "Taxi Driver, Girl, Sewer"
+			};
+			_repo.Add(plot);
 
-            var comment = new Comment { MovieId = movie.Id, Author = "donna", Text="Great!" };
-            _repo.Add(comment);
+			var comment = new Comment { MovieId = movie.Id, Author = "donna", Text = "Great!" };
+			_repo.Add(comment);
 
-            comment = new Comment { MovieId = movie.Id, Author= "spiderman", Text="w00t!" };
-            _repo.Add(comment);
+			comment = new Comment { MovieId = movie.Id, Author = "spiderman", Text = "w00t!" };
+			_repo.Add(comment);
 
-            movie = new Movie { DirectorId = director.Id, Title = "Goodfellas" };
-            _repo.Add(movie);
+			movie = new Movie { DirectorId = director.Id, Title = "Goodfellas" };
+			_repo.Add(movie);
 
-            comment = new Comment { MovieId = movie.Id, Author = "martin", Text = "That's me at my best!" };
-            _repo.Add(comment);
+			comment = new Comment { MovieId = movie.Id, Author = "martin", Text = "That's me at my best!" };
+			_repo.Add(comment);
 
-            comment = new Comment { MovieId = movie.Id, Author = "sometimes", Text = "Yes! Gangsters!" };
-            _repo.Add(comment);
-        }
-    }
+			comment = new Comment { MovieId = movie.Id, Author = "sometimes", Text = "Yes! Gangsters!" };
+			_repo.Add(comment);
+		}
+	}
 }

@@ -46,12 +46,12 @@ namespace SubSonic.Repository
 				/// <summary>
 				/// Loads a T object
 				/// </summary>
-				/// <typeparam name="T"></typeparam>
+				/// <typeparam name="TLoad"></typeparam>
 				/// <param name="item">The item.</param>
 				/// <param name="column">The column.</param>
 				/// <param name="value">The value.</param>
 				/// <returns></returns>
-				public bool Load<T>(T item, string column, object value) where T : class, new()
+				public bool Load<TLoad>(TLoad item, string column, object value) where TLoad : class, new()
 				{
 					var qry = _db.Select.From(GetTable()).Where(column).IsEqualTo(value);
 					bool loaded = false;
@@ -70,11 +70,11 @@ namespace SubSonic.Repository
         /// <summary>
         /// Loads a T object
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TLoad"></typeparam>
         /// <param name="item">The item.</param>
         /// <param name="expression">The expression.</param>
         /// <returns></returns>
-				public bool Load<T>(T item, Expression<Func<T, bool>> expression) where T : class, new()
+				public bool Load<TLoad>(TLoad item, Expression<Func<TLoad, bool>> expression) where TLoad : class, new()
 				{
 					var qry = _db.Select.From(GetTable()).Where(expression);
 					bool loaded = false;

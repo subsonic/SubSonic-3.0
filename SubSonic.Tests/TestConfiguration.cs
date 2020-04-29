@@ -20,8 +20,8 @@ namespace SubSonic.Tests
     {
         private const string dataSourceParam = "Data Source=";
 
-        public const string MsSql2005TestConnectionString = @"server=.\SQLExpress;database=SubSonic;integrated security=true;";
-        public const string MsSql2008TestConnectionString = @"server=.\SQL2008;database=SubSonic;integrated security=true;";
+        public const string MsSql2005TestConnectionString = @"server=(localdb)\MSSQLLocalDB;database=SubSonic;integrated security=true;";
+        public const string MsSql2008TestConnectionString = @"server=(localdb)\MSSQLLocalDB;database=SubSonic;integrated security=true;";
         public const string MySqlTestConnectionString = "server=localhost;database=subsonic;user id=root; password=;";
 
         public static string SQLiteTestsFilePath

@@ -1,4 +1,4 @@
-<#@ template language="C#v3.5" debug="False" hostspecific="True"  #>
+<#@ template language="C#" debug="False" hostspecific="True"  #>
 <#@ output extension=".cs" #>
 <#@ include file="SQLServer.ttinclude" #>
 <#

@@ -23,47 +23,48 @@ using Xunit;
 
 namespace SubSonic.Tests.SimpleQuery
 {
-    public class QueryTests
-    {
-        private readonly TestDB _db;
-        private IDataProvider _provider;
+	public class QueryTests
+	{
+		private readonly TestDB _db;
+		private IDataProvider _provider;
 
-        public QueryTests()
-        {
-            _provider = ProviderFactory.GetProvider("WestWind");
+		public QueryTests()
+		{
+			_provider = ProviderFactory.GetProvider("WestWind");
 
-            _db = new TestDB(_provider);
-            var setup = new Setup(_provider);
-            setup.DropTestTables();
-            setup.CreateTestTable();
-            setup.LoadTestData();
-        }
+			_db = new TestDB(_provider);
+			var setup = new Setup(_provider);
+			setup.DropTestTables();
+			setup.CreateTestTable();
+			setup.LoadTestData();
+		}
 
-        [Fact]
-        public void Issue105_Query_Should_Load_BinaryFields()
-        {
-            var query = new Query<Product>(_provider);
-            var result = (from x in query select x).ToList();
+		[Fact]
+		public void Issue105_Query_Should_Load_BinaryFields()
+		{
+			var query = new Query<Product>(_provider);
+			var result = (from x in query select x).ToList();
 
-            Assert.False(result.Any(p => p.Image == null));
-        }
+			Assert.False(result.Any(p => p.Image == null));
+		}
 
-        [Fact]
-        public void Issue106_Guid_Should_Be_Allowed_In_Query()
-        {
-            var query = new Query<Product>(_provider);
-            var someGuid = Guid.NewGuid(); // Some guid - wedo not need to retrieve a value!
-            Assert.DoesNotThrow(() => query.Where(p => p.Sku == someGuid));
-        }
+		[Fact]
+		public void Issue106_Guid_Should_Be_Allowed_In_Query()
+		{
+			var query = new Query<Product>(_provider);
+			var someGuid = Guid.NewGuid(); // Some guid - wedo not need to retrieve a value!
+			var ex = Record.Exception(() => query.Where(p => p.Sku == someGuid));
+			Assert.Null(ex);
+		}
 
-        [Fact]
-        public void Issue106_Guid_In_Query_Should_Retrieve_Matching_Records()
-        {
-            var query = new Query<Product>(_provider);
-            var firstSku= query.First().Sku;
-            var result = query.Where(p => p.Sku == firstSku).ToList();
+		[Fact]
+		public void Issue106_Guid_In_Query_Should_Retrieve_Matching_Records()
+		{
+			var query = new Query<Product>(_provider);
+			var firstSku = query.First().Sku;
+			var result = query.Where(p => p.Sku == firstSku).ToList();
 
-            Assert.Equal(firstSku, result[0].Sku);
-        }
-    }
+			Assert.Equal(firstSku, result[0].Sku);
+		}
+	}
 }

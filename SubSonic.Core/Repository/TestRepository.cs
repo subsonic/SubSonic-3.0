@@ -101,7 +101,7 @@ namespace SubSonic.Repository
             return _db.FindTable(typeof(T).Name);
         }
 
-        public bool Load<T>(T item, string column, object value) where T : class, new()
+        public bool Load<TLoad>(TLoad item, string column, object value) where TLoad : class, new()
         {
             if(item is IActiveRecord)
             {
@@ -121,7 +121,7 @@ namespace SubSonic.Repository
             return true;
         }
 
-        public bool Load<T>(T item, Expression<Func<T, bool>> expression) where T : class, new()
+        public bool Load<TLoad>(TLoad item, Expression<Func<TLoad, bool>> expression) where TLoad : class, new()
         {
             return true;
         }
