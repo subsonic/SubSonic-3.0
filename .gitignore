@@ -21,6 +21,7 @@ Thumbs.db
 *.log
 *.swp
 *.user
+*.csproj.old
 _compareTemp
 _notes
 aspnet_client
@@ -38,3 +39,5 @@ build/*
 # *.dll
  
 /packages
+/MigrationBackup
+/.vs

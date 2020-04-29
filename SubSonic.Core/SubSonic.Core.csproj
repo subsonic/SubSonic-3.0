@@ -1,21 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{53FF90B2-2D33-4EC0-91B6-A30FDF1B3374}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SubSonic</RootNamespace>
-    <AssemblyName>SubSonic.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -31,39 +19,20 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <DocumentationFile>bin\Debug\SubSonic.Core.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.4.4.0\lib\net45\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
     <Reference Include="System.configuration" />
-    <Reference Include="System.Core">
+    <Reference Update="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data.Linq">
@@ -71,144 +40,6 @@
     </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Transactions" />
-    <Reference Include="System.XML" />
-    <Reference Include="System.Data" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="DataProviders\IInterceptionStrategy.cs" />
-    <Compile Include="DataProviders\LazyLoadInterceptor.cs" />
-    <Compile Include="DataProviders\IQueryLanguage.cs" />
-    <Compile Include="DataProviders\Log\DelegatingLogAdapter.cs" />
-    <Compile Include="DataProviders\Log\ILogAdapter.cs" />
-    <Compile Include="DataProviders\Log\TextWriterLogAdapter.cs" />
-    <Compile Include="DataProviders\MySQL\MySqlProvider.cs" />
-    <Compile Include="DataProviders\SqlServer\SqlServerProvider.cs" />
-    <Compile Include="DataProviders\SQLite\SQLiteProvider.cs" />
-    <Compile Include="Linq\Translation\CountOrderByRemover.cs" />
-    <Compile Include="Repository\SimpleRepositoryOptions.cs" />
-    <Compile Include="Repository\SimpleRepositoryOptionsExtensions.cs" />
-    <Compile Include="Schema\DatabaseRelation.cs" />
-    <Compile Include="Repository\SimpleTestRepository.cs" />
-    <Compile Include="Schema\IActiveRecord.cs" />
-    <Compile Include="DataProviders\Connection.cs" />
-    <Compile Include="DataProviders\DbDataProvider.cs" />
-    <Compile Include="DataProviders\IDataProvider.cs" />
-    <Compile Include="DataProviders\ProviderFactory.cs" />
-    <Compile Include="Extensions\Database.cs" />
-    <Compile Include="Extensions\Dates.cs" />
-    <Compile Include="Extensions\ExpressionParser.cs" />
-    <Compile Include="Extensions\IO.cs" />
-    <Compile Include="Extensions\Inflector.cs" />
-    <Compile Include="Extensions\Linq.cs" />
-    <Compile Include="Extensions\Numeric.cs" />
-    <Compile Include="Extensions\Objects.cs" />
-    <Compile Include="Extensions\QueryVisitor.cs" />
-    <Compile Include="Extensions\RegexPattern.cs" />
-    <Compile Include="Extensions\Strings.cs" />
-    <Compile Include="Extensions\Validation.cs" />
-    <Compile Include="Linq\Structure\CompoundKey.cs" />
-    <Compile Include="Linq\Structure\DbExpressionComparer.cs" />
-    <Compile Include="Linq\Structure\DbExpressionReplacer.cs" />
-    <Compile Include="Linq\Structure\DbExpressions.cs" />
-    <Compile Include="Linq\Structure\DbExpressionVisitor.cs" />
-    <Compile Include="Linq\Structure\DbExpressionWriter.cs" />
-    <Compile Include="Linq\Structure\DbQueryProvider.cs" />
-    <Compile Include="Linq\Structure\ExecutionBuilder.cs" />
-    <Compile Include="Linq\Structure\ImplicitMapping.cs" />
-    <Compile Include="DataProviders\MySQL\MySqlFormatter.cs" />
-    <Compile Include="DataProviders\MySQL\MySqlLanguage.cs" />
-    <Compile Include="Linq\Structure\QueryCommand.cs" />
-    <Compile Include="Linq\Structure\QueryLanguage.cs" />
-    <Compile Include="Linq\Structure\QueryMapping.cs" />
-    <Compile Include="Linq\Structure\QueryPolicy.cs" />
-    <Compile Include="Linq\Translation\AggregateChecker.cs" />
-    <Compile Include="Linq\Translation\AggregateRewriter.cs" />
-    <Compile Include="Linq\Translation\ClientJoinedProjectionRewriter.cs" />
-    <Compile Include="Linq\Translation\ColumnMapper.cs" />
-    <Compile Include="Linq\Translation\ColumnProjector.cs" />
-    <Compile Include="Linq\Translation\CrossApplyRewriter.cs" />
-    <Compile Include="Linq\Translation\DeclaredAliasGatherer.cs" />
-    <Compile Include="Linq\Translation\OrderByRewriter.cs" />
-    <Compile Include="Linq\Translation\Parameterizer.cs" />
-    <Compile Include="Linq\Translation\QueryBinder.cs" />
-    <Compile Include="Linq\Translation\QueryDuplicator.cs" />
-    <Compile Include="Linq\Translation\RedundantColumnRemover.cs" />
-    <Compile Include="Linq\Translation\RedundantJoinRemover.cs" />
-    <Compile Include="Linq\Translation\RedundantSubqueryRemover.cs" />
-    <Compile Include="Linq\Translation\ReferencedAliasGatherer.cs" />
-    <Compile Include="Linq\Translation\RelationshipBinder.cs" />
-    <Compile Include="Linq\Translation\RelationshipIncluder.cs" />
-    <Compile Include="Linq\Translation\SelectGatherer.cs" />
-    <Compile Include="Linq\Translation\SingletonProjectionRewriter.cs" />
-    <Compile Include="Linq\Translation\SkipRewriter.cs" />
-    <Compile Include="DataProviders\SQLite\SQLiteFormatter.cs" />
-    <Compile Include="DataProviders\SQLite\SQLiteLanguage.cs" />
-    <Compile Include="Linq\Translation\SubqueryRemover.cs" />
-    <Compile Include="Linq\Translation\UnusedColumnRemover.cs" />
-    <Compile Include="Linq\Structure\TSqlFormatter.cs" />
-    <Compile Include="Linq\Structure\TSqlLanguage.cs" />
-    <Compile Include="Linq\Structure\DeferredList.cs" />
-    <Compile Include="Linq\Structure\ExpressionComparer.cs" />
-    <Compile Include="Linq\Structure\ExpressionReplacer.cs" />
-    <Compile Include="Linq\Structure\ExpressionVisitor.cs" />
-    <Compile Include="Linq\Structure\ExpressionWriter.cs" />
-    <Compile Include="Linq\Structure\Grouping.cs" />
-    <Compile Include="Linq\Structure\PartialEvaluator.cs" />
-    <Compile Include="Linq\Structure\Query.cs" />
-    <Compile Include="Linq\Structure\QueryCompiler.cs" />
-    <Compile Include="Linq\Structure\QueryProvider.cs" />
-    <Compile Include="Linq\Structure\RootQueryableFinder.cs" />
-    <Compile Include="Linq\Structure\ScopedDictionary.cs" />
-    <Compile Include="Linq\Structure\TypeHelper.cs" />
-    <Compile Include="Schema\IReference.cs" />
-    <Compile Include="Schema\PagedList.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Query\Aggregate.cs" />
-    <Compile Include="Query\BatchQuery.cs" />
-    <Compile Include="Query\Constraint.cs" />
-    <Compile Include="Query\Delete.cs" />
-    <Compile Include="Query\InlineQuery.cs" />
-    <Compile Include="Query\Insert.cs" />
-    <Compile Include="Query\IQuerySurface.cs" />
-    <Compile Include="Query\ISqlQuery.cs" />
-    <Compile Include="Query\Update.cs" />
-    <Compile Include="Repository\IRepository.cs" />
-    <Compile Include="Repository\SimpleRepository.cs" />
-    <Compile Include="Repository\SubSonicRepository.cs" />
-    <Compile Include="Repository\TestRepository.cs" />
-    <Compile Include="Schema\Migrator.cs" />
-    <Compile Include="DataProviders\ISqlFragment.cs" />
-    <Compile Include="DataProviders\MySQL\MySqlSqlFragment.cs" />
-    <Compile Include="SQLGeneration\Schema\ANSISchemaGenerator.cs" />
-    <Compile Include="Schema\DatabaseSchema.cs" />
-    <Compile Include="Schema\IDatabaseSchema.cs" />
-    <Compile Include="Schema\IView.cs" />
-    <Compile Include="SQLGeneration\Schema\RelationAttributes.cs" />
-    <Compile Include="DataProviders\MySQL\MySqlGenerator.cs" />
-    <Compile Include="DataProviders\SQLite\SQLiteSchema.cs" />
-    <Compile Include="DataProviders\ISchemaGenerator.cs" />
-    <Compile Include="SQLGeneration\Schema\SchemaAttributes.cs" />
-    <Compile Include="DataProviders\MySQL\MySqlSchema.cs" />
-    <Compile Include="DataProviders\SqlServer\Sql2005Schema.cs" />
-    <Compile Include="DataProviders\SqlServer\Sql2005Generator.cs" />
-    <Compile Include="DataProviders\ISqlGenerator.cs" />
-    <Compile Include="Query\Join.cs" />
-    <Compile Include="Query\QueryCommand.cs" />
-    <Compile Include="Query\Select.cs" />
-    <Compile Include="Query\SqlQuery.cs" />
-    <Compile Include="Query\TypeSystem.cs" />
-    <Compile Include="Schema\DatabaseColumn.cs" />
-    <Compile Include="Schema\DatabaseTable.cs" />
-    <Compile Include="Schema\IColumn.cs" />
-    <Compile Include="Schema\IDBObject.cs" />
-    <Compile Include="Schema\IStoredProcedure.cs" />
-    <Compile Include="Schema\ITable.cs" />
-    <Compile Include="Schema\StoredProcedure.cs" />
-    <Compile Include="SQLGeneration\ANSISqlGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SQLGeneration\SqlFragment.cs" />
-    <Compile Include="DataProviders\SQLite\SQLiteGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="LICENSE.txt" />
@@ -231,14 +62,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <PackageReference Include="Castle.Core">
+      <Version>4.4.0</Version>
+    </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
