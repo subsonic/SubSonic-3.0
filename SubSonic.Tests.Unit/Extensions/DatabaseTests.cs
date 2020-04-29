@@ -31,7 +31,7 @@ namespace SubSonic.Tests.Unit.Extensions
             var dbType = DbType.Decimal;
             var sqlType = dbType.GetSqlDBType();
 
-            Assert.IsType(typeof(SqlDbType), sqlType);
+            Assert.IsType<SqlDbType>(sqlType);
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace SubSonic.Tests.Unit.Extensions
             var provider = ProviderFactory.GetProvider("WestWind");
             var table = typeof(Product).ToSchemaTable(provider);
 
-            Assert.Equal(table.PrimaryKey.Name, "ProductID");
+            Assert.Equal("ProductID", table.PrimaryKey.Name);
         }
 
         [Fact]
@@ -87,11 +87,11 @@ namespace SubSonic.Tests.Unit.Extensions
 
             var qry = p.ToUpdateQuery(provider);
             Assert.NotNull(qry);
-            Assert.IsType(typeof(Update<Product>), qry);
+            Assert.IsType<Update<Product>>(qry);
 
             Update<Product> update = (Update<Product>)qry;
             Assert.Equal(5, update.Settings.Count);
-            Assert.Equal(1, update.Constraints.Count);
+            Assert.Single(update.Constraints);
             Assert.Equal(p.ProductID, update.Constraints[0].ParameterValue);
         }
 
@@ -108,7 +108,7 @@ namespace SubSonic.Tests.Unit.Extensions
 
             var qry = p.ToInsertQuery(provider);
             Assert.NotNull(qry);
-            Assert.IsType(typeof(Insert), qry);
+            Assert.IsType<Insert>(qry);
             Insert insert = (Insert)qry;
 
             Assert.Equal(5, insert.Inserts.Count);
@@ -128,10 +128,10 @@ namespace SubSonic.Tests.Unit.Extensions
 
             var qry = p.ToDeleteQuery(provider);
             Assert.NotNull(qry);
-            Assert.IsType(typeof(Delete<Product>), qry);
+            Assert.IsType<Delete<Product>>(qry);
             Delete<Product> del = (Delete<Product>)qry;
 
-            Assert.Equal(1, del.Constraints.Count);
+            Assert.Single(del.Constraints);
             Assert.Equal(p.ProductID, del.Constraints[0].ParameterValue);
         }
 			

@@ -23,13 +23,13 @@ namespace SubSonic.Tests.BugReports {
             p.Save();
 
             p = Product.SingleOrDefault(x => x.ProductID == 1);
-            Assert.Equal(p.Discontinued, true);
+            Assert.True(p.Discontinued);
 
             p.Discontinued = false;
             p.Save();
             
             p = Product.SingleOrDefault(x => x.ProductID == 1);
-            Assert.Equal(p.Discontinued, false);
+            Assert.False(p.Discontinued);
 
         }
         [Fact]
@@ -38,7 +38,7 @@ namespace SubSonic.Tests.BugReports {
                        where p.ProductID > 0
                        select p;
 
-            Assert.Equal(true, list.FirstOrDefault().IsLoaded());
+            Assert.True(list.FirstOrDefault().IsLoaded());
         }
 
 
@@ -48,31 +48,31 @@ namespace SubSonic.Tests.BugReports {
                        where p.ProductID > 0
                        select p;
 
-            Assert.Equal(false, list.FirstOrDefault().IsNew());
+            Assert.False(list.FirstOrDefault().IsNew());
         }
 
         [Fact]
         public void CreatingNew_Product_Should_Set_IsNew_True() {
             var product = new Product();
-            Assert.Equal(true, product.IsNew());
+            Assert.True(product.IsNew());
         }
         [Fact]
         public void CreatingNew_Product_Should_Set_IsLoaded_False() {
             var product = new Product();
-            Assert.Equal(false, product.IsLoaded());
+            Assert.False(product.IsLoaded());
         }
 
         [Fact]
         public void PullingSingle_Should_Set_New_Product_IsLoaded_True() {
             var product = new Product();
             product = Product.SingleOrDefault(x => x.ProductID == 1);
-            Assert.Equal(true, product.IsLoaded());
+            Assert.True(product.IsLoaded());
         }
         [Fact]
         public void PullingSingle_Should_Set_New_Product_IsNew_False() {
             var product = new Product();
             product = Product.SingleOrDefault(x => x.ProductID == 1);
-            Assert.Equal(false, product.IsNew());
+            Assert.False(product.IsNew());
         }
 
 

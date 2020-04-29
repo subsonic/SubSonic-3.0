@@ -30,7 +30,7 @@ namespace SubSonic.Tests.Unit.Extensions
             //sorry for this test
             string fileText = (tempPath + "\\testfile.txt").GetFileText();
             //it's the only way I can think of to do it
-            Assert.Equal(fileText, "this is a stupid test");
+            Assert.Equal("this is a stupid test", fileText);
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace SubSonic.Tests.Unit.Extensions
             //sorry for this test
             "this is a stupid test".CreateToFile(tempPath + "\\testfile2.txt");
             //it's the only way I can think of to do it
-            Assert.Equal((tempPath + "\\testfile2.txt").GetFileText(), "this is a stupid test");
+            Assert.Equal("this is a stupid test", (tempPath + "\\testfile2.txt").GetFileText());
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace SubSonic.Tests.Unit.Extensions
             (tempPath + "\\testfile3.txt").UpdateFileText("stupid", "really stupid");
 
             //it's the only way I can think of to do it
-            Assert.Equal((tempPath + "\\testfile3.txt").GetFileText(), "this is a really stupid test");
+            Assert.Equal("this is a really stupid test", (tempPath + "\\testfile3.txt").GetFileText());
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace SubSonic.Tests.Unit.Extensions
             //sorry for this test
             "this is a stupid test".CreateToFile(tempPath + "\\testfile4.txt");
             //it's the only way I can think of to do it
-            Assert.Equal((tempPath + "\\testfile4.txt").GetFileText(), "this is a stupid test");
+            Assert.Equal("this is a stupid test", (tempPath + "\\testfile4.txt").GetFileText());
         }
     }
 }

@@ -69,7 +69,7 @@ namespace SubSonic.Tests.Migrations
 
             //query it to make sure it's there
             var qry = new CodingHorror(provider, "SELECT * FROM SubSonicTests").ExecuteTypedList<SubSonicTest>();
-            Assert.Equal(0, qry.Count);
+            Assert.Empty(qry);
         }
 
         [Fact]
@@ -96,7 +96,7 @@ namespace SubSonic.Tests.Migrations
 
             //query it to make sure it's there
             var qry = new CodingHorror(provider, "SELECT * FROM SubSonicTests").ExecuteTypedList<SubSonicTest>();
-            Assert.Equal(0, qry.Count);
+            Assert.Empty(qry);
         }
 
     }

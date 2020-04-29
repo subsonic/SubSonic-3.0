@@ -45,7 +45,7 @@ namespace SubSonic.Tests.SimpleQuery
 			var query = new Query<Product>(_provider);
 			var result = (from x in query select x).ToList();
 
-			Assert.False(result.Any(p => p.Image == null));
+			Assert.DoesNotContain(result, p => p.Image == null);
 		}
 
 		[Fact]

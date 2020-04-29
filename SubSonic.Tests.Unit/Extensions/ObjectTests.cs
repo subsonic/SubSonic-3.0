@@ -23,7 +23,7 @@ namespace SubSonic.Tests.Unit.Extensions
         public void ChangeTypeTo_Should_Change_String_To_DateTime()
         {
             var result = "12/12/09".ChangeTypeTo<DateTime>();
-            Assert.IsType(typeof(DateTime), result);
+            Assert.IsType<DateTime>(result);
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace SubSonic.Tests.Unit.Extensions
         {
             string guid = Guid.NewGuid().ToString();
             var result = guid.ChangeTypeTo<Guid>();
-            Assert.IsType(typeof(Guid), result);
+            Assert.IsType<Guid>(result);
         }
 
         [Fact]

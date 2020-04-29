@@ -122,7 +122,7 @@ namespace SubSonic.Tests.SimpleQuery
 
             var deleteCmd = _db.Delete<Product>(x => !doNotDelete.Contains(x.ProductID)).GetCommand();
 
-            Assert.Equal(1, deleteCmd.Parameters.Count);
+            Assert.Single(deleteCmd.Parameters);
             Assert.Equal(0, deleteCmd.Parameters[0].ParameterValue);
             Assert.Equal("@0", deleteCmd.Parameters[0].ParameterName);
 
@@ -137,7 +137,7 @@ namespace SubSonic.Tests.SimpleQuery
 
             var deleteCmd = _db.Delete<Product>(x => doNotDelete.Contains(x.ProductID)).GetCommand();
 
-            Assert.Equal(1, deleteCmd.Parameters.Count);
+            Assert.Single(deleteCmd.Parameters);
             Assert.Equal(0, deleteCmd.Parameters[0].ParameterValue);
             Assert.Equal("@0", deleteCmd.Parameters[0].ParameterName);
 

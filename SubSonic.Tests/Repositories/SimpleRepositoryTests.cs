@@ -218,7 +218,7 @@ namespace SubSonic.Tests.Repositories
             _repo.UpdateMany(list);
             list = _repo.Find<Shwerko>(x => x.SomeNumber > 0).ToList();
 
-            Assert.Equal(list[0].Name, "Updated");
+            Assert.Equal("Updated", list[0].Name);
         }
 
         [Fact]
@@ -363,7 +363,7 @@ namespace SubSonic.Tests.Repositories
 					ElDate = new DateTime(2010, 1, 1)
 				};
 
-			Assert.IsType(typeof (int), _repo.Add(newShwerko));
+			Assert.IsType<int>(_repo.Add(newShwerko));
 		}
 
 		[Fact]
@@ -524,7 +524,7 @@ namespace SubSonic.Tests.Repositories
             var result = (from s in _repo.All<Shwerko>()
                          select new { ID = s.ID, Key = s.Key }).ToArray();
 
-            Assert.Equal(1, result.Count());
+            Assert.Single(result);
             Assert.Equal(key, result[0].Key);
             Assert.Equal(id, result[0].ID);
         }
@@ -538,7 +538,7 @@ namespace SubSonic.Tests.Repositories
             var result = (from s in _repo.All<Shwerko>()
                           select s.Key).ToArray();
 
-            Assert.Equal(1, result.Count());
+            Assert.Single(result);
             Assert.Equal(key, result[0]);
         }
 
@@ -551,7 +551,7 @@ namespace SubSonic.Tests.Repositories
             var result = (from s in _repo.All<Shwerko>()
                           select s.Salutation).ToArray();
 
-            Assert.Equal(1, result.Count());
+            Assert.Single(result);
             Assert.Equal(Salutation.Ms, result[0]);
         }
 
@@ -565,7 +565,7 @@ namespace SubSonic.Tests.Repositories
                           orderby x.ElDate descending
                           select y).ToList();
 
-            Assert.Equal(1, result.Count);
+            Assert.Single(result);
             Assert.Equal("Common", result[0].Name);
         }
 
@@ -578,7 +578,7 @@ namespace SubSonic.Tests.Repositories
                          join y in _repo.All<Shwerko2>() on x.Name equals y.Name
                          select new { SomeName = x.Name, Key = y.Key, ID = y.ID }).ToList();
 
-            Assert.Equal(1, result.Count);
+            Assert.Single(result);
             Assert.Equal("Common", result[0].SomeName);
         }
 
@@ -597,7 +597,7 @@ namespace SubSonic.Tests.Repositories
                               }
                           ).ToList();
 
-            Assert.Equal(1, result.Count);
+            Assert.Single(result);
             Assert.Equal("Common", result[0].SelectedName);
         }
 
@@ -633,7 +633,7 @@ namespace SubSonic.Tests.Repositories
 		  {
 			  GivenShwerkos3WithValues(3.2M);
 			  var result = _repo.All<Shwerko3>().Where(o => o.Name == "Test").ToList();
-			  Assert.Equal(1, result.Count);
+			  Assert.Single(result);
 		  }
 
 		  [Fact]

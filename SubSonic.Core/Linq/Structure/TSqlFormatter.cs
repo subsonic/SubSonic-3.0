@@ -349,7 +349,9 @@ namespace SubSonic.Linq.Structure
                         }
                         break;
                 }
-            } else if (m.Method.DeclaringType == typeof(System.Data.Linq.SqlClient.SqlMethods)) {
+            }
+#if FEATURE_SQLMETHODS
+      else if (m.Method.DeclaringType == typeof(System.Data.Linq.SqlClient.SqlMethods)) {
                 switch (m.Method.Name) {
                     case "DateDiffDay":
                         if (m.Arguments[1].Type == typeof(DateTime)) {
@@ -442,8 +444,9 @@ namespace SubSonic.Linq.Structure
                         }
                         break;
                 }
-            }            
-            else if (m.Method.DeclaringType == typeof(Decimal)) {
+            }     
+#endif
+      else if (m.Method.DeclaringType == typeof(Decimal)) {
                 switch (m.Method.Name) {
                     case "Add":
                     case "Subtract":
