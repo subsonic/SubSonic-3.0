@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup Condition="$(TargetFramework.Contains('net4'))">
 		  <DefineConstants>$(DefineConstants);DOTNET45;DOTNETFRAMEWORK</DefineConstants>
