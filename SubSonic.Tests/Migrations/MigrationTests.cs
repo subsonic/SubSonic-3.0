@@ -85,11 +85,11 @@ namespace SubSonic.Tests.Migrations
             provider.MigrateToDatabase<SubSonicTest>(assembly);
 
         }
-
+#if MYSQL
         [Fact]
         public void Migration_MigrateToDb_Should_Save_Schema_To_MySQL()
         {
-            var provider = ProviderFactory.GetProvider(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
+            var provider = ProviderFactory.GetProvider(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySqlClient);
             DropTestTable(provider);
             var assembly = Assembly.GetExecutingAssembly();
             provider.MigrateToDatabase<SubSonicTest>(assembly);
@@ -98,6 +98,6 @@ namespace SubSonic.Tests.Migrations
             var qry = new CodingHorror(provider, "SELECT * FROM SubSonicTests").ExecuteTypedList<SubSonicTest>();
             Assert.Empty(qry);
         }
-
+#endif
     }
 }

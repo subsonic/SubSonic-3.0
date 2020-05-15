@@ -18,7 +18,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)'=='net48'">
-		<DefineConstants>$(DefineConstants);DOTNET45;FEATURE_SQLMETHODS</DefineConstants>
+		<DefineConstants>$(DefineConstants);FEATURE_SQLMETHODS</DefineConstants>
 	</PropertyGroup>	
   <ItemGroup>
     <Reference Update="System.Core" />
@@ -27,8 +27,9 @@
     <Content Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="System.Data.SQLite" Version="1.0.112.2" />
     <PackageReference Include="Castle.Core">
-      <Version>4.4.0</Version>
+      <Version>4.4.1</Version>
     </PackageReference>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
     <PackageReference Include="System.Data.Common" Version="4.3.0" />

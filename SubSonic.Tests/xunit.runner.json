@@ -1,0 +1,4 @@
+﻿{
+  "$schema": "https://xunit.net/schema/current/xunit.runner.schema.json",
+  "maxParallelThreads" : 1 // The DB access is not threadsafe
+}

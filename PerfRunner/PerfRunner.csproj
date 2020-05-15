@@ -1,26 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net48;netstandard2.1;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net48;netcoreapp3.1</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-          <DebugType>Full</DebugType>
+    <DebugType>Full</DebugType>
   </PropertyGroup>
   <ItemGroup>
     <Reference Update="System.Core" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SubSonic.Core\SubSonic.Core.csproj" />
-    <ProjectReference Include="..\SubSonic.Tests\SubSonic.Tests.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="MySql.Data.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.20" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
     <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
     <PackageReference Include="System.Net.Primitives" Version="4.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SubSonic.Core\SubSonic.Core.csproj" />
+    <ProjectReference Include="..\SubSonic.Tests\SubSonic.Tests.csproj" />
   </ItemGroup>
 </Project>

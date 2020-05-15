@@ -17,6 +17,7 @@ using System.Configuration;
 using SubSonic.DataProviders.SqlServer;
 using SubSonic.DataProviders.MySQL;
 using SubSonic.DataProviders.SQLite;
+using System.Data.Common;
 
 namespace SubSonic.DataProviders
 {
@@ -24,7 +25,7 @@ namespace SubSonic.DataProviders
 	{
 		private const string DEFAULT_DB_CLIENT_TYPE_NAME = "System.Data.SqlClient";
 
-		private static Dictionary<string, Func<string, string, IDataProvider>> _factories = BuildDefaults();
+		private static Dictionary<string, Func<string, string, IDataProvider>> _factories { get; set; }  = BuildDefaults();
 
 		private static Dictionary<string, Func<string, string, IDataProvider>> BuildDefaults()
 		{
@@ -33,7 +34,9 @@ namespace SubSonic.DataProviders
 			defaults.Add("System.Data.SqlClient", (conn, provider) => new SqlServerProvider(conn, provider));
 			defaults.Add("MySql.Data.MySqlClient", (conn, provider) => new MySqlProvider(conn, provider));
 			defaults.Add("System.Data.SQLite", (conn, provider) => new SQLiteProvider(conn, provider));
-
+//#if !DOTNETFRAMEWORK
+//            DbProviderFactories.RegisterFactory("System.Data.SqlClient", new DbProviderFactory())
+//#endif
 			return defaults;
 		}
 
@@ -51,16 +54,16 @@ namespace SubSonic.DataProviders
 		{
 			string connString = ConfigurationManager.ConnectionStrings[ConfigurationManager.ConnectionStrings.Count - 1].ConnectionString;
 			string providerName = ConfigurationManager.ConnectionStrings[ConfigurationManager.ConnectionStrings.Count - 1].ProviderName;
+            
 			return LoadProvider(connString, providerName);
 		}
 
 		public static IDataProvider GetProvider(string connectionStringName)
 		{
 			// Get the application configuration file.
-			System.Configuration.Configuration config =
-							ConfigurationManager.OpenExeConfiguration(
-							ConfigurationUserLevel.None);
-
+			//System.Configuration.Configuration config =
+			//				ConfigurationManager.OpenExeConfiguration(
+			//				ConfigurationUserLevel.None);
 			if (ConfigurationManager.ConnectionStrings[connectionStringName] == null)
 				throw new ApplicationException(string.Format("Connection string '{0}' does not exist", connectionStringName));
 

@@ -1,4 +1,4 @@
-
+﻿
 
 
 using System;
@@ -12,6 +12,7 @@ using SubSonic.Query;
 using SubSonic.Schema;
 using System.Data.Common;
 using System.Collections.Generic;
+using SubSonic.Tests;
 
 namespace SouthWind
 {
@@ -33,6 +34,7 @@ namespace SouthWind
 
         public NorthwindDB() 
         {
+            var x = DbClientTypeName.MsSql;
             if (DefaultDataProvider == null) {
                 DataProvider = ProviderFactory.GetProvider("Northwind");
             }
@@ -44,12 +46,16 @@ namespace SouthWind
 
         public NorthwindDB(string connectionStringName)
         {
+            // This is only to ensure, that the static constructor of DbClientTypeName has run
+            var x = DbClientTypeName.MsSql;
             DataProvider = ProviderFactory.GetProvider(connectionStringName);
             Init();
         }
 
 		public NorthwindDB(string connectionString, string providerName)
         {
+            // This is only to ensure, that the static constructor of DbClientTypeName has run
+            var x = DbClientTypeName.MsSql;
             DataProvider = ProviderFactory.GetProvider(connectionString,providerName);
             Init();
         }

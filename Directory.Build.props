@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup Condition="$(TargetFramework.Contains('net4'))">
+		  <DefineConstants>$(DefineConstants);DOTNET45;DOTNETFRAMEWORK</DefineConstants>
+	</PropertyGroup>	
+  <PropertyGroup Condition="$(TargetFramework.Contains('netcoreapp'))">
+		  <DefineConstants>$(DefineConstants);DOTNETCORE</DefineConstants>
+	</PropertyGroup>	
+  <PropertyGroup Condition="$(TargetFramework.Contains('netstandard'))">
+		  <DefineConstants>$(DefineConstants);DOTNETSTANDARD</DefineConstants>
+	</PropertyGroup>	
+</Project>
