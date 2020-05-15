@@ -30,7 +30,7 @@ namespace SubSonic.Tests.Migrations
         [Fact]
         public void CreateTable_Should_Set_PK_If_Guid_To_DefaultSetting_NewID() {
             var sql = typeof(GuidAsKey).ToSchemaTable(_provider).CreateSql;
-            Assert.True(sql.Contains("CONSTRAINT [DF_GuidAsKeys_ID] DEFAULT (NEWID())"));
+            Assert.Contains("CONSTRAINT [DF_GuidAsKeys_ID] DEFAULT (NEWID())", sql);
         }
 
         [Fact]

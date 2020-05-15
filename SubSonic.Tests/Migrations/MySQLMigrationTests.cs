@@ -26,7 +26,7 @@ namespace SubSonic.Tests.Migrations
 
         public MySQLMigrationTests()
         {
-            _provider = ProviderFactory.GetProvider(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
+            _provider = ProviderFactory.GetProvider(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySqlClient);
             migrator = new Migrator(Assembly.GetExecutingAssembly());
         }
 

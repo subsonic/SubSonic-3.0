@@ -20,7 +20,7 @@ namespace SubSonic.Tests.BugReports {
                 .Set("RequiredDate").EqualTo(DateTime.Parse("1/12/2001"));
                 
             var cmd = qry.GetCommand();
-            Assert.Equal(cmd.Parameters[0].DataType, DbType.DateTime);
+            Assert.Equal(DbType.DateTime, cmd.Parameters[0].DataType);
         }
 
         [Fact]

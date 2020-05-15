@@ -1,4 +1,4 @@
-
+﻿
 
 
 using System;
@@ -12,6 +12,7 @@ using SubSonic.Query;
 using SubSonic.Schema;
 using System.Data.Common;
 using System.Collections.Generic;
+using SubSonic.Tests;
 
 namespace SouthWind
 {
@@ -33,6 +34,7 @@ namespace SouthWind
 
         public NorthwindDB() 
         {
+            var x = DbClientTypeName.MsSql;
             if (DefaultDataProvider == null) {
                 DataProvider = ProviderFactory.GetProvider("Northwind");
             }
@@ -44,12 +46,16 @@ namespace SouthWind
 
         public NorthwindDB(string connectionStringName)
         {
+            // This is only to ensure, that the static constructor of DbClientTypeName has run
+            var x = DbClientTypeName.MsSql;
             DataProvider = ProviderFactory.GetProvider(connectionStringName);
             Init();
         }
 
 		public NorthwindDB(string connectionString, string providerName)
         {
+            // This is only to ensure, that the static constructor of DbClientTypeName has run
+            var x = DbClientTypeName.MsSql;
             DataProvider = ProviderFactory.GetProvider(connectionString,providerName);
             Init();
         }
@@ -128,6 +134,8 @@ namespace SouthWind
             return null;
         }
 			
+        public Query<Employee> Employees { get; set; }
+        public Query<Category> Categories { get; set; }
         public Query<Customer> Customers { get; set; }
         public Query<Shipper> Shippers { get; set; }
         public Query<Supplier> Suppliers { get; set; }
@@ -139,8 +147,6 @@ namespace SouthWind
         public Query<Region> Regions { get; set; }
         public Query<Territory> Territories { get; set; }
         public Query<EmployeeTerritory> EmployeeTerritories { get; set; }
-        public Query<Employee> Employees { get; set; }
-        public Query<Category> Categories { get; set; }
 
 			
 
@@ -244,6 +250,8 @@ namespace SouthWind
             provider = new DbQueryProvider(this.Provider);
 
             #region ' Query Defs '
+            Employees = new Query<Employee>(provider);
+            Categories = new Query<Category>(provider);
             Customers = new Query<Customer>(provider);
             Shippers = new Query<Shipper>(provider);
             Suppliers = new Query<Supplier>(provider);
@@ -255,14 +263,14 @@ namespace SouthWind
             Regions = new Query<Region>(provider);
             Territories = new Query<Territory>(provider);
             EmployeeTerritories = new Query<EmployeeTerritory>(provider);
-            Employees = new Query<Employee>(provider);
-            Categories = new Query<Category>(provider);
             #endregion
 
 
             #region ' Schemas '
         	if(DataProvider.Schema.Tables.Count == 0)
 			{
+            	DataProvider.Schema.Tables.Add(new EmployeesTable(DataProvider));
+            	DataProvider.Schema.Tables.Add(new CategoriesTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new CustomersTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new ShippersTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new SuppliersTable(DataProvider));
@@ -274,8 +282,6 @@ namespace SouthWind
             	DataProvider.Schema.Tables.Add(new RegionTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new TerritoriesTable(DataProvider));
             	DataProvider.Schema.Tables.Add(new EmployeeTerritoriesTable(DataProvider));
-            	DataProvider.Schema.Tables.Add(new EmployeesTable(DataProvider));
-            	DataProvider.Schema.Tables.Add(new CategoriesTable(DataProvider));
             }
             #endregion
         }

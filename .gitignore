@@ -21,6 +21,7 @@ Thumbs.db
 *.log
 *.swp
 *.user
+*.csproj.old
 _compareTemp
 _notes
 aspnet_client
@@ -37,3 +38,6 @@ build/*
 # Exclude ALL DLLs? (
 # *.dll
  
+/packages
+/MigrationBackup
+/.vs

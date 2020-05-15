@@ -1,13 +1,22 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Core", "SubSonic.Core\SubSonic.Core.csproj", "{53FF90B2-2D33-4EC0-91B6-A30FDF1B3374}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30021.99
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubSonic.Core", "SubSonic.Core\SubSonic.Core.csproj", "{53FF90B2-2D33-4EC0-91B6-A30FDF1B3374}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Tests", "SubSonic.Tests\SubSonic.Tests.csproj", "{6B23B65F-2E09-4531-BDA1-A6EA08CBA843}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubSonic.Tests", "SubSonic.Tests\SubSonic.Tests.csproj", "{6B23B65F-2E09-4531-BDA1-A6EA08CBA843}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubSonic.Tests.Unit", "SubSonic.Tests.Unit\SubSonic.Tests.Unit.csproj", "{29F51F2F-115C-4AFE-85CB-1F34498C6AD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubSonic.Tests.Unit", "SubSonic.Tests.Unit\SubSonic.Tests.Unit.csproj", "{29F51F2F-115C-4AFE-85CB-1F34498C6AD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerfRunner", "PerfRunner\PerfRunner.csproj", "{45BA3F78-05F5-4344-AD0D-309F2AED9A0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerfRunner", "PerfRunner\PerfRunner.csproj", "{45BA3F78-05F5-4344-AD0D-309F2AED9A0A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ED5DFCD3-111B-4CA3-8D20-9547AE59BDC4}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,5 +46,6 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {3196DAA6-040E-43E1-BF55-195D70AAFB6A}
 	EndGlobalSection
 EndGlobal

@@ -41,6 +41,8 @@ namespace SubSonic.Tests.Repositories
             TestSupport.CleanTables(_provider, "Directors", "Movies", "Comments", "NonVirtualRelationProperties");
         }
 
+#if MYSQL
+
         [Fact]
         public void Simple_Repo_Should_Lazy_Load_1toN_Relation()
         {
@@ -77,9 +79,11 @@ namespace SubSonic.Tests.Repositories
 
             _provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
 
-            Assert.DoesNotThrow(() => {
+            var ex = Record.Exception(() =>
+            {
                 var someAccess = director.Movies[0];
             });
+            Assert.Null(ex);
         }
 
         [Fact]
@@ -92,10 +96,11 @@ namespace SubSonic.Tests.Repositories
 
             _provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
 
-            Assert.DoesNotThrow(() =>
+            var ex = Record.Exception(() =>
             {
                 var someAccess = director.Movies;
             });
+            Assert.Null(ex);
         }
 
         [Fact]
@@ -109,10 +114,11 @@ namespace SubSonic.Tests.Repositories
 
             _provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
 
-            Assert.DoesNotThrow(() =>
+            var ex = Record.Exception(() =>
             {
                 var someAccess = movie.Director.Name;
             });
+            Assert.Null(ex);
         }
 
         [Fact]
@@ -125,10 +131,11 @@ namespace SubSonic.Tests.Repositories
 
             _provider.InterceptionStrategy = new MockInterceptionStrategy(_provider);
 
-            Assert.DoesNotThrow(() =>
+            var ex = Record.Exception(() =>
             {
                 var someAccess = movie.Director;
             });
+            Assert.Null(ex);
         }
 
         [Fact]
@@ -154,20 +161,22 @@ namespace SubSonic.Tests.Repositories
         [Fact]
         public void NonVirtual_Relation_Property_Should_Throw_An_Exception()
         {
-            Assert.Throws<InvalidOperationException>(() => {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
                 _repo.Add(new NonVirtualRelationProperty { DirectorId = 1 });
             });
         }
-
+#endif
         private void GivenMovies()
         {
             var director = new Director { Name = "Martin Scorsese" };
             _repo.Add(director);
 
-            var movie = new Movie { DirectorId = director.Id, Title="Taxi Driver" };
+            var movie = new Movie { DirectorId = director.Id, Title = "Taxi Driver" };
             _repo.Add(movie);
 
-            var plot = new Plot() {
+            var plot = new Plot()
+            {
                 Movie = movie.Id,
                 PlotWithoutSpoiler = "Taxi Driver meets girl",
                 PlotWithSpoiler = "Taxi Driver meets girl and life goes down the sewer!",
@@ -175,10 +184,10 @@ namespace SubSonic.Tests.Repositories
             };
             _repo.Add(plot);
 
-            var comment = new Comment { MovieId = movie.Id, Author = "donna", Text="Great!" };
+            var comment = new Comment { MovieId = movie.Id, Author = "donna", Text = "Great!" };
             _repo.Add(comment);
 
-            comment = new Comment { MovieId = movie.Id, Author= "spiderman", Text="w00t!" };
+            comment = new Comment { MovieId = movie.Id, Author = "spiderman", Text = "w00t!" };
             _repo.Add(comment);
 
             movie = new Movie { DirectorId = director.Id, Title = "Goodfellas" };

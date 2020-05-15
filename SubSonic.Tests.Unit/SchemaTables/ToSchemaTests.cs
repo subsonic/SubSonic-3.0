@@ -263,7 +263,7 @@ namespace SubSonic.Tests.Unit.SchemaTables
 		public void ToSchemaTable_Should_Set_TableName_To_TestTableName_When_TableNameOverrideAttribute_Used()
 		{
 			var table = typeof(TestTypeWithTableNameOverride).ToSchemaTable(_provider);
-			Assert.Equal(table.Name, "TestTableName");
+			Assert.Equal("TestTableName", table.Name);
         }
 
         [Fact]

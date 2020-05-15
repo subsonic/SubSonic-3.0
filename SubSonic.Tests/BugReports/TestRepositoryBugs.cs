@@ -22,8 +22,8 @@ namespace SubSonic.Tests.BugReports
             
             var orderDetail = OrderDetail.SingleOrDefault(o => o.ProductID == 3 && o.OrderID == 1, "test", String.Empty);
 
-            Assert.Equal(orderDetail.ProductID, 3);
-            Assert.Equal(orderDetail.OrderID, 1);
+            Assert.Equal(3, orderDetail.ProductID);
+            Assert.Equal(1, orderDetail.OrderID);
         }
 
         [Fact]
@@ -33,9 +33,9 @@ namespace SubSonic.Tests.BugReports
 
             var orderDetail = OrderDetail.Find(o => o.ProductID == 3 && o.OrderID == 1, "test", String.Empty);
 
-            Assert.Equal(orderDetail.Count, 1);
-            Assert.Equal(orderDetail.First().ProductID, 3);
-            Assert.Equal(orderDetail.First().OrderID, 1);
+            Assert.Equal(1, orderDetail.Count);
+            Assert.Equal(3, orderDetail.First().ProductID);
+            Assert.Equal(1, orderDetail.First().OrderID);
         }
 
         [Fact]

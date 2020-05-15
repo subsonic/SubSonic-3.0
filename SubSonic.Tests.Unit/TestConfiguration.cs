@@ -16,42 +16,42 @@ using System.IO;
 
 namespace SubSonic.Tests
 {
-    public class TestConfiguration
-    {
-        private const string dataSourceParam = "Data Source=";
+	public class TestConfiguration
+	{
+		private const string dataSourceParam = "Data Source=";
 
-        public const string MsSql2005TestConnectionString = @"server=.\SQLExpress;database=NonExistent;integrated security=true;";
-                public const string MsSql2008TestConnectionString = @"server=.\SQL2008;database=NonExistent;integrated security=true;";
-                public const string MySqlTestConnectionString = "server=localhost;database=NonExistent;user id=root; password=;";
+		public const string MsSql2005TestConnectionString = @"server=(localdb)\MSSQLLocalDB;database=NonExistent;integrated security=true;";
+		public const string MsSql2008TestConnectionString = @"server=(localdb)\MSSQLLocalDB;database=NonExistent;integrated security=true;";
+		public const string MySqlTestConnectionString = "server=localhost;database=NonExistent;user id=root; password=;";
 
-        public static string SQLiteTestsFilePath
-        {
-            get { return String.Concat(Directory.GetCurrentDirectory(), "\\..\\..\\TestClasses\\", "SubSonic.db"); }
-        }
+		public static string SQLiteTestsFilePath
+		{
+			get { return String.Concat(Directory.GetCurrentDirectory(), "\\..\\..\\TestClasses\\", "SubSonic.db"); }
+		}
 
-        public static string SQLiteMigrationsFilePath
-        {
-            get { return String.Concat(Directory.GetCurrentDirectory(), "\\..\\..\\Migrations\\", "Migrations.db"); }
-        }
+		public static string SQLiteMigrationsFilePath
+		{
+			get { return String.Concat(Directory.GetCurrentDirectory(), "\\..\\..\\Migrations\\", "Migrations.db"); }
+		}
 
-        public static string SQLiteRepositoryFilePath
-        {
-            get { return String.Concat(Directory.GetCurrentDirectory(), "\\..\\..\\Repositories\\", "RepoTests.db"); }
-        }
+		public static string SQLiteRepositoryFilePath
+		{
+			get { return String.Concat(Directory.GetCurrentDirectory(), "\\..\\..\\Repositories\\", "RepoTests.db"); }
+		}
 
-        public static string SQLiteTestsConnectionString
-        {
-            get { return String.Concat(dataSourceParam, SQLiteTestsFilePath); }
-        }
+		public static string SQLiteTestsConnectionString
+		{
+			get { return String.Concat(dataSourceParam, SQLiteTestsFilePath); }
+		}
 
-        public static string SQLiteMigrationsConnectionString
-        {
-            get { return String.Concat(dataSourceParam, SQLiteMigrationsFilePath); }
-        }
+		public static string SQLiteMigrationsConnectionString
+		{
+			get { return String.Concat(dataSourceParam, SQLiteMigrationsFilePath); }
+		}
 
-        public static string SQLiteRepositoryConnectionString
-        {
-            get { return String.Concat(dataSourceParam, SQLiteRepositoryFilePath); }
-        }
-    }
+		public static string SQLiteRepositoryConnectionString
+		{
+			get { return String.Concat(dataSourceParam, SQLiteRepositoryFilePath); }
+		}
+	}
 }

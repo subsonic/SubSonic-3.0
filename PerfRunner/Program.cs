@@ -20,12 +20,14 @@ using SubSonic.Tests;
 using SubSonic.Tests.Linq.TestBases;
 using SouthWind;
 using System.Configuration;
+using System.Data.Common;
+using System.Data.SQLite;
 
 namespace PerfRunner
 {
 	public class Program
 	{
-		private static readonly IDataProvider mySqlProvider = ProviderFactory.GetProvider(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySql);
+		private static readonly IDataProvider mySqlProvider = ProviderFactory.GetProvider(TestConfiguration.MySqlTestConnectionString, DbClientTypeName.MySqlClient);
 
 		private static readonly IDataProvider sql2005Provider = ProviderFactory.GetProvider(ConfigurationManager.ConnectionStrings["Northwind"].ConnectionString, DbClientTypeName.MsSql);
 
@@ -33,13 +35,20 @@ namespace PerfRunner
 
 		private static void Main(string[] args)
 		{
-			//RunInserts();
-			//SubSonic.Tests.ActiveRecord.FetchTests.ActiveRecord_Should_Return_10_Products_LessOrEqual_To_10();
-			//SubSonic.Tests.ActiveRecord.FetchTests.ActiveRecord_Should_Return_10_Products_Paged();
-			//RunSimpleRepoSelects();
-			//RunIQSelects();
-			//RunSimpleQuerySelects();
-			RunAR();
+#if DOTNETCORE
+            // Registering DbProviderFactories using app.config is only possible in the full framework
+            // Applications using SubSonic.Core must register the factories before calling the deeper layer like below
+            DbProviderFactories.RegisterFactory(MsSql, System.Data.SqlClient.SqlClientFactory.Instance);
+            DbProviderFactories.RegisterFactory(MySqlClient, MySql.Data.MySqlClient.MySqlClientFactory.Instance);
+            DbProviderFactories.RegisterFactory(SqlLite, SQLiteFactory.Instance);
+#endif
+            //RunInserts();
+            //SubSonic.Tests.ActiveRecord.FetchTests.ActiveRecord_Should_Return_10_Products_LessOrEqual_To_10();
+            //SubSonic.Tests.ActiveRecord.FetchTests.ActiveRecord_Should_Return_10_Products_Paged();
+            //RunSimpleRepoSelects();
+            //RunIQSelects();
+            //RunSimpleQuerySelects();
+            RunAR();
 			RunARLists();
 			Console.WriteLine("Done");
 			Console.ReadLine();

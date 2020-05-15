@@ -56,8 +56,8 @@ namespace SubSonic.Repository
         
         T GetByKey(object key);
         ITable GetTable();
-        bool Load<T>(T item, Expression<Func<T, bool>> expression) where T : class, new();
-        bool Load<T>(T item, string column, object value) where T : class, new();
+        bool Load<TLoad>(TLoad item, Expression<Func<TLoad, bool>> expression) where TLoad : class, new();
+        bool Load<TLoad>(TLoad item, string column, object value) where TLoad : class, new();
     }
 
     public interface IRepository

@@ -27,6 +27,7 @@ namespace SubSonic.Tests.Linq
     {
         protected TestDB _db;
 
+#if MYSQL
         [Fact]
         public void All_With_StartsWith()
         {
@@ -53,7 +54,7 @@ namespace SubSonic.Tests.Linq
 
             Assert.Equal(5, result.Count());
         }
-			       
+
         [Fact]
         public void Count_Distinct_With_Arg()
         {
@@ -61,19 +62,19 @@ namespace SubSonic.Tests.Linq
 
             Assert.Equal(1, result);
         }
-			       
+
         [Fact]
         public void Count_With_SingleArg()
         {
             var result = _db.Orders.Count(x => x.OrderID > 0);
             Assert.Equal(100, result);
         }
-			
+
         [Fact]
         public void First_Product_Should_Have_ProductID_1()
         {
             Assert.True(_db.Products.First().ProductID == 1);
-        }      
+        }
 
         [Fact]
         public void Select_Single_Product_With_ID_1()
@@ -86,7 +87,7 @@ namespace SubSonic.Tests.Linq
             Assert.Equal(1, result.ProductID);
         }
 
-				[Fact]
+        [Fact]
         public void Single_Product_Should_Have_ProductID_1()
         {
             Assert.True(_db.Products.Single(x => x.ProductID == 1).ProductID == 1);
@@ -104,7 +105,8 @@ namespace SubSonic.Tests.Linq
         {
             var result = _db.Orders.Sum(x => x.OrderID);
             Assert.Equal(5050, result);
-        }     
+        }
+#endif
     }
 
     // ReSharper restore InconsistentNaming

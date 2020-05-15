@@ -16,42 +16,47 @@ using System.IO;
 
 namespace SubSonic.Tests
 {
-    public class TestConfiguration
-    {
-        private const string dataSourceParam = "Data Source=";
+	public class TestConfiguration
+	{
+		private const string dataSourceParam = "Data Source=";
 
-        public const string MsSql2005TestConnectionString = @"server=.\SQLExpress;database=SubSonic;integrated security=true;";
-        public const string MsSql2008TestConnectionString = @"server=.\SQL2008;database=SubSonic;integrated security=true;";
-        public const string MySqlTestConnectionString = "server=localhost;database=subsonic;user id=root; password=;";
+		public const string MsSql2005TestConnectionString = @"server=(localdb)\MSSQLLocalDB;database=SubSonic;integrated security=true;";
+		public const string MsSql2008TestConnectionString = @"server=(localdb)\MSSQLLocalDB;database=SubSonic;integrated security=true;";
+		public const string MySqlTestConnectionString = "server=localhost;database=subsonic;user id=root; password=;";
 
-        public static string SQLiteTestsFilePath
-        {
-            get { return String.Concat(Directory.GetCurrentDirectory(), "\\..\\..\\TestClasses\\", "SubSonic.db"); }
-        }
+        /// <summary>
+        /// Relative path to the project directory when running the tests
+        /// </summary>
+		static string ProjectDirectory => @"..\..\..\";
 
-        public static string SQLiteMigrationsFilePath
-        {
-            get { return String.Concat(Directory.GetCurrentDirectory(), "\\..\\..\\Migrations\\", "Migrations.db"); }
-        }
+		public static string SQLiteTestsFilePath
+		{
+			get { return Path.Combine(Directory.GetCurrentDirectory(), ProjectDirectory , "TestClasses", "SubSonic.db"); }
+		}
 
-        public static string SQLiteRepositoryFilePath
-        {
-            get { return String.Concat(Directory.GetCurrentDirectory(), "\\..\\..\\Repositories\\", "RepoTests.db"); }
-        }
+		public static string SQLiteMigrationsFilePath
+		{
+			get { return Path.Combine(Directory.GetCurrentDirectory(), ProjectDirectory , "Migrations", "Migrations.db"); }
+		}
 
-        public static string SQLiteTestsConnectionString
-        {
-            get { return String.Concat(dataSourceParam, SQLiteTestsFilePath); }
-        }
+		public static string SQLiteRepositoryFilePath
+		{
+			get { return Path.Combine(Directory.GetCurrentDirectory(), ProjectDirectory , "Repositories", "RepoTests.db"); }
+		}
 
-        public static string SQLiteMigrationsConnectionString
-        {
-            get { return String.Concat(dataSourceParam, SQLiteMigrationsFilePath); }
-        }
+		public static string SQLiteTestsConnectionString
+		{
+			get { return String.Concat(dataSourceParam, SQLiteTestsFilePath); }
+		}
 
-        public static string SQLiteRepositoryConnectionString
-        {
-            get { return String.Concat(dataSourceParam, SQLiteRepositoryFilePath); }
-        }
-    }
+		public static string SQLiteMigrationsConnectionString
+		{
+			get { return String.Concat(dataSourceParam, SQLiteMigrationsFilePath); }
+		}
+
+		public static string SQLiteRepositoryConnectionString
+		{
+			get { return String.Concat(dataSourceParam, SQLiteRepositoryFilePath); }
+		}
+	}
 }

@@ -21,8 +21,8 @@ using System.Collections;
 
 namespace SubSonic.Extensions
 {
-    public class QueryVisitor : ExpressionVisitor
-    {
+    public class QueryVisitor : SubSonic.Linq.Structure.ExpressionVisitor
+	{
         private List<Constraint> constraints;
         private Constraint current;
 

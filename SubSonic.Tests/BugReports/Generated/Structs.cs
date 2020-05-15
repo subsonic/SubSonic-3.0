@@ -1,23 +1,6 @@
 ﻿
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 using System;
 using SubSonic.Schema;
 using System.Collections.Generic;
@@ -26,6 +9,439 @@ using System.Data;
 
 namespace SouthWind {
 	
+        /// <summary>
+        /// Table: Employees
+        /// Primary Key: EmployeeID
+        /// </summary>
+
+        public class EmployeesTable: DatabaseTable {
+            
+            public EmployeesTable(IDataProvider provider):base("Employees",provider){
+                ClassName = "Employee";
+                SchemaName = "dbo";
+                
+
+                Columns.Add(new DatabaseColumn("EmployeeID", this)
+                {
+	                IsPrimaryKey = true,
+	                DataType = DbType.Int32,
+	                IsNullable = false,
+	                AutoIncrement = true,
+	                IsForeignKey = true,
+	                MaxLength = 0,
+					PropertyName = "EmployeeID"
+                });
+
+                Columns.Add(new DatabaseColumn("LastName", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = false,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 20,
+					PropertyName = "LastName"
+                });
+
+                Columns.Add(new DatabaseColumn("FirstName", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = false,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 10,
+					PropertyName = "FirstName"
+                });
+
+                Columns.Add(new DatabaseColumn("Title", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 30,
+					PropertyName = "Title"
+                });
+
+                Columns.Add(new DatabaseColumn("TitleOfCourtesy", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 25,
+					PropertyName = "TitleOfCourtesy"
+                });
+
+                Columns.Add(new DatabaseColumn("BirthDate", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.DateTime,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 0,
+					PropertyName = "BirthDate"
+                });
+
+                Columns.Add(new DatabaseColumn("HireDate", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.DateTime,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 0,
+					PropertyName = "HireDate"
+                });
+
+                Columns.Add(new DatabaseColumn("Address", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 60,
+					PropertyName = "Address"
+                });
+
+                Columns.Add(new DatabaseColumn("City", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 15,
+					PropertyName = "City"
+                });
+
+                Columns.Add(new DatabaseColumn("Region", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 15,
+					PropertyName = "Region"
+                });
+
+                Columns.Add(new DatabaseColumn("PostalCode", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 10,
+					PropertyName = "PostalCode"
+                });
+
+                Columns.Add(new DatabaseColumn("Country", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 15,
+					PropertyName = "Country"
+                });
+
+                Columns.Add(new DatabaseColumn("HomePhone", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 24,
+					PropertyName = "HomePhone"
+                });
+
+                Columns.Add(new DatabaseColumn("Extension", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 4,
+					PropertyName = "Extension"
+                });
+
+                Columns.Add(new DatabaseColumn("Photo", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.Binary,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 2147483647,
+					PropertyName = "Photo"
+                });
+
+                Columns.Add(new DatabaseColumn("Notes", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 1073741823,
+					PropertyName = "Notes"
+                });
+
+                Columns.Add(new DatabaseColumn("ReportsTo", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.Int32,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = true,
+	                MaxLength = 0,
+					PropertyName = "ReportsTo"
+                });
+
+                Columns.Add(new DatabaseColumn("PhotoPath", this)
+                {
+	                IsPrimaryKey = false,
+	                DataType = DbType.String,
+	                IsNullable = true,
+	                AutoIncrement = false,
+	                IsForeignKey = false,
+	                MaxLength = 255,
+					PropertyName = "PhotoPath"
+                });
+                    
+                
+                
+            }
+
+            public IColumn EmployeeID{
+                get{
+                    return this.GetColumn("EmployeeID");
+                }
+            }
+				
+   			public static string EmployeeIDColumn{
+			      get{
+        			return "EmployeeID";
+      			}
+		    }
+            
+            public IColumn LastName{
+                get{
+                    return this.GetColumn("LastName");
+                }
+            }
+				
+   			public static string LastNameColumn{
+			      get{
+        			return "LastName";
+      			}
+		    }
+            
+            public IColumn FirstName{
+                get{
+                    return this.GetColumn("FirstName");
+                }
+            }
+				
+   			public static string FirstNameColumn{
+			      get{
+        			return "FirstName";
+      			}
+		    }
+            
+            public IColumn Title{
+                get{
+                    return this.GetColumn("Title");
+                }
+            }
+				
+   			public static string TitleColumn{
+			      get{
+        			return "Title";
+      			}
+		    }
+            
+            public IColumn TitleOfCourtesy{
+                get{
+                    return this.GetColumn("TitleOfCourtesy");
+                }
+            }
+				
+   			public static string TitleOfCourtesyColumn{
+			      get{
+        			return "TitleOfCourtesy";
+      			}
+		    }
+            
+            public IColumn BirthDate{
+                get{
+                    return this.GetColumn("BirthDate");
+                }
+            }
+				
+   			public static string BirthDateColumn{
+			      get{
+        			return "BirthDate";
+      			}
+		    }
+            
+            public IColumn HireDate{
+                get{
+                    return this.GetColumn("HireDate");
+                }
+            }
+				
+   			public static string HireDateColumn{
+			      get{
+        			return "HireDate";
+      			}
+		    }
+            
+            public IColumn Address{
+                get{
+                    return this.GetColumn("Address");
+                }
+            }
+				
+   			public static string AddressColumn{
+			      get{
+        			return "Address";
+      			}
+		    }
+            
+            public IColumn City{
+                get{
+                    return this.GetColumn("City");
+                }
+            }
+				
+   			public static string CityColumn{
+			      get{
+        			return "City";
+      			}
+		    }
+            
+            public IColumn Region{
+                get{
+                    return this.GetColumn("Region");
+                }
+            }
+				
+   			public static string RegionColumn{
+			      get{
+        			return "Region";
+      			}
+		    }
+            
+            public IColumn PostalCode{
+                get{
+                    return this.GetColumn("PostalCode");
+                }
+            }
+				
+   			public static string PostalCodeColumn{
+			      get{
+        			return "PostalCode";
+      			}
+		    }
+            
+            public IColumn Country{
+                get{
+                    return this.GetColumn("Country");
+                }
+            }
+				
+   			public static string CountryColumn{
+			      get{
+        			return "Country";
+      			}
+		    }
+            
+            public IColumn HomePhone{
+                get{
+                    return this.GetColumn("HomePhone");
+                }
+            }
+				
+   			public static string HomePhoneColumn{
+			      get{
+        			return "HomePhone";
+      			}
+		    }
+            
+            public IColumn Extension{
+                get{
+                    return this.GetColumn("Extension");
+                }
+            }
+				
+   			public static string ExtensionColumn{
+			      get{
+        			return "Extension";
+      			}
+		    }
+            
+            public IColumn Photo{
+                get{
+                    return this.GetColumn("Photo");
+                }
+            }
+				
+   			public static string PhotoColumn{
+			      get{
+        			return "Photo";
+      			}
+		    }
+            
+            public IColumn Notes{
+                get{
+                    return this.GetColumn("Notes");
+                }
+            }
+				
+   			public static string NotesColumn{
+			      get{
+        			return "Notes";
+      			}
+		    }
+            
+            public IColumn ReportsTo{
+                get{
+                    return this.GetColumn("ReportsTo");
+                }
+            }
+				
+   			public static string ReportsToColumn{
+			      get{
+        			return "ReportsTo";
+      			}
+		    }
+            
+            public IColumn PhotoPath{
+                get{
+                    return this.GetColumn("PhotoPath");
+                }
+            }
+				
+   			public static string PhotoPathColumn{
+			      get{
+        			return "PhotoPath";
+      			}
+		    }
+            
+                    
+        }
+        
         /// <summary>
         /// Table: Categories
         /// Primary Key: CategoryID
@@ -841,7 +1257,7 @@ namespace SouthWind {
                 {
 	                IsPrimaryKey = false,
 	                DataType = DbType.DateTime,
-	                IsNullable = false,
+	                IsNullable = true,
 	                AutoIncrement = false,
 	                IsForeignKey = false,
 	                MaxLength = 0,
@@ -1858,439 +2274,6 @@ namespace SouthWind {
    			public static string TerritoryIDColumn{
 			      get{
         			return "TerritoryID";
-      			}
-		    }
-            
-                    
-        }
-        
-        /// <summary>
-        /// Table: Employees
-        /// Primary Key: EmployeeID
-        /// </summary>
-
-        public class EmployeesTable: DatabaseTable {
-            
-            public EmployeesTable(IDataProvider provider):base("Employees",provider){
-                ClassName = "Employee";
-                SchemaName = "dbo";
-                
-
-                Columns.Add(new DatabaseColumn("EmployeeID", this)
-                {
-	                IsPrimaryKey = true,
-	                DataType = DbType.Int32,
-	                IsNullable = false,
-	                AutoIncrement = true,
-	                IsForeignKey = true,
-	                MaxLength = 0,
-					PropertyName = "EmployeeID"
-                });
-
-                Columns.Add(new DatabaseColumn("LastName", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = false,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 20,
-					PropertyName = "LastName"
-                });
-
-                Columns.Add(new DatabaseColumn("FirstName", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = false,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 10,
-					PropertyName = "FirstName"
-                });
-
-                Columns.Add(new DatabaseColumn("Title", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 30,
-					PropertyName = "Title"
-                });
-
-                Columns.Add(new DatabaseColumn("TitleOfCourtesy", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 25,
-					PropertyName = "TitleOfCourtesy"
-                });
-
-                Columns.Add(new DatabaseColumn("BirthDate", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.DateTime,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 0,
-					PropertyName = "BirthDate"
-                });
-
-                Columns.Add(new DatabaseColumn("HireDate", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.DateTime,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 0,
-					PropertyName = "HireDate"
-                });
-
-                Columns.Add(new DatabaseColumn("Address", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 60,
-					PropertyName = "Address"
-                });
-
-                Columns.Add(new DatabaseColumn("City", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 15,
-					PropertyName = "City"
-                });
-
-                Columns.Add(new DatabaseColumn("Region", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 15,
-					PropertyName = "Region"
-                });
-
-                Columns.Add(new DatabaseColumn("PostalCode", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 10,
-					PropertyName = "PostalCode"
-                });
-
-                Columns.Add(new DatabaseColumn("Country", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 15,
-					PropertyName = "Country"
-                });
-
-                Columns.Add(new DatabaseColumn("HomePhone", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 24,
-					PropertyName = "HomePhone"
-                });
-
-                Columns.Add(new DatabaseColumn("Extension", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 4,
-					PropertyName = "Extension"
-                });
-
-                Columns.Add(new DatabaseColumn("Photo", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.Binary,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 2147483647,
-					PropertyName = "Photo"
-                });
-
-                Columns.Add(new DatabaseColumn("Notes", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 1073741823,
-					PropertyName = "Notes"
-                });
-
-                Columns.Add(new DatabaseColumn("ReportsTo", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.Int32,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = true,
-	                MaxLength = 0,
-					PropertyName = "ReportsTo"
-                });
-
-                Columns.Add(new DatabaseColumn("PhotoPath", this)
-                {
-	                IsPrimaryKey = false,
-	                DataType = DbType.String,
-	                IsNullable = true,
-	                AutoIncrement = false,
-	                IsForeignKey = false,
-	                MaxLength = 255,
-					PropertyName = "PhotoPath"
-                });
-                    
-                
-                
-            }
-
-            public IColumn EmployeeID{
-                get{
-                    return this.GetColumn("EmployeeID");
-                }
-            }
-				
-   			public static string EmployeeIDColumn{
-			      get{
-        			return "EmployeeID";
-      			}
-		    }
-            
-            public IColumn LastName{
-                get{
-                    return this.GetColumn("LastName");
-                }
-            }
-				
-   			public static string LastNameColumn{
-			      get{
-        			return "LastName";
-      			}
-		    }
-            
-            public IColumn FirstName{
-                get{
-                    return this.GetColumn("FirstName");
-                }
-            }
-				
-   			public static string FirstNameColumn{
-			      get{
-        			return "FirstName";
-      			}
-		    }
-            
-            public IColumn Title{
-                get{
-                    return this.GetColumn("Title");
-                }
-            }
-				
-   			public static string TitleColumn{
-			      get{
-        			return "Title";
-      			}
-		    }
-            
-            public IColumn TitleOfCourtesy{
-                get{
-                    return this.GetColumn("TitleOfCourtesy");
-                }
-            }
-				
-   			public static string TitleOfCourtesyColumn{
-			      get{
-        			return "TitleOfCourtesy";
-      			}
-		    }
-            
-            public IColumn BirthDate{
-                get{
-                    return this.GetColumn("BirthDate");
-                }
-            }
-				
-   			public static string BirthDateColumn{
-			      get{
-        			return "BirthDate";
-      			}
-		    }
-            
-            public IColumn HireDate{
-                get{
-                    return this.GetColumn("HireDate");
-                }
-            }
-				
-   			public static string HireDateColumn{
-			      get{
-        			return "HireDate";
-      			}
-		    }
-            
-            public IColumn Address{
-                get{
-                    return this.GetColumn("Address");
-                }
-            }
-				
-   			public static string AddressColumn{
-			      get{
-        			return "Address";
-      			}
-		    }
-            
-            public IColumn City{
-                get{
-                    return this.GetColumn("City");
-                }
-            }
-				
-   			public static string CityColumn{
-			      get{
-        			return "City";
-      			}
-		    }
-            
-            public IColumn Region{
-                get{
-                    return this.GetColumn("Region");
-                }
-            }
-				
-   			public static string RegionColumn{
-			      get{
-        			return "Region";
-      			}
-		    }
-            
-            public IColumn PostalCode{
-                get{
-                    return this.GetColumn("PostalCode");
-                }
-            }
-				
-   			public static string PostalCodeColumn{
-			      get{
-        			return "PostalCode";
-      			}
-		    }
-            
-            public IColumn Country{
-                get{
-                    return this.GetColumn("Country");
-                }
-            }
-				
-   			public static string CountryColumn{
-			      get{
-        			return "Country";
-      			}
-		    }
-            
-            public IColumn HomePhone{
-                get{
-                    return this.GetColumn("HomePhone");
-                }
-            }
-				
-   			public static string HomePhoneColumn{
-			      get{
-        			return "HomePhone";
-      			}
-		    }
-            
-            public IColumn Extension{
-                get{
-                    return this.GetColumn("Extension");
-                }
-            }
-				
-   			public static string ExtensionColumn{
-			      get{
-        			return "Extension";
-      			}
-		    }
-            
-            public IColumn Photo{
-                get{
-                    return this.GetColumn("Photo");
-                }
-            }
-				
-   			public static string PhotoColumn{
-			      get{
-        			return "Photo";
-      			}
-		    }
-            
-            public IColumn Notes{
-                get{
-                    return this.GetColumn("Notes");
-                }
-            }
-				
-   			public static string NotesColumn{
-			      get{
-        			return "Notes";
-      			}
-		    }
-            
-            public IColumn ReportsTo{
-                get{
-                    return this.GetColumn("ReportsTo");
-                }
-            }
-				
-   			public static string ReportsToColumn{
-			      get{
-        			return "ReportsTo";
-      			}
-		    }
-            
-            public IColumn PhotoPath{
-                get{
-                    return this.GetColumn("PhotoPath");
-                }
-            }
-				
-   			public static string PhotoPathColumn{
-			      get{
-        			return "PhotoPath";
       			}
 		    }
             
