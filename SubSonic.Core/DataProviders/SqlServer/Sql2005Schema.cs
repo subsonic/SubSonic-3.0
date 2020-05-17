@@ -114,9 +114,10 @@ namespace SubSonic.DataProviders.SqlServer
                 case DbType.UInt16:
                 case DbType.Int16:
                 case DbType.Int32:
+                    return "int";
                 case DbType.UInt64:
                 case DbType.Int64:
-                    return "int";
+                    return "bigint";
                 case DbType.Single:
                     return "real";
                 case DbType.VarNumeric:
