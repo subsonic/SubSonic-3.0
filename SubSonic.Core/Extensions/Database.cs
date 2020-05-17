@@ -166,6 +166,17 @@ namespace SubSonic.Extensions
 				if(currentProp == null)
                     currentField = cachedFields.SingleOrDefault(x => x.Name.Equals(pName, StringComparison.InvariantCultureIgnoreCase));
 
+                //if we still haven't found a property, see if an 'X' was appended.  If it was, assume the column we
+                //actually want is the one without the X
+                if (currentProp == null)
+                {
+                    currentProp = cachedProps.SingleOrDefault(x => x.Name.EndsWith("X") 
+                        && x.Name.Substring(0, x.Name.Length - 1).Equals(pName, StringComparison.InvariantCultureIgnoreCase)
+                        );
+                }
+
+
+
                 if(currentProp != null && !DBNull.Value.Equals(rdr.GetValue(i)))
                 {
                     Type valueType = rdr.GetValue(i).GetType();

@@ -141,6 +141,12 @@ namespace SubSonic.Schema
 
         public IColumn GetColumnByPropertyName(string PropertyName)
         {
+
+if (PropertyName.EndsWith("X") && this.Name.Equals(PropertyName.Substring(0, PropertyName.Length - 1), StringComparison.InvariantCultureIgnoreCase) &&
+                this.Columns.Any(x => x.Name.Equals(PropertyName.Substring(0, PropertyName.Length - 1), StringComparison.InvariantCultureIgnoreCase)))
+            {
+                PropertyName = PropertyName.Substring(0, PropertyName.Length - 1);
+            }
             return Columns.SingleOrDefault(x => x.PropertyName.Equals(PropertyName, StringComparison.InvariantCultureIgnoreCase));
         }
 
